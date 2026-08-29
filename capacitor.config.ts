@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.harinath.colorquestkids",
+  appId: "com.brecksvillelabs.colorquestkids",
   appName: "ColorQuest Kids",
   webDir: "dist",
   server: {

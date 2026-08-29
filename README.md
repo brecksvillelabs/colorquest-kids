@@ -2,6 +2,15 @@
 
 ColorQuest Kids is a free, ad-free, installable creative learning app for ages 1–12. It includes free drawing, shape building, coloring, funny illustrated storybooks, varied reasoning puzzles, guided Math and Science trails, hands-on Science Labs, and Discovery Lab missions covering nature, geography, science, mathematics, and space.
 
+## New in version 2.8.0 — Brecksville Labs Play readiness
+
+- Android identity moved to the permanent Brecksville Labs namespace `com.brecksvillelabs.colorquestkids`
+- Public, mobile-friendly privacy and parent-support pages are bundled with both GitHub Pages and Android
+- Parent Corner links directly to the privacy policy, support page, and private support email
+- Advertising and analytics build hooks were removed from the Android project
+- Release signing can be supplied through an ignored local `android/keystore.properties` file; keys and passwords are never committed
+- Play Console Data safety, Families, target-audience, content-rating, store-copy, testing, and asset guidance is documented in `PLAY_STORE_SUBMISSION.md`
+
 ## New in version 2.7.1 — Accurate tablet painting
 
 - Brush, finger, mouse, and stylus coordinates now stay aligned when responsive phone or tablet layouts resize the visible canvas.
@@ -127,7 +136,7 @@ This repository includes an automatic GitHub Pages deployment workflow.
 1. Open the repository's **Settings → Pages**.
 2. Under **Build and deployment**, choose **GitHub Actions**.
 3. Open **Actions** and allow the first deployment to finish.
-4. Visit `https://eharinathkumar.github.io/colorquest-kids/`.
+4. Visit `https://brecksvillelabs.github.io/colorquest-kids/`.
 
 On Android or desktop Chrome, use the in-app **Install ColorQuest** button when it appears. On iPhone or iPad, open the Share menu and choose **Add to Home Screen**.
 
@@ -152,4 +161,4 @@ npm run android:sync
 
 Run synchronization only after all release changes are integrated; it replaces the web bundle under `android/app/src/main/assets/public/`.
 
-Profiles, progress, and saved artwork stay on that device. No email address, cloud account, or full birthday is required. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
+Profiles, progress, and saved artwork stay on that device. No email address, cloud account, or full birthday is required. See the [public privacy policy](https://brecksvillelabs.github.io/colorquest-kids/privacy.html) or [PRIVACY_POLICY.md](PRIVACY_POLICY.md).

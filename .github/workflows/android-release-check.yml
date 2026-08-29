@@ -1,0 +1,47 @@
+name: Android release check
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+      - run: npm run check
+      - run: npm run android:sync
+      - name: Android unit tests and minified bundle
+        working-directory: android
+        run: ./gradlew testDebugUnitTest bundleRelease
+      - name: Confirm privacy assets and release metadata
+        run: |
+          test -f android/app/src/main/assets/public/privacy.html
+          test -f android/app/src/main/assets/public/support.html
+          test -f android/app/build/outputs/bundle/release/app-release.aab
+          ! find android/app/src/main/assets/public -name '*.map' -print -quit | grep -q .
+          grep -q 'applicationId "com.brecksvillelabs.colorquestkids"' android/app/build.gradle
+          grep -q 'versionCode 16' android/app/build.gradle
+      - uses: actions/upload-artifact@v4
+        with:
+          name: colorquest-2.8.0-unsigned-release-check
+          if-no-files-found: error
+          path: |
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/mapping/release/mapping.txt
+          retention-days: 14

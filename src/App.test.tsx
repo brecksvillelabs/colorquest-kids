@@ -228,6 +228,18 @@ describe("ColorQuest core journeys", () => {
     expect(share).toHaveBeenCalledWith(expect.objectContaining({ files: ["content://colorquest/picture.png"] }));
   });
 
+  it("keeps the privacy policy and parent support reachable in the app", async () => {
+    const user = userEvent.setup();
+    render(<ColorQuestApp />);
+
+    await user.click(screen.getByRole("button", { name: "Grown-ups" }));
+    expect(screen.getByRole("link", { name: "Privacy policy" }).getAttribute("href")).toBe("privacy.html");
+    expect(screen.getByRole("link", { name: "Parent support" }).getAttribute("href")).toBe("support.html");
+
+    await passGrownUpGate(user, "Open parent corner");
+    expect(screen.getByRole("link", { name: "Email Brecksville Labs" }).getAttribute("href")).toBe("mailto:brecksvillelabs@gmail.com");
+  });
+
   it("colors a drawing and keeps the coloring activity usable", async () => {
     const user = userEvent.setup();
     render(<ColorQuestApp />);

@@ -2,11 +2,11 @@
 
 The Android project wraps the same tested ColorQuest experience and bundles its web files inside the application. It does not load the GitHub Pages site as its main screen.
 
-Release target: **ColorQuest Kids 2.7.1**, `versionCode` **15**. Google Play requires every uploaded bundle to use a version code higher than all earlier uploads.
+Release target: **ColorQuest Kids 2.8.0**, `versionCode` **16**. Google Play requires every uploaded bundle to use a version code higher than all earlier uploads.
 
 ## What is ready
 
-- Application ID: `com.harinath.colorquestkids`
+- Application ID: `com.brecksvillelabs.colorquestkids`
 - App name: ColorQuest Kids
 - Android source: `android/`
 - Android-targeted web build generated with relative asset paths (copy it into the native project with the final `npm run android:sync`)
@@ -87,6 +87,6 @@ The normal Android Studio **Run** button creates a debug build and does not prov
 - Archive `android/app/build/outputs/mapping/release/mapping.txt` with the corresponding bundle so release crash traces can be decoded.
 - Keep the upload key and passwords private and backed up.
 - Complete the privacy policy, Data safety, Target audience, Families policy, and IARC content-rating forms.
-- Publish `PRIVACY_POLICY.md` at a stable public URL and use that URL in Play Console.
+- Use `https://brecksvillelabs.github.io/colorquest-kids/privacy.html` in Play Console and confirm the same policy opens from Parent Corner.
 - Prepare phone and tablet screenshots, feature graphic, short description, and full description.
 - Use the closed track with at least 12 opted-in testers for at least 14 days if the Play Console account is a new personal account.

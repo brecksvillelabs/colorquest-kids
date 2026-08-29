@@ -651,6 +651,12 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
 .artwork-actions .delete-art { color: #a23e35; background: #fff0ed; }
 .gallery-message { padding: 10px 13px; border-radius: 11px; background: #dff8ed; color: #126d54; font-weight: 800; }
 .gallery-privacy { margin: 18px 0 0; color: #bed0df; font: 650 11px/1.4 system-ui, sans-serif; }
+.parent-legal-card { margin-top: 24px; padding: 22px; border: 1px solid #d8e2ec; border-radius: 20px; background: #f7fbff; }
+.parent-legal-card h2 { margin: 4px 0 6px; }
+.parent-legal-card p { margin: 0; }
+.parent-legal-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; margin: 16px 0 0; }
+.parent-legal-links a { display: inline-flex; min-height: 40px; align-items: center; padding: 0 14px; border: 1px solid #b8cee2; border-radius: 999px; color: #174f9b; background: #fff; font-weight: 800; text-decoration: none; }
+.parent-legal-links a:focus-visible { outline: 3px solid #ffbf47; outline-offset: 2px; }
 
 /* Canvas-first tablet workspace: tools stay one tap away in the dock instead
    of pushing the child's art below the first viewport. */

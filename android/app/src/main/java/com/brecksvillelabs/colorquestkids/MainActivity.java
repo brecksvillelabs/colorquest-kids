@@ -1,4 +1,4 @@
-package com.harinath.colorquestkids;
+package com.brecksvillelabs.colorquestkids;
 
 import com.getcapacitor.BridgeActivity;
 

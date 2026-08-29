@@ -1,68 +1,29 @@
-# ColorQuest Kids 2.7.1 — Accurate Tablet Painting
+# ColorQuest Kids 2.8.0 — Brecksville Labs Play Readiness
 
-Release date: August 9, 2026  
-Web version: 2.7.1  
-Android version: 2.7.1 (`versionCode` 15)
+Web version: **2.8.0**
 
-## Hotfix
+Android version: **2.8.0** (`versionCode` **16**)
 
-- Corrected canvas pointer mapping after responsive phone/tablet scaling, keeping paint directly under the child’s finger or stylus.
-- Aligned the editable shape layer to the canvas logical dimensions.
-- Added focused regression coverage for normal, scaled, and temporarily hidden canvases.
+Android package: **com.brecksvillelabs.colorquestkids**
 
-## What changed
+## Release purpose
 
-- Home now offers three clear doors—Create, Play, and Learn—rather than seven competing activity choices.
-- A chosen door reveals only its relevant activities, with child-friendly `New` and `Keep going` labels.
-- Every activity opens in a dedicated workspace. The Home launcher, age selector, masthead, and completion counters no longer stack above the activity.
-- A compact workspace bar provides predictable Back, current activity, profile, and `Choose another` controls.
-- On phones, `Choose another` opens as a large bottom sheet; on tablets and desktop it becomes a roomy modal.
-- Draw and Color remain immersive and artwork-first. Stories, puzzles, Math, Science, labs, and Discovery begin directly below the compact workspace controls.
-- The active child’s exact age drives content; age changes remain in profile/grown-up controls rather than the child’s activity screen.
+This release establishes the permanent Brecksville Labs identity and the privacy, support, signing, documentation, and automated release checks needed before the first Google Play upload. It preserves the v2.7.1 canvas-alignment fix and all existing child profiles, creative tools, learning content, and local-data behavior.
 
-## Art-first layout update
+## Included
 
-- **New page** now sits beside **Recent Work** at the top of Draw Freely.
-- Coloring pictures appear before the paint controls so the artwork is the screen hero.
-- The paint palette and save controls sit below the picture.
-- Children can color the picture background with any solid color or gradient by tapping open background space.
-- Background paint is quietly restored with the rest of the child's recent work.
+- Permanent Brecksville Labs Android application ID
+- Public privacy policy at `/colorquest-kids/privacy.html`
+- Public parent-support page at `/colorquest-kids/support.html`
+- Privacy and support links inside Parent Corner and on the grown-up gate screen
+- Private support contact: `brecksvillelabs@gmail.com`
+- Removed unused Google Services build hook
+- Ignored local release-signing configuration with a safe example file
+- Data Safety audit sheet
+- Play Console submission answers, store copy, asset plan, and testing checklist
+- Pull-request Android workflow that builds the minified release bundle without publishing or exposing signing secrets
+- Offline cache advanced to v2.8.0
 
-## Clear Canvas update
+## Important release boundary
 
-- The Creative Spark prompt no longer covers the drawing canvas.
-- Children can open an idea only when they want one with **Show me an idea**.
-- Recent Work is collapsed behind one compact button and expands on demand.
-- Draw/Color navigation is compressed on phones and tablets so the canvas begins much closer to the top.
-
-## Headline changes
-
-- **One Creative Studio:** Draw and Color now sit in one clearly named path with a two-button mode switch, while retaining independent progress and resume positions.
-- **27 distinct coloring scenes:** the former ten-scene loop is replaced by hand-built offline SVG artwork covering recognizable animals, gardens, landscapes, fantasy, transport, and space.
-- **Animals that read as animals:** lion, elephant, red panda, sea turtle, penguin, fox, giraffe, rabbit, whale, owl, horse, frog, toucan, octopus, tiger, koala, butterfly, dinosaur, cat, and more have species-specific silhouettes and details.
-- **26 paints:** 18 solid colors and eight gradients are shared by drawing and coloring. Younger children start with solids and can reveal “magic colors”; older children see the full palette.
-- **Richer drawing tools:** ten brushes now include marker, pencil, crayon, chalk, watercolor, spray, rainbow, sparkle, pattern, and eraser.
-- **More building pieces:** 12 editable shapes include circles, ovals, squares, rectangles, triangles, diamonds, stars, hearts, moons, clouds, arrows, and speech bubbles.
-- **More base paint:** ten solid and gradient canvas backgrounds include meadow and rainbow mist.
-- **Quiet recent-work safety:** Draw and Color silently keep only the four most recently edited canvases per child. This working history is separate from the permanent family gallery.
-- **No leave-page interruption:** children can use Home, profiles, age/activity controls, arrows, page picker, Next, or Parent Corner without a confirmation popup.
-- **Saving is deliberate:** both Draw and Color have a visible **Save to gallery** button. Only pictures a child chooses are added to the family gallery.
-- **Coloring as storytelling:** every page includes one accurate animal/nature fact and an imagination prompt with read-aloud support.
-- **Responsive and offline:** SVG artwork remains sharp on phones and tablets, needs no live image requests, and is included in the PWA and Android bundle.
-
-The adaptive Math, Science, Labs, storybooks, puzzles, profiles, progress, Fifi guidance, and existing saved family artwork from 2.5 remain intact.
-
-## Verification
-
-- Automated tests cover the complete existing app plus Creative Studio catalog uniqueness, subject breadth, palette size, real gradient generation, silent navigation, and coloring interaction.
-- TypeScript and the production GitHub Pages build pass.
-- Android assets are synchronized from the same tested source.
-- Production source maps remain disabled; Android release minification and resource shrinking remain enabled.
-
-## Still required on your computer
-
-Open the included `android/` folder in Android Studio, run on a physical phone and tablet, then create a signed release `.aab`. Follow `ANDROID_RELEASE.md`; the private signing key is intentionally not included.
-
-## GitHub Pages update
-
-Copy the release contents into the root of the existing `colorquest-kids` repository and keep only `.github/workflows/deploy-pages.yml`. Do not upload `node_modules` or the release ZIP. Commit and push to `main`; GitHub Actions will build and deploy the site.
+The GitHub Actions artifact is an unsigned engineering check and must not be uploaded to Play. The production App Bundle must be signed with the private ColorQuest upload key, then inspected in Play Console before closed testing.

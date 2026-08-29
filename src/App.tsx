@@ -1096,6 +1096,7 @@ function ParentCorner({
           onPass={() => setUnlocked(true)}
           onCancel={onHome}
         />
+        <p className="parent-legal-links"><a href="privacy.html" target="_blank" rel="noreferrer">Privacy policy</a><span aria-hidden="true">·</span><a href="support.html" target="_blank" rel="noreferrer">Parent support</a></p>
       </main>
     );
   }
@@ -1153,6 +1154,10 @@ function ParentCorner({
           </div>
         </section>
         <ArtworkGallery profiles={family.profiles} revision={artworkRevision} />
+        <section className="parent-legal-card">
+          <div><p className="eyebrow">Privacy and help</p><h2>Clear information for grown-ups</h2><p>Read how ColorQuest stores profiles and artwork locally, or contact Brecksville Labs privately for support.</p></div>
+          <div className="parent-legal-links"><a href="privacy.html" target="_blank" rel="noreferrer">Privacy policy</a><a href="support.html" target="_blank" rel="noreferrer">Support</a><a href="mailto:brecksvillelabs@gmail.com">Email Brecksville Labs</a></div>
+        </section>
         <button className="primary-button" onClick={onHome}>Back to ColorQuest</button>
       </section>
     </main>
