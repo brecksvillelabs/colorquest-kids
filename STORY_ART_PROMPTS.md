@@ -21,3 +21,14 @@ The version 2.4 illustrations were generated as original, local app assets with 
 6. **Dot and the Bubble Bus:** Dot blows an enormous bubble; imagines it as a bus with her dog driving; butterfly passengers bring leaf parcels; the bus lands and pops into sparkling drops.
 
 The six storyboard sheets were visually reviewed, cropped into 24 standalone WebP pages, resized to 900×900, stripped of metadata, and bundled under `public/stories/`. The source sheets are not required by the app.
+
+
+## Daily story art — 2026-09-23
+
+**The Garden That Made Room** adds four original vector illustrations under `public/stories/garden-made-room-*.svg`.
+
+- Visual continuity: Amara wears a yellow shirt with purple overalls; Ben wears a green hoodie and uses a teal wheelchair; Mei wears a coral shirt with blue overalls.
+- Setting: a bright, welcoming community garden with wide paths, raised beds, flowers, butterflies, and warm neighborhood details.
+- Story progression: same tools for everyone → noticing different needs → adapting tools and access → everyone contributing.
+- Accessibility: every story page includes descriptive alt text in `src/story-data.ts`.
+- Asset constraints: original vector shapes only; no logos, copyrighted characters, watermarks, or text baked into the illustrations.

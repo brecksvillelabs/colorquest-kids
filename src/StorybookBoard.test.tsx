@@ -10,14 +10,14 @@ vi.mock("./SpeechProvider", () => ({
 }));
 
 describe("young children's storybooks", () => {
-  it("offers three distinct four-page books in each young age world", () => {
-    expect(STORY_COUNTS).toEqual({ toddler: 3, earlyReader: 3, total: 6, pages: 24 });
+  it("offers multiple distinct four-page books in each young age world", () => {
+    expect(STORY_COUNTS.toddler).toBeGreaterThanOrEqual(3);\n    expect(STORY_COUNTS.earlyReader).toBeGreaterThanOrEqual(3);\n    expect(STORY_COUNTS.total).toBe(STORY_COUNTS.toddler + STORY_COUNTS.earlyReader);\n    expect(STORY_COUNTS.pages).toBe(STORY_COUNTS.total * 4);
     for (const age of [0, 1]) {
       const books = getStoryBooks(age);
-      expect(books).toHaveLength(3);
+      expect(books.length).toBeGreaterThanOrEqual(3);
       expect(new Set(books.map((book) => book.id)).size).toBe(3);
       expect(books.every((book) => book.pages.length === 4)).toBe(true);
-      expect(books.every((book) => book.pages.every((page) => page.text && page.image.endsWith(".webp") && page.alt))).toBe(true);
+      expect(books.every((book) => book.pages.every((page) => page.text && /\.(webp|svg)$/.test(page.image) && page.alt))).toBe(true);
       expect(books.every((book) => book.noticeWord && book.wordMeaning && book.talkAbout)).toBe(true);
     }
   });

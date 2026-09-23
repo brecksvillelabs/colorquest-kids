@@ -116,6 +116,22 @@ const earlyReaderStories: StoryBook[] = [
       { text: "The bus landed softly. POP! It became a sparkling puddle. “Every bus needs a last stop,” Dot laughed.", image: "stories/bubble-bus-4.webp", alt: "Dot, her dog, and butterflies laughing after the bubble pops into sparkling drops" },
     ],
   },
+  {
+    id: "garden-made-room",
+    title: "The Garden That Made Room",
+    emoji: "🌻",
+    ageWorld: 1,
+    blurb: "Three friends discover that fair can mean different tools for the same big job.",
+    noticeWord: "fair",
+    wordMeaning: "Fair does not always mean everyone gets the same thing. It can mean everyone gets what helps them take part.",
+    talkAbout: "If two friends need different tools to join the same activity, can both choices still be fair?",
+    pages: [
+      { text: "Saturday was Garden Day. Amara, Ben, and Mei each got the same tall watering can. “Same for everyone!” said Mr. Luis.", image: "stories/garden-made-room-1.svg", alt: "Amara, Ben, and Mei arriving at a bright community garden, each beside the same tall blue watering can; Ben uses a teal wheelchair" },
+      { text: "But the big can was heavy for Amara, and the hose hook sat too high for Ben to reach from his wheelchair. Mei wanted picture labels so she could learn every plant name.", image: "stories/garden-made-room-2.svg", alt: "The three friends noticing different garden needs: a heavy watering can, a hose hook mounted too high, and unlabeled plants" },
+      { text: "The friends tried a better question: “What helps each person join in?” They found a small pitcher, lowered the hose hook, and drew bright picture labels together.", image: "stories/garden-made-room-3.svg", alt: "Amara, Ben, and Mei adapting the garden with a small pitcher, a reachable hose hook, and colorful picture labels" },
+      { text: "Soon every seedling had water. Ben painted signs, Amara watered herbs, and Mei welcomed a new family to the garden. Fair did not look the same—and everyone had a way to help.", image: "stories/garden-made-room-4.svg", alt: "A thriving inclusive community garden where Ben paints signs, Amara waters herbs, Mei greets a family, and everyone contributes" },
+    ],
+  },
 ];
 
 export const STORY_COUNTS = {
