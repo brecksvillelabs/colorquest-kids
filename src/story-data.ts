@@ -65,6 +65,22 @@ const toddlerStories: StoryBook[] = [
       { text: "Tuck crossed the daisy finish. The ball had not moved. Everyone laughed—even the ball, almost.", image: "stories/turtles-fast-day-4.webp", alt: "Tuck, Duck, and the red ball celebrating at a finish line made from daisies" },
     ],
   },
+  {
+    id: "hello-blanket",
+    title: "The Hello Blanket",
+    emoji: "👋",
+    ageWorld: 0,
+    blurb: "Four friends discover there are many wonderful ways to say hello.",
+    noticeWord: "welcome",
+    wordMeaning: "Welcome means showing someone they belong with you.",
+    talkAbout: "How many different ways can you show a friend hello?",
+    pages: [
+      { text: "Maya brought a bright blanket to the park. “Hello!” she called. Her friends came close.", image: "stories/hello-blanket-1.svg", alt: "Four young friends with varied skin tones arriving at a sunny park picnic with a rolled rainbow blanket" },
+      { text: "Noah liked picture cards. He tapped his HELLO picture. Maya smiled and made room beside her.", image: "stories/hello-blanket-2.svg", alt: "A child points to a hello picture card while friends make space on a colorful picnic blanket" },
+      { text: "Zuri waved. Leo signed hello with his hands. Maya said hello out loud. Four hellos—one happy welcome!", image: "stories/hello-blanket-3.svg", alt: "Friends greet one another in different ways by waving, signing hello, pointing to a picture card, and smiling" },
+      { text: "They shared fruit, bubbles, and the big bright blanket. There was room for every hello—and room for every friend.", image: "stories/hello-blanket-4.svg", alt: "A joyful diverse group of children share fruit and bubbles on a rainbow picnic blanket with room for everyone" },
+    ],
+  },
 ];
 
 const earlyReaderStories: StoryBook[] = [
