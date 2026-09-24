@@ -5,6 +5,7 @@ This log records stories added by the daily story workflow so future additions c
 | Date | Story | Age world | Core theme | Art |
 | --- | --- | --- | --- | --- |
 | 2026-09-23 | The Garden That Made Room | Early reader | Equity, accessibility, fairness, belonging | 4 original SVG pages |
+| 2026-09-24 | The Hello Blanket | Toddler | Belonging, communication accessibility, respect | 4 original SVG pages |
 
 ## Rotation guidance
 
