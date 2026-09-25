@@ -15,7 +15,7 @@ describe("young children's storybooks", () => {
     for (const age of [0, 1]) {
       const books = getStoryBooks(age);
       expect(books.length).toBeGreaterThanOrEqual(3);
-      expect(new Set(books.map((book) => book.id)).size).toBe(3);
+      expect(new Set(books.map((book) => book.id)).size).toBe(books.length);
       expect(books.every((book) => book.pages.length === 4)).toBe(true);
       expect(books.every((book) => book.pages.every((page) => page.text && /\.(webp|svg)$/.test(page.image) && page.alt))).toBe(true);
       expect(books.every((book) => book.noticeWord && book.wordMeaning && book.talkAbout)).toBe(true);

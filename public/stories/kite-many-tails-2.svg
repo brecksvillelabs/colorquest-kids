@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Four friends each take a different kite-building job">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#9edcff"/><stop offset="1" stop-color="#fff4c7"/></linearGradient></defs>
+<rect width="900" height="900" fill="url(#sky)"/><circle cx="760" cy="120" r="62" fill="#ffd75a"/>
+<path d="M0 650 Q220 540 440 650 T900 620 V900 H0Z" fill="#82cf78"/>
+<path d="M0 730 Q240 620 480 735 T900 700 V900 H0Z" fill="#56ad67"/>
+<g stroke="#513d35" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="170" cy="610" r="54" fill="#8b5a3c"/><path d="M170 664v118M170 705l-60 70M170 705l65 65" fill="none"/><path d="M120 585q50-75 100 0" fill="#6b3e2e"/>
+<circle cx="340" cy="620" r="54" fill="#c6865a"/><path d="M340 674v115M340 715l-55 68M340 715l58 68" fill="none"/><path d="M290 594q50-62 100 0" fill="#2d201b"/>
+<circle cx="520" cy="610" r="54" fill="#f0c29a"/><path d="M520 664v120M520 708l-58 70M520 708l60 70" fill="none"/><path d="M470 588q50-70 100 0" fill="#7a4d2f"/>
+<circle cx="690" cy="620" r="54" fill="#a66d4f"/><path d="M690 674v112M690 716l-55 65M690 716l58 65" fill="none"/><path d="M640 590q50-68 100 0" fill="#241c19"/>
+</g>
+<g fill="#fff"><circle cx="150" cy="610" r="8"/><circle cx="190" cy="610" r="8"/><circle cx="320" cy="620" r="8"/><circle cx="360" cy="620" r="8"/><circle cx="500" cy="610" r="8"/><circle cx="540" cy="610" r="8"/><circle cx="670" cy="620" r="8"/><circle cx="710" cy="620" r="8"/></g>
+<path d="M450 280l125 105-125 105-125-105z" fill="#ff7a73" stroke="#513d35" stroke-width="8"/><circle cx="450" cy="385" r="32" fill="#ffd75a"/><path d="M450 353v64M418 385h64" stroke="#f08a24" stroke-width="8"/><g stroke-width="14"><path d="M250 460l60 35" stroke="#4e91ff"/><path d="M590 470l60 35" stroke="#f0b323"/><path d="M360 510l50 30" stroke="#57b86a"/><path d="M510 515l50 30" stroke="#e35a9d"/></g>
+<rect x="70" y="70" width="760" height="92" rx="35" fill="#ffffff" opacity=".9"/><text x="450" y="126" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="700" fill="#3c4660">Different jobs, one kite</text>
+</svg>

@@ -148,6 +148,22 @@ const earlyReaderStories: StoryBook[] = [
       { text: "Soon every seedling had water. Ben painted signs, Amara watered herbs, and Mei welcomed a new family to the garden. Fair did not look the same—and everyone had a way to help.", image: "stories/garden-made-room-4.svg", alt: "A thriving inclusive community garden where Ben paints signs, Amara waters herbs, Mei greets a family, and everyone contributes" },
     ],
   },
+  {
+    id: "kite-many-tails",
+    title: "The Kite With Many Tails",
+    emoji: "🪁",
+    ageWorld: 1,
+    blurb: "Four neighbors discover that a kite flies best when everyone has a way to help.",
+    noticeWord: "contribute",
+    wordMeaning: "Contribute means adding something you can do or share to help a group.",
+    talkAbout: "What could each person contribute if your group built something together?",
+    pages: [
+      { text: "At the hilltop picnic, Asha, Mateo, June, and Sami found a bright kite kit. Everyone wanted to help, but there was only one spool and one pair of scissors.", image: "stories/kite-many-tails-1.svg", alt: "Four children with varied skin tones gathered around a colorful kite kit on a grassy hill, with one spool and one pair of child-safe scissors" },
+      { text: "“We don’t all need the same job,” said June. Asha tied careful knots, Mateo chose the tail colors, Sami held the frame steady, and June drew a smiling sun.", image: "stories/kite-many-tails-2.svg", alt: "Four friends doing different kite-building jobs together: tying ribbon, choosing colors, steadying the frame, and drawing a sun" },
+      { text: "WHOOSH! The kite wobbled. Its short tail tugged sideways. The friends each added one ribbon, making a long dancing tail from everyone’s pieces.", image: "stories/kite-many-tails-3.svg", alt: "The children adding different colorful ribbons to a kite tail while the kite begins to lift in the breeze" },
+      { text: "Up sailed the kite—gold, blue, green, and red ribbons streaming together. No one had done every job. Everyone had contributed, and the sky held all their colors.", image: "stories/kite-many-tails-4.svg", alt: "A joyful group of four children flying their finished kite high above the hill with a long multicolored ribbon tail" },
+    ],
+  },
 ];
 
 export const STORY_COUNTS = {
