@@ -11,7 +11,10 @@ vi.mock("./SpeechProvider", () => ({
 
 describe("young children's storybooks", () => {
   it("offers multiple distinct four-page books in each young age world", () => {
-    expect(STORY_COUNTS.toddler).toBeGreaterThanOrEqual(3);\n    expect(STORY_COUNTS.earlyReader).toBeGreaterThanOrEqual(3);\n    expect(STORY_COUNTS.total).toBe(STORY_COUNTS.toddler + STORY_COUNTS.earlyReader);\n    expect(STORY_COUNTS.pages).toBe(STORY_COUNTS.total * 4);
+    expect(STORY_COUNTS.toddler).toBeGreaterThanOrEqual(3);
+    expect(STORY_COUNTS.earlyReader).toBeGreaterThanOrEqual(3);
+    expect(STORY_COUNTS.total).toBe(STORY_COUNTS.toddler + STORY_COUNTS.earlyReader);
+    expect(STORY_COUNTS.pages).toBe(STORY_COUNTS.total * 4);
     for (const age of [0, 1]) {
       const books = getStoryBooks(age);
       expect(books.length).toBeGreaterThanOrEqual(3);
