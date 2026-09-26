@@ -81,6 +81,22 @@ const toddlerStories: StoryBook[] = [
       { text: "They shared fruit, bubbles, and the big bright blanket. There was room for every hello—and room for every friend.", image: "stories/hello-blanket-4.svg", alt: "A joyful diverse group of children share fruit and bubbles on a rainbow picnic blanket with room for everyone" },
     ],
   },
+  {
+    id: "parade-soft-sounds",
+    title: "The Parade of Soft Sounds",
+    emoji: "🎀",
+    ageWorld: 0,
+    blurb: "Three friends make a parade that everyone can enjoy.",
+    noticeWord: "gentle",
+    wordMeaning: "Gentle means soft, calm, and careful.",
+    talkAbout: "What could you change to help a friend join a game or celebration?",
+    pages: [
+      { text: "Courtyard Parade Day began with bells, drums, and bright flags. Ravi jingled. Lila tapped. Noor smiled—but the sounds felt too big.", image: "stories/parade-soft-sounds-1.svg", alt: "Children with varied skin tones gather in a bright courtyard; Ravi holds bells, Lila has a small drum, and Noor stands calmly beside her grandmother with hands near her ears" },
+      { text: "Noor covered her ears. Ravi stopped. Lila stopped too. “We can make a parade that feels good for everyone,” said Ravi.", image: "stories/parade-soft-sounds-2.svg", alt: "Ravi and Lila notice Noor needs a quieter sound and choose colorful ribbon wands and gentle rice shakers together" },
+      { text: "They traded loud bells for ribbon wands, soft shakers, and quiet claps. Noor chose a purple ribbon and twirled it high.", image: "stories/parade-soft-sounds-3.svg", alt: "Noor, Ravi, and Lila make a gentle parade with flowing ribbon wands, soft shakers, and quiet claps in a sunny courtyard" },
+      { text: "Swish, shake, clap! The parade danced through the courtyard. It was softer, still joyful, and everyone had a way to join.", image: "stories/parade-soft-sounds-4.svg", alt: "A joyful diverse group of children and families parade through the courtyard with colorful ribbons, soft shakers, smiles, and plenty of comfortable space" },
+    ],
+  },
 ];
 
 const earlyReaderStories: StoryBook[] = [

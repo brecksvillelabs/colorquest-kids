@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="A joyful diverse group of children and families parade through the courtyard with colorful ribbons, soft shakers, smiles, and plenty of comfortable space">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#aee6ff"/><stop offset="1" stop-color="#fff0b8"/></linearGradient>
+  </defs>
+  <rect width="900" height="900" fill="url(#sky)"/>
+  <circle cx="770" cy="105" r="60" fill="#ffd75a"/>
+  <path d="M0 575Q190 515 370 570T720 560T900 555V900H0Z" fill="#7dd3a7"/>
+  <g opacity=".95">
+    <rect x="40" y="245" width="145" height="230" rx="18" fill="#fda4af"/>
+    <rect x="715" y="235" width="145" height="240" rx="18" fill="#93c5fd"/>
+    <rect x="210" y="275" width="112" height="200" rx="18" fill="#fde68a"/>
+    <rect x="575" y="270" width="112" height="205" rx="18" fill="#c4b5fd"/>
+  </g>
+  <g fill="none" stroke-linecap="round">
+    <path d="M95 485q90-110 180 0" stroke="#ec4899" stroke-width="18"/>
+    <path d="M280 470q90-120 180 0" stroke="#8b5cf6" stroke-width="18"/>
+    <path d="M465 485q90-110 180 0" stroke="#14b8a6" stroke-width="18"/>
+    <path d="M630 470q75-95 150 0" stroke="#f59e0b" stroke-width="18"/>
+  </g>
+  <g stroke="#513d35" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="170" cy="630" r="48" fill="#9b6647"/><path d="M170 678v100M170 712l-45 58M170 712l48 58" fill="none"/>
+    <circle cx="350" cy="642" r="48" fill="#d69b72"/><path d="M350 690v94M350 720l-45 58M350 720l48 58" fill="none"/>
+    <circle cx="540" cy="630" r="48" fill="#8b5a3c"/><path d="M540 678v100M540 712l-45 58M540 712l48 58" fill="none"/>
+    <circle cx="720" cy="640" r="48" fill="#efc19a"/><path d="M720 688v96M720 720l-45 58M720 720l48 58" fill="none"/>
+  </g>
+  <g fill="#2d201b"><path d="M125 613q45-66 90 0"/><path d="M305 625q45-62 90 0"/><path d="M495 613q45-68 90 0"/><path d="M675 623q45-62 90 0"/></g>
+  <g fill="#fff"><circle cx="152" cy="632" r="7"/><circle cx="188" cy="632" r="7"/><circle cx="332" cy="644" r="7"/><circle cx="368" cy="644" r="7"/><circle cx="522" cy="632" r="7"/><circle cx="558" cy="632" r="7"/><circle cx="702" cy="642" r="7"/><circle cx="738" cy="642" r="7"/></g>
+  <rect x="65" y="60" width="770" height="94" rx="34" fill="#fff" opacity=".92"/>
+  <text x="450" y="119" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="700" fill="#334155">Joy has many volumes</text>
+</svg>

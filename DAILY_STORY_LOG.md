@@ -7,6 +7,7 @@ This log records stories added by the daily story workflow so future additions c
 | 2026-09-23 | The Garden That Made Room | Early reader | Equity, accessibility, fairness, belonging | 4 original SVG pages |
 | 2026-09-24 | The Hello Blanket | Toddler | Belonging, communication accessibility, respect | 4 original SVG pages |
 | 2026-09-25 | The Kite With Many Tails | Early reader | Cooperation, equitable participation, contribution | 4 original SVG pages |
+| 2026-09-26 | The Parade of Soft Sounds | Toddler | Sensory accessibility, empathy, belonging | 4 original SVG pages |
 
 ## Rotation guidance
 

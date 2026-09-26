@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Noor, Ravi, and Lila make a gentle parade with flowing ribbon wands, soft shakers, and quiet claps in a sunny courtyard">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b9e8ff"/><stop offset="1" stop-color="#fff1bd"/></linearGradient>
+  </defs>
+  <rect width="900" height="900" fill="url(#sky)"/>
+  <circle cx="780" cy="110" r="58" fill="#ffd75a"/>
+  <path d="M0 570Q180 520 350 570T700 565T900 560V900H0Z" fill="#7dd3a7"/>
+  <g opacity=".95">
+    <rect x="55" y="240" width="150" height="240" rx="18" fill="#ff8fab"/>
+    <rect x="695" y="235" width="150" height="245" rx="18" fill="#7dd3fc"/>
+    <rect x="225" y="270" width="115" height="210" rx="18" fill="#fde68a"/>
+    <rect x="560" y="265" width="115" height="215" rx="18" fill="#c4b5fd"/>
+  </g>
+  <g stroke="#513d35" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="210" cy="620" r="50" fill="#9b6647"/>
+    <path d="M210 670v108M210 710l-50 62M210 710l55 62" fill="none"/>
+    <circle cx="450" cy="630" r="50" fill="#d69b72"/>
+    <path d="M450 680v102M450 716l-52 60M450 716l55 60" fill="none"/>
+    <circle cx="690" cy="620" r="50" fill="#8b5a3c"/>
+    <path d="M690 670v108M690 710l-50 62M690 710l55 62" fill="none"/>
+  </g>
+  <g fill="#2d201b"><path d="M165 602q45-68 90 0"/><path d="M405 612q45-62 90 0"/><path d="M645 602q45-70 90 0"/></g>
+  <path d="M170 520q55-85 110 0" fill="none" stroke="#8b5cf6" stroke-width="18" stroke-linecap="round"/>
+  <path d="M190 510q-45-55-80-25M218 500q25-70 65-45" fill="none" stroke="#ec4899" stroke-width="16" stroke-linecap="round"/>
+  <rect x="405" y="492" width="90" height="54" rx="24" fill="#f59e0b" stroke="#513d35" stroke-width="6"/>
+  <circle cx="425" cy="519" r="8" fill="#fff"/><circle cx="450" cy="519" r="8" fill="#fff"/><circle cx="475" cy="519" r="8" fill="#fff"/>
+  <path d="M645 505q45-55 90 0M650 525q40 42 80 0" fill="none" stroke="#14b8a6" stroke-width="15" stroke-linecap="round"/>
+  <rect x="65" y="60" width="770" height="94" rx="34" fill="#fff" opacity=".92"/>
+  <text x="450" y="119" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="700" fill="#334155">Swish, shake, clap</text>
+</svg>
