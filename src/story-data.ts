@@ -81,6 +81,22 @@ const toddlerStories: StoryBook[] = [
       { text: "They shared fruit, bubbles, and the big bright blanket. There was room for every hello—and room for every friend.", image: "stories/hello-blanket-4.svg", alt: "A joyful diverse group of children share fruit and bubbles on a rainbow picnic blanket with room for everyone" },
     ],
   },
+  {
+    id: "parade-soft-sounds",
+    title: "The Parade of Soft Sounds",
+    emoji: "🎀",
+    ageWorld: 0,
+    blurb: "A courtyard parade finds a gentler beat so every friend can join.",
+    noticeWord: "gentle",
+    wordMeaning: "Gentle means soft, calm, and careful.",
+    talkAbout: "What could you change in a game or celebration to help a friend feel comfortable joining?",
+    pages: [
+      { text: "Music bounced through the courtyard. Ravi shook bells. Lila tapped a drum. Noor covered her ears and stepped beside Grandma.", image: "stories/parade-soft-sounds-1.svg", alt: "Children with varied skin tones gather in a bright courtyard; Ravi holds bells, Lila has a small drum, and Noor stands calmly beside her grandmother with hands near her ears" },
+      { text: "Ravi noticed. “Too loud?” Noor nodded. Lila found ribbon wands, and Grandma brought soft shakers filled with rice.", image: "stories/parade-soft-sounds-2.svg", alt: "Ravi and Lila notice Noor needs a quieter sound and choose colorful ribbon wands and gentle rice shakers together" },
+      { text: "Swish, shake, tap-tap! The friends made a new parade. Noor led with a purple ribbon, and everyone chose a sound that felt good.", image: "stories/parade-soft-sounds-3.svg", alt: "Noor happily leads a courtyard parade with a purple ribbon while friends use gentle shakers, a softly tapped drum, and flowing ribbons" },
+      { text: "Around the fountain they went—bright ribbons flying, quiet rhythms bouncing. The parade had changed, and every friend was still part of it.", image: "stories/parade-soft-sounds-4.svg", alt: "A joyful inclusive group circles a courtyard fountain with colorful ribbons and gentle instruments, with every child taking part" },
+    ],
+  },
 ];
 
 const earlyReaderStories: StoryBook[] = [
