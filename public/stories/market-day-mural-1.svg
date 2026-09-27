@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Four diverse children plan a cheerful community mural beside market stalls filled with fruit, flowers, and bicycles">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#bfe8ff"/><stop offset="1" stop-color="#fff1c2"/></linearGradient></defs>
+<rect width="900" height="900" fill="url(#sky)"/><circle cx="790" cy="100" r="55" fill="#ffd45c"/>
+<rect x="60" y="220" width="780" height="380" rx="26" fill="#fff8e7" stroke="#8b6f47" stroke-width="8"/>
+<g opacity=".95"><circle cx="170" cy="335" r="58" fill="#fb7185"/><rect x="270" y="285" width="120" height="105" rx="18" fill="#60a5fa"/><path d="M465 390l65-120 65 120z" fill="#34d399"/><circle cx="690" cy="330" r="62" fill="#fbbf24"/></g>
+<path d="M0 650Q220 610 430 650T900 640V900H0Z" fill="#86d5a6"/>
+<g stroke="#4b362f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="180" cy="665" r="44" fill="#8b5a3c"/><path d="M180 709v92M180 742l-42 52M180 742l45 52" fill="none"/>
+<circle cx="365" cy="680" r="44" fill="#efc19a"/><path d="M365 724v82M365 752l-42 48M365 752l45 48" fill="none"/>
+<circle cx="555" cy="665" r="44" fill="#a86f4c"/><path d="M555 709v92M555 742l-42 52M555 742l45 52" fill="none"/>
+<circle cx="735" cy="680" r="44" fill="#d69b72"/><path d="M735 724v68M735 748l-40 45M735 748l44 45" fill="none"/>
+</g>
+
+
+
+<rect x="75" y="55" width="750" height="90" rx="32" fill="#fff" opacity=".94"/><text x="450" y="112" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="700" fill="#334155">A wall for everyone</text>
+</svg>

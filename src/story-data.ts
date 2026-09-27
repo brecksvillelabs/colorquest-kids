@@ -180,6 +180,22 @@ const earlyReaderStories: StoryBook[] = [
       { text: "Up sailed the kite—gold, blue, green, and red ribbons streaming together. No one had done every job. Everyone had contributed, and the sky held all their colors.", image: "stories/kite-many-tails-4.svg", alt: "A joyful group of four children flying their finished kite high above the hill with a long multicolored ribbon tail" },
     ],
   },
+  {
+    id: "market-day-mural",
+    title: "The Market Day Mural",
+    emoji: "🎨",
+    ageWorld: 1,
+    blurb: "Four young artists turn a blank market wall into a picture everyone can help create.",
+    noticeWord: "adapt",
+    wordMeaning: "Adapt means changing how something works so it fits a need better.",
+    talkAbout: "How can a group change a project so more people can take part?",
+    pages: [
+      { text: "On Market Day, Imani, Theo, Valentina, and Arun were invited to paint a giant wall. They sketched fruit, flowers, bicycles, and the neighborhood cat.", image: "stories/market-day-mural-1.svg", alt: "Four diverse children plan a cheerful community mural beside market stalls filled with fruit, flowers, and bicycles" },
+      { text: "Theo could see the wall best up close, but the paint table was far away. Arun loved mixing colors, yet reaching the high wall from his wheelchair was tricky.", image: "stories/market-day-mural-2.svg", alt: "The young artists notice that the paint table is far from Theo and that part of the mural is too high for Arun to reach comfortably from his wheelchair" },
+      { text: "So the team adapted their plan. They moved paint into small trays, added a low mural panel, and clipped textured shape guides beside the outlines. Everyone picked a job that worked.", image: "stories/market-day-mural-3.svg", alt: "Friends adapt the art space with reachable paint trays, a lower mural panel, and textured shape guides so each child can contribute comfortably" },
+      { text: "By sunset, one enormous picture stretched across the market: many colors, many hands, one shared wall. People stopped to find each artist’s special piece—and the children proudly found one another’s.", image: "stories/market-day-mural-4.svg", alt: "A lively inclusive market celebrates a finished multicolored mural while the four young artists point out one another's contributions" },
+    ],
+  },
 ];
 
 export const STORY_COUNTS = {
