@@ -4,6 +4,14 @@ ColorQuest Kids is a free, ad-free, installable creative learning app for ages 1
 
 > Project operating procedure, architecture notes, and living roadmap: [COLORQUEST_SOP_ROADMAP.md](COLORQUEST_SOP_ROADMAP.md)
 
+## Current feature — Family coloring pages
+
+- Grown-ups can add PNG, JPG, WebP, or SVG coloring sheets through a randomized grown-up gate
+- Imports are processed locally into clean line art and stored privately on the device
+- Children can use paint bucket, brush, crayon, eraser, undo/redo, zoom, and per-profile autosave
+- Finished custom pages save into the existing private family artwork gallery
+- Built-in ColorQuest coloring scenes remain unchanged alongside the new **My coloring pages** shelf
+
 ## New in version 2.8.0 — Brecksville Labs Play readiness
 
 - Android identity moved to the permanent Brecksville Labs namespace `com.brecksvillelabs.colorquestkids`
