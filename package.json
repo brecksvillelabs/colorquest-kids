@@ -20,7 +20,8 @@
     "@capacitor/filesystem": "^8.1.2",
     "@capacitor/share": "^8.0.1",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "pdfjs-dist": "6.4.299"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.0",
