@@ -1,5 +1,5 @@
 import { type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
-import type { PDFDocumentProxy } from "pdfjs-dist";
+import type { PDFDocumentLoadingTask, PDFDocumentProxy } from "pdfjs-dist";
 import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import { ART_PAINTS, DEFAULT_PAINT, getArtPaint, paintCss } from "./art-palette";
 import { GrownUpGate } from "./GrownUpGate";
@@ -31,6 +31,7 @@ type GateAction =
 
 type PdfImportState = {
   document: PDFDocumentProxy;
+  loadingTask: PDFDocumentLoadingTask;
   fileName: string;
   pageCount: number;
   pageNumber: number;
@@ -174,7 +175,9 @@ async function loadPdfDocument(file: File) {
     pdfWorkerConfigured = true;
   }
   const data = new Uint8Array(await file.arrayBuffer());
-  return pdfjs.getDocument({ data, isEvalSupported: false }).promise;
+  const loadingTask = pdfjs.getDocument({ data });
+  const document = await loadingTask.promise;
+  return { document, loadingTask };
 }
 
 async function renderPdfPageCanvas(document: PDFDocumentProxy, pageNumber: number, maxDimension: number) {
@@ -191,6 +194,7 @@ async function renderPdfPageCanvas(document: PDFDocumentProxy, pageNumber: numbe
   context.fillStyle = "#ffffff";
   context.fillRect(0, 0, canvas.width, canvas.height);
   await page.render({
+    canvas,
     canvasContext: context,
     viewport,
     background: "#ffffff",
@@ -225,7 +229,7 @@ export default function CustomColoringStudio({
   const boundaryRef = useRef<Uint8Array>(new Uint8Array());
   const photoInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const pendingPdfRef = useRef<PDFDocumentProxy | null>(null);
+  const pendingPdfRef = useRef<PDFDocumentLoadingTask | null>(null);
   const drawingRef = useRef(false);
   const previousPointRef = useRef<{ x: number; y: number } | null>(null);
   const historyRef = useRef<string[]>([]);
@@ -529,15 +533,15 @@ export default function CustomColoringStudio({
 
   const openPdfForImport = async (file: File) => {
     setMessage("Opening PDF…");
-    const document = await loadPdfDocument(file);
-    pendingPdfRef.current = document;
+    const { document, loadingTask } = await loadPdfDocument(file);
+    pendingPdfRef.current = loadingTask;
     const pageCount = document.numPages;
 
     if (pageCount === 1) {
       const canvas = await renderPdfPageCanvas(document, 1, 1200);
       const prepared = await prepareLineArtFromCanvas(canvas);
       await savePreparedPage(pdfPageTitle(file.name, 1, 1), prepared);
-      await document.destroy();
+      await loadingTask.destroy();
       pendingPdfRef.current = null;
       return;
     }
@@ -545,6 +549,7 @@ export default function CustomColoringStudio({
     const previewCanvas = await renderPdfPageCanvas(document, 1, 520);
     setPdfImport({
       document,
+      loadingTask,
       fileName: file.name,
       pageCount,
       pageNumber: 1,
@@ -607,7 +612,7 @@ export default function CustomColoringStudio({
         pdfPageTitle(pdfImport.fileName, pdfImport.pageNumber, pdfImport.pageCount),
         prepared,
       );
-      await pdfImport.document.destroy();
+      await pdfImport.loadingTask.destroy();
       pendingPdfRef.current = null;
       setPdfImport(null);
     } catch (error) {
@@ -618,10 +623,10 @@ export default function CustomColoringStudio({
   };
 
   const cancelPdfImport = async () => {
-    const document = pdfImport?.document || pendingPdfRef.current;
+    const loadingTask = pdfImport?.loadingTask || pendingPdfRef.current;
     setPdfImport(null);
     pendingPdfRef.current = null;
-    if (document) await document.destroy().catch(() => undefined);
+    if (loadingTask) await loadingTask.destroy().catch(() => undefined);
     setMessage("PDF import cancelled.");
   };
 
