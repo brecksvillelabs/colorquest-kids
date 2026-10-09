@@ -10,7 +10,7 @@ export function effectiveLabSafety(ageWorld: number, safety: LabSafety): LabSafe
   return ageWorld === 0 && safety === "Child can try" ? "Grown-up nearby" : safety;
 }
 
-export function labNarration(lab: ScienceLab) {
+export function labNarration(lab: ScienceLab, safety: LabSafety = lab.safety) {
   return [
     lab.title,
     `Safety level: ${safety}.`,
