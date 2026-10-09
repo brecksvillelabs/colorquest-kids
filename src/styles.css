@@ -702,7 +702,9 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
 }
 
 @media (max-width: 1050px) {
-  nav .nav-link, .grownups { display: none; }
+  nav .nav-link { display: none; }
+  .grownups { min-width: 48px; width: 48px; padding: 0; font-size: 0; }
+  .grownups::before { content: "👥"; font-size: 20px; }
   .hero { grid-template-columns: 1fr; gap: 20px; text-align: center; }
   .hero-copy { display: grid; justify-items: center; }
   .hero-art { width: 100%; min-height: 390px; }
@@ -1914,4 +1916,77 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   .first-parent-pin > small { grid-column: 1; }
   .lab-supervision-gate { grid-template-columns: 1fr; }
   .lab-supervision-copy > span { width: 46px; height: 46px; border-radius: 14px; }
+}
+
+
+/* ---------- 2026 hard check: Parent Corner + age-appropriate home ---------- */
+.parent-pin-settings {
+  margin: 28px 0;
+  padding: clamp(18px, 3vw, 27px);
+  border: 1px solid #d8e6f0;
+  border-radius: 25px;
+  background: #fff;
+  box-shadow: 0 9px 22px #173b6d10;
+}
+.parent-pin-settings h2 {
+  margin: 4px 0 7px;
+  color: var(--navy, #173b6d);
+  font-size: clamp(28px, 4vw, 42px);
+}
+.parent-pin-settings > div:first-child > p:not(.eyebrow) {
+  max-width: 72ch;
+  margin: 0;
+  color: #597087;
+  font: 650 14px/1.5 system-ui, sans-serif;
+}
+.parent-pin-fields {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(150px, 220px) auto;
+  gap: 10px;
+  align-items: end;
+  margin-top: 17px;
+}
+.parent-pin-fields label {
+  display: grid;
+  gap: 5px;
+  color: #62778e;
+  font-size: 11px;
+  font-weight: 850;
+}
+.parent-pin-fields input {
+  min-height: 46px;
+  padding: 8px 11px;
+  border: 1px solid #cbd9e3;
+  border-radius: 11px;
+  color: var(--navy, #173b6d);
+  font: 850 17px/1 system-ui, sans-serif;
+  text-align: center;
+  letter-spacing: .12em;
+}
+.parent-pin-message {
+  display: block;
+  margin-top: 10px;
+  color: #176651;
+  font-weight: 800;
+}
+.parent-pin-note {
+  display: block;
+  max-width: 85ch;
+  margin-top: 9px;
+  color: #708195;
+  font: 650 11px/1.45 system-ui, sans-serif;
+}
+.mentor-home-young {
+  max-width: 980px;
+}
+.mentor-home-young .mentor-path-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.mentor-home-young .mentor-path-grid article {
+  max-width: 760px;
+}
+
+@media (max-width: 700px) {
+  .parent-pin-fields { grid-template-columns: 1fr; }
+  .parent-pin-fields .tool-button { width: 100%; min-height: 48px; }
 }
