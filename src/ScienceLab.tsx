@@ -109,9 +109,7 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
             title={lab.safety}
             intro="Enter the Parent PIN when the supervising grown-up is ready to begin the hands-on part."
             confirmLabel="We’re ready to begin"
-            cancelLabel="Choose another lab"
             onPass={() => setAdultReady(true)}
-            onCancel={() => undefined}
           />
         </section>
       ) : (
