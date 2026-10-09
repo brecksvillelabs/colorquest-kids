@@ -127,7 +127,7 @@ function childActivityLabel(activity: Activity, ageWorld: number) {
   if (activity === "math") return ageWorld >= 2 ? "Math" : "Number Games";
   if (activity === "lab") return ageWorld >= 2 ? "Science Lab" : "Try a Lab";
   if (activity === "discover") return ageWorld >= 2 ? "Discovery" : "Discover";
-  return childActivityLabel(activity, age);
+  return CHILD_ACTIVITY_LABELS[activity];
 }
 
 function childGroupMeta(groupId: keyof typeof CHILD_GROUP_META, ageWorld: number) {
