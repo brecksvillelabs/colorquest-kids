@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PROFILE_AVATARS, ageWorldFor, type ChildProfile } from "./profile-data";
 import { hasParentPin, saveParentPin, validParentPin } from "./parent-pin";
+import { GrownUpGate } from "./GrownUpGate";
 
 const AGE_WORLD_NAMES = ["Little Explorer", "Growing Creator", "Curious Inventor", "Big Thinker"];
 
@@ -120,6 +121,8 @@ export function ProfileHub({
   onAdd: () => void;
   onBack: () => void;
 }) {
+  const [addGateOpen, setAddGateOpen] = useState(false);
+
   return (
     <main className="profile-page">
       <section className="profile-hub-card">
@@ -135,11 +138,26 @@ export function ProfileHub({
               <em>{profile.id === activeProfileId ? "Playing now" : "Choose profile"}</em>
             </button>
           ))}
-          <button className="add-profile-card" onClick={onAdd}>
+          <button className="add-profile-card" onClick={() => setAddGateOpen(true)}>
             <span>＋</span><strong>Add a child</strong><small>Create a separate private space</small>
           </button>
         </div>
       </section>
+      {addGateOpen && (
+        <div className="profile-parent-gate-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setAddGateOpen(false); }}>
+          <div className="profile-parent-gate-dialog" role="dialog" aria-modal="true" aria-label="Grown-up check to add a child profile">
+            <GrownUpGate
+              compact
+              title="Grown-ups only"
+              intro="Adding another child changes the household setup, so a grown-up needs to enter the Parent PIN."
+              confirmLabel="Add a child"
+              cancelLabel="Back to profiles"
+              onPass={() => { setAddGateOpen(false); onAdd(); }}
+              onCancel={() => setAddGateOpen(false)}
+            />
+          </div>
+        </div>
+      )}
     </main>
   );
 }
