@@ -351,7 +351,7 @@ export function buildAbacusChallenge(
         return {
           id, stageId, prompt: `${a} × ${b} = ?`, startValue: 0, targetValue: target, rods: rodsNeeded(target),
           hint: `Think of ${a} equal groups of ${b}. Build the product when you know it.`,
-          strategy: "V1 practices the arithmetic result on the soroban; the advanced traditional multiplication layout is a later module.",
+          strategy: "Think in equal groups, then use place value to build the final product calmly.",
           speakText: `Use the abacus to solve ${a} times ${b}.`,
         };
       }
