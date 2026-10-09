@@ -34,8 +34,9 @@ describe("Abacus Lab curriculum", () => {
   });
 
   it("recommends the first unexplored stage without locking later stages", () => {
-    expect(recommendedStageId(8, [])).toBe("bead-play");
-    expect(recommendedStageId(8, ["bead-play", "digits"])).toBe("place-value");
+    expect(recommendedStageId(2, [])).toBe("bead-play");
+    expect(recommendedStageId(8, [])).toBe("digits");
+    expect(recommendedStageId(8, ["digits"])).toBe("place-value");
     expect(stagesForAge(8).some((stage) => stage.id === "multiply-divide")).toBe(true);
   });
 });
