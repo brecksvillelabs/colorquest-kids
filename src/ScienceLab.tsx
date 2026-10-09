@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { getScienceLab, getScienceLabs, type ScienceLab } from "./lab-data";
+import { getScienceLab, getScienceLabs, type LabSafety, type ScienceLab } from "./lab-data";
 import { SpeakButton, useAutoSpeak, useSpeakOnChange } from "./SpeechProvider";
 import { GrownUpGate } from "./GrownUpGate";
 
 const SAFETY_ICON = { "Child can try": "🟢", "Grown-up nearby": "🟡", "Grown-up required": "🔴" } as const;
 
+export function effectiveLabSafety(ageWorld: number, safety: LabSafety): LabSafety {
+  // Ages 1–3 should never interpret a hands-on investigation as independent.
+  return ageWorld === 0 && safety === "Child can try" ? "Grown-up nearby" : safety;
+}
+
 export function labNarration(lab: ScienceLab) {
   return [
     lab.title,
-    `Safety level: ${lab.safety}.`,
+    `Safety level: ${safety}.`,
     lab.question,
     `Prediction choices: ${lab.predictions.join(", ")}.`,
     `You will need: ${lab.materials.join(", ")}.`,
@@ -25,7 +30,8 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
   const [prediction, setPrediction] = useState<string | null>(null);
   const [checked, setChecked] = useState<number[]>([]);
   const [revealed, setRevealed] = useState(false);
-  const needsAdult = lab.safety !== "Child can try";
+  const safety = effectiveLabSafety(age, lab.safety);
+  const needsAdult = safety !== "Child can try";
   const [adultReady, setAdultReady] = useState(!needsAdult);
 
   const reveal = () => {
@@ -37,14 +43,14 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
     adultReady
       ? [
           lab.title,
-          `Safety level: ${lab.safety}.`,
+          `Safety level: ${safety}.`,
           lab.question,
           `Prediction choices: ${lab.predictions.join(", ")}.`,
           `You will need: ${lab.materials.join(", ")}.`,
         ]
       : [
           lab.title,
-          `Safety level: ${lab.safety}.`,
+          `Safety level: ${safety}.`,
           lab.question,
           `Choose a prediction, then ask a grown-up before starting the hands-on steps.`,
         ],
@@ -57,12 +63,12 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
       <header className="lab-header">
         <div className="lab-icon" aria-hidden="true">{lab.icon}</div>
         <div><p>SCIENCE LAB · {lab.field}</p><h3>{lab.title}</h3><small>Lab {page} of {labs.length} · about {lab.time}</small></div>
-        <strong className={`safety-${lab.safety.toLowerCase().replaceAll(" ", "-")}`}>{SAFETY_ICON[lab.safety]} {lab.safety}</strong>
+        <strong className={`safety-${safety.toLowerCase().replaceAll(" ", "-")}`}>{SAFETY_ICON[safety]} {safety}</strong>
         <SpeakButton
           id={`lab-${lab.id}`}
           label="Read the lab"
           className="on-banner"
-          text={adultReady ? labNarration(lab) : [lab.title, `Safety level: ${lab.safety}.`, lab.question, "Ask a grown-up before starting the hands-on steps."]}
+          text={adultReady ? [lab.title, `Safety level: ${safety}.`, ...labNarration(lab).slice(2)] : [lab.title, `Safety level: ${safety}.`, lab.question, "Ask a grown-up before starting the hands-on steps."]}
         />
       </header>
       <section className="lab-question">
@@ -93,12 +99,12 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
       {needsAdult && !adultReady ? (
         <section className="lab-supervision-gate" aria-label="Grown-up required before hands-on lab steps">
           <div className="lab-supervision-copy">
-            <span aria-hidden="true">{lab.safety === "Grown-up required" ? "🔴" : "🟡"}</span>
+            <span aria-hidden="true">{safety === "Grown-up required" ? "🔴" : "🟡"}</span>
             <div>
               <p className="eyebrow">Pause before the hands-on part</p>
-              <h4>{lab.safety}</h4>
+              <h4>{safety}</h4>
               <p>
-                {lab.safety === "Grown-up required"
+                {safety === "Grown-up required"
                   ? "A grown-up needs to do this lab with the child. Materials and procedure stay hidden until the Parent PIN is entered."
                   : "A grown-up needs to be nearby for the hands-on part. Materials and procedure stay hidden until the Parent PIN is entered."}
               </p>
@@ -106,7 +112,7 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
           </div>
           <GrownUpGate
             compact
-            title={lab.safety}
+            title={safety}
             intro="Enter the Parent PIN when the supervising grown-up is ready to begin the hands-on part."
             confirmLabel="We’re ready to begin"
             onPass={() => setAdultReady(true)}
@@ -175,7 +181,7 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
         </div> : null}
       </section>}
       {revealed && <section className="lab-wonder"><span>🌟 NEXT QUESTION</span><p>{lab.wonder}</p><strong>Draw or write what you would test next.</strong></section>}
-      <section className="lab-map"><strong>Choose another investigation</strong><div>{labs.map((item, index) => <button key={item.id} className={index + 1 === page ? "active" : ""} onClick={() => onSelectLab(index + 1)}><span>{item.icon}</span>{item.title}<small>{SAFETY_ICON[item.safety]} {item.safety}</small></button>)}</div></section>
+      <section className="lab-map"><strong>Choose another investigation</strong><div>{labs.map((item, index) => <button key={item.id} className={index + 1 === page ? "active" : ""} onClick={() => onSelectLab(index + 1)}><span>{item.icon}</span>{item.title}<small>{SAFETY_ICON[effectiveLabSafety(age, item.safety)]} {effectiveLabSafety(age, item.safety)}</small></button>)}</div></section>
       <p className="lab-safety-note">Never taste lab materials. Never use flames, mains electricity, sealed pressure experiments, or unknown chemicals. Stop if anything breaks, spills dangerously, or becomes hot.</p>
     </div>
   );
