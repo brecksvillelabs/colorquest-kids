@@ -154,7 +154,8 @@ function Soroban({
                   if (event.key === "ArrowUp") onChange(setUpperBead(digits, index, false));
                 }}
               >
-                <rect x={x - 31} y={upperY - 14} width="62" height="28" rx="14" />
+                <rect className="soroban-hit" x={x - 36} y={upperY - 22} width="72" height="44" rx="18" />
+                <rect className="soroban-bead-shape" x={x - 31} y={upperY - 14} width="62" height="28" rx="14" />
                 <path d={`M ${x - 19} ${upperY} H ${x + 19}`} />
               </g>
 
@@ -192,7 +193,8 @@ function Soroban({
                       if (event.key === "ArrowDown") onChange(setLowerCount(digits, index, beadNumber - 1));
                     }}
                   >
-                    <rect x={x - 31} y={y - 13} width="62" height="26" rx="13" />
+                    <rect className="soroban-hit" x={x - 36} y={y - 22} width="72" height="44" rx="18" />
+                    <rect className="soroban-bead-shape" x={x - 31} y={y - 13} width="62" height="26" rx="13" />
                     <path d={`M ${x - 19} ${y} H ${x + 19}`} />
                   </g>
                 );
@@ -403,7 +405,6 @@ export default function AbacusBoard({
             </div>
           </div>
           <ol>{stage.steps.map((step) => <li key={step}>{step}</li>)}</ol>
-          <small className="abacus-teacher-note">Teaching note: {stage.teacherNote}</small>
           {stage.id !== "bead-play" && (
             <div className="abacus-stage-meter">
               <StageProgress count={correctHere} complete={completeHere} />
