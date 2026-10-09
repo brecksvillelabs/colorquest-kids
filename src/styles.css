@@ -1339,3 +1339,418 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   .custom-save-row { align-items: stretch; flex-direction: column; }
   .custom-save-row .save-button { width: 100%; }
 }
+
+
+/* ---------- Custom coloring V1.1: Files/PDF + focused workbench ---------- */
+.custom-coloring-studio.page-focused {
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.custom-import-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.custom-import-actions button {
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  padding: 12px 15px;
+  border: 1px solid #d7e5f1;
+  border-radius: 18px;
+  background: #fff;
+  color: var(--navy, #173b6d);
+  text-align: left;
+  box-shadow: 0 5px 18px #173b6d0e;
+  cursor: pointer;
+}
+.custom-import-actions button > span {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 23px;
+}
+.custom-import-actions button strong { align-self: end; font-size: 16px; }
+.custom-import-actions button small { align-self: start; color: #687e9a; font-size: 11.5px; line-height: 1.25; }
+.custom-import-actions button:disabled { opacity: .55; cursor: default; }
+.custom-import-photo > span { background: #fff1e8; }
+.custom-import-files > span { background: #e8f7f4; }
+.custom-import-actions button:hover { border-color: #9ecfc5; background: #fbfffe; }
+
+.custom-page-library {
+  padding: 14px;
+  border: 1px solid #dce8f3;
+  border-radius: 22px;
+  background: #fbfdff;
+}
+.custom-page-library-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding: 0 4px 10px;
+}
+.custom-page-library-heading strong {
+  display: block;
+  color: var(--navy, #173b6d);
+  font-size: 18px;
+}
+.custom-page-library-heading small { display: block; margin-top: 2px; color: #71859e; }
+
+.custom-focus-bar {
+  position: sticky;
+  top: 4px;
+  z-index: 24;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid #d9e6f1;
+  border-radius: 18px;
+  background: #fffffff2;
+  box-shadow: 0 7px 24px #173b6d14;
+  backdrop-filter: blur(12px);
+}
+.custom-focus-bar > div {
+  min-width: 0;
+  text-align: center;
+}
+.custom-focus-bar strong {
+  display: block;
+  overflow: hidden;
+  color: var(--navy, #173b6d);
+  font-size: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.custom-focus-bar small {
+  display: block;
+  overflow: hidden;
+  margin-top: 2px;
+  color: #687e9a;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.custom-focus-back,
+.custom-focus-add {
+  min-height: 42px;
+  padding: 7px 11px;
+  border: 1px solid #d2e1ed;
+  border-radius: 12px;
+  background: #f7fbfe;
+  color: var(--navy, #173b6d);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  cursor: pointer;
+}
+.custom-focus-add {
+  border-color: #ace1d5;
+  background: #e9faf6;
+  color: #167661;
+}
+
+.custom-coloring-focus {
+  display: grid;
+  gap: 12px;
+}
+.custom-coloring-focus .custom-coloring-workbench {
+  grid-template-columns: minmax(0, 1fr) minmax(225px, 275px);
+  gap: 14px;
+}
+.custom-coloring-focus .custom-canvas-hero {
+  grid-column: 1;
+  grid-row: 1;
+  padding: 8px;
+  background: #f5f9fc;
+}
+.custom-coloring-focus .custom-coloring-toolbar {
+  grid-column: 2;
+  grid-row: 1;
+  top: 72px;
+  align-self: start;
+  gap: 12px;
+  padding: 13px;
+}
+.custom-toolbar-label strong {
+  display: block;
+  color: var(--navy, #173b6d);
+  font-size: 15px;
+}
+.custom-toolbar-label small {
+  display: block;
+  margin-top: 2px;
+  color: #73869c;
+  font-size: 10.5px;
+  line-height: 1.3;
+}
+.custom-paint-section > span {
+  display: block;
+  margin-bottom: 8px;
+  color: #526a88;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.custom-coloring-focus .custom-canvas-viewport {
+  min-height: 0;
+  max-height: 78vh;
+  place-items: start center;
+  padding: 6px;
+  border-radius: 15px;
+}
+.custom-coloring-focus .custom-coloring-canvas {
+  display: block;
+  height: auto;
+  border-radius: 6px;
+  transform: none;
+  transform-origin: top center;
+  box-shadow: 0 6px 18px #173b6d17;
+}
+.custom-canvas-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 7px 2px 0;
+}
+.custom-canvas-meta .custom-zoom-row { margin-top: 0; }
+.custom-canvas-meta > small {
+  color: #647b95;
+  font-size: 11px;
+  text-align: right;
+}
+.custom-focus-save {
+  width: 100%;
+  min-height: 48px;
+}
+.custom-focus-privacy {
+  margin: -3px 0 0;
+  color: #71849a;
+  font-size: 10.5px;
+  line-height: 1.35;
+  text-align: center;
+}
+.custom-coloring-message { margin: 0; }
+
+.pdf-import-dialog {
+  width: min(100%, 620px);
+  max-height: 92vh;
+  overflow: auto;
+  padding: 18px;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0 24px 76px #0c203f55;
+}
+.pdf-import-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.pdf-import-heading h3 {
+  margin: 3px 0 0;
+  color: var(--navy, #173b6d);
+  font-size: 25px;
+}
+.pdf-import-heading > button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: #edf3f8;
+  color: var(--navy, #173b6d);
+  font-size: 25px;
+  cursor: pointer;
+}
+.pdf-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 280px;
+  max-height: 55vh;
+  margin: 14px 0;
+  padding: 8px;
+  overflow: auto;
+  border: 1px solid #dbe6ef;
+  border-radius: 18px;
+  background: #f3f6f9;
+}
+.pdf-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 52vh;
+  object-fit: contain;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 5px 16px #173b6d17;
+}
+.pdf-preview > span {
+  position: absolute;
+  inset: auto 12px 12px auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #173b6de8;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+.pdf-page-picker {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 46px;
+  gap: 8px;
+  align-items: center;
+}
+.pdf-page-picker > button {
+  height: 44px;
+  border: 1px solid #d4e2ed;
+  border-radius: 12px;
+  background: #f7fbfe;
+  color: var(--navy, #173b6d);
+  font-size: 20px;
+  font-weight: 900;
+}
+.pdf-page-picker label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #526a88;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pdf-page-picker input {
+  width: 70px;
+  height: 42px;
+  border: 2px solid #bfd1df;
+  border-radius: 11px;
+  color: var(--navy, #173b6d);
+  text-align: center;
+  font: inherit;
+  font-weight: 850;
+}
+.pdf-import-dialog > p {
+  margin: 12px 0;
+  color: #667d97;
+  font-size: 12px;
+  text-align: center;
+}
+.pdf-import-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+@media (max-width: 820px) {
+  .custom-coloring-focus .custom-coloring-workbench {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .custom-coloring-focus .custom-canvas-hero { order: 1; width: 100%; }
+  .custom-coloring-focus .custom-coloring-toolbar {
+    order: 2;
+    position: static;
+    width: 100%;
+    padding: 11px;
+  }
+  .custom-coloring-focus .custom-canvas-viewport {
+    width: 100%;
+    min-height: 0;
+    max-height: none;
+    padding: 4px;
+  }
+  .custom-coloring-focus .custom-coloring-canvas {
+    max-width: none;
+  }
+  .custom-toolbar-label { display: none; }
+  .custom-canvas-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .custom-canvas-meta > small { text-align: left; }
+  .custom-coloring-focus .custom-color-palette { grid-template-columns: repeat(8, 1fr); }
+  .custom-coloring-focus .custom-history-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .custom-coloring-focus .custom-history-actions button:last-child { grid-column: auto; }
+}
+
+@media (max-width: 520px) {
+  .custom-coloring-heading {
+    padding: 14px 15px;
+  }
+  .custom-coloring-heading h3 { font-size: 26px; }
+  .custom-import-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+  .custom-import-actions button {
+    min-height: 92px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 36px auto auto;
+    place-items: center;
+    gap: 1px;
+    padding: 9px 7px;
+    text-align: center;
+  }
+  .custom-import-actions button > span {
+    grid-row: auto;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+  .custom-import-actions button strong { align-self: center; font-size: 13px; }
+  .custom-import-actions button small { align-self: center; font-size: 9.5px; }
+
+  .custom-focus-bar {
+    top: 2px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 15px;
+  }
+  .custom-focus-bar strong { font-size: 14px; }
+  .custom-focus-bar small { font-size: 9.5px; }
+  .custom-focus-back,
+  .custom-focus-add {
+    min-height: 40px;
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+  .custom-coloring-focus .custom-canvas-hero {
+    padding: 5px;
+    border-radius: 16px;
+  }
+  .custom-coloring-focus .custom-canvas-viewport {
+    border-radius: 12px;
+    padding: 2px;
+  }
+  .custom-coloring-focus .custom-tool-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .custom-coloring-focus .custom-color-palette {
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .custom-coloring-focus .custom-history-actions button { min-height: 39px; font-size: 11px; }
+  .custom-coloring-focus .custom-zoom-row {
+    display: grid;
+    grid-template-columns: auto repeat(4, 1fr);
+    width: 100%;
+  }
+  .custom-coloring-focus .custom-zoom-row button { padding: 4px 5px; font-size: 11px; }
+
+  .pdf-import-dialog { padding: 14px; border-radius: 21px; }
+  .pdf-import-heading h3 { font-size: 21px; }
+  .pdf-preview { min-height: 230px; max-height: 52vh; }
+  .pdf-page-picker { grid-template-columns: 42px minmax(0, 1fr) 42px; }
+}
