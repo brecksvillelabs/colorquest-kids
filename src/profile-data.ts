@@ -24,6 +24,7 @@ export type ProfileProgress = {
 export type AbacusModeKey = "learn" | "practice" | "free";
 
 export type AbacusProgress = {
+  hasVisited: boolean;
   attempts: number;
   correct: number;
   stageCorrect: Record<string, number>;
@@ -88,6 +89,7 @@ export const INTEREST_KEYS: InterestKey[] = ["numbers", "patterns", "building", 
 
 export function emptyAbacusProgress(): AbacusProgress {
   return {
+    hasVisited: false,
     attempts: 0,
     correct: 0,
     stageCorrect: {},
@@ -342,6 +344,7 @@ export function recordAbacusResult(
           ...learning,
           abacus: {
             ...previous,
+            hasVisited: true,
             attempts: previous.attempts + (result.mode === "free" ? 0 : 1),
             correct: previous.correct + (result.correct && result.mode !== "free" ? 1 : 0),
             stageCorrect,
@@ -352,6 +355,39 @@ export function recordAbacusResult(
             lastMode: result.mode,
             lastStageId: result.stageId,
             lastValue: Math.max(0, Math.round(result.value)),
+          },
+        },
+      },
+    },
+  };
+}
+
+
+export function recordAbacusVisit(
+  data: FamilyData,
+  profileId: string,
+  state: {
+    stageId: string;
+    mode: AbacusModeKey;
+  },
+): FamilyData {
+  const progress = data.progress[profileId] || emptyProgress();
+  const learning = progress.learning || emptyLearningSignals();
+  const previous = { ...emptyAbacusProgress(), ...(learning.abacus || {}) };
+  return {
+    ...data,
+    progress: {
+      ...data.progress,
+      [profileId]: {
+        ...progress,
+        lastActivity: "math",
+        learning: {
+          ...learning,
+          abacus: {
+            ...previous,
+            hasVisited: true,
+            lastMode: state.mode,
+            lastStageId: state.stageId,
           },
         },
       },
