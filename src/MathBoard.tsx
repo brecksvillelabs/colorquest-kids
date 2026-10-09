@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AbacusBoard from "./AbacusBoard";
 import LearningBoard from "./LearningBoard";
 import type { MathRepresentation } from "./adaptive-math";
-import type { AbacusProgress, InterestKey, MathPracticeOutcome, MathPracticeState } from "./profile-data";
+import { emptyAbacusProgress, type AbacusProgress, type InterestKey, type MathPracticeOutcome, type MathPracticeState } from "./profile-data";
 
 type MathMode = "trail" | "abacus";
 
@@ -49,7 +49,7 @@ export default function MathBoard({
   liked: boolean;
   mathPractice?: MathPracticeState;
   mathJourney: MathPracticeOutcome[];
-  abacusProgress: AbacusProgress;
+  abacusProgress?: AbacusProgress;
   onComplete: () => void;
   onAttempt: () => void;
   onMathAnswer: (result: {
@@ -74,6 +74,7 @@ export default function MathBoard({
   onAbacusModeChange?: (active: boolean) => void;
 }) {
   const [mode, setMode] = useState<MathMode>(() => loadMathMode(profileId));
+  const safeAbacusProgress = abacusProgress || emptyAbacusProgress();
 
   useEffect(() => {
     saveMathMode(profileId, mode);
@@ -116,7 +117,7 @@ export default function MathBoard({
         <AbacusBoard
           childAge={childAge}
           profileId={profileId}
-          progress={abacusProgress}
+          progress={safeAbacusProgress}
           onResult={onAbacusResult}
           onVisit={onAbacusVisit}
         />
