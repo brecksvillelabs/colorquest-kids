@@ -102,7 +102,7 @@ After the validated change reaches `main`:
 
 ## 5. Custom Coloring Pages — V1 specification
 
-**Status: In progress** (October 2026 feature train)
+**Status: Done** (October 2026 V1)
 
 Goal: let a grown-up add a coloring sheet from the device, then let children color it privately inside ColorQuest.
 
@@ -148,7 +148,7 @@ Goal: let a grown-up add a coloring sheet from the device, then let children col
 
 | Priority | Item | Status | Notes |
 | --- | --- | --- | --- |
-| P0 | Custom Coloring Pages V1 | In progress | Parent-gated local upload, bucket/brush/crayon/eraser, drafts, gallery export |
+| P0 | Custom Coloring Pages V1 | Done | Parent-gated local upload, bucket/brush/crayon/eraser, drafts, gallery export |
 | P0 | PWA deployment/cache correctness | Done | Network-first authored bundle/story delivery in service worker |
 | P0 | Creative-work autosave | Done | Built-in Draw/Color drafts are device-local |
 | P0 | Daily story delivery verification | Done | Exact-commit deploy verification added to workflow expectations |
@@ -194,4 +194,4 @@ Before marking V1 Done:
 
 ## 10. Change log
 
-- **2026-10-08:** Created project SOP/living roadmap. Added Custom Coloring Pages V1 architecture and QC requirements. Clarified web/PWA vs future Android/Play release boundaries.
+- **2026-10-08:** Created project SOP/living roadmap. Added Custom Coloring Pages V1 architecture and QC requirements. Clarified web/PWA vs future Android/Play release boundaries.\n- **2026-10-08:** Custom Coloring Pages V1 passed full repository QC and was merged to `main`.
