@@ -27,6 +27,7 @@ import { getScienceLabs, LAB_COUNTS } from "./lab-data";
 import { activityCount, activityNoun, activityUnit, COLORING_SCENE_COUNT } from "./content-counts";
 import { artCredit, DiscoveryArt } from "./discovery-art";
 import { recordAdaptiveMathAnswer, type MathRepresentation } from "./adaptive-math";
+import { ABACUS_STAGES } from "./abacus-data";
 import {
   activityGroupsForAge,
   isActivityAvailable,
@@ -1199,6 +1200,8 @@ function ParentCorner({
               const visibleActivities = activityGroupsForAge(childAgeWorld).flatMap((group) => group.activities);
               const mathJourney = childProgress.learning?.mathJourney || [];
               const independentMath = mathJourney.filter((outcome) => outcome.firstTry).length;
+              const abacus = childProgress.learning?.abacus;
+              const abacusStage = ABACUS_STAGES.find((stage) => stage.id === abacus?.lastStageId);
               return (
                 <article key={profile.id}>
                   <span>{profile.avatar}</span>
@@ -1207,6 +1210,7 @@ function ParentCorner({
                   <strong>{completedCount(childProgress)} completed</strong>
                   <small>Continue: {ACTIVITY_META[resume.activity].title}, {activityUnit(resume.activity).toLowerCase()} {resume.page}</small>
                   <small>Fresh Math practice: {mathJourney.length} questions · {independentMath} solved independently first try</small>
+                  {abacus?.hasVisited && <small>Abacus: {abacus.completedStages.length} stage{abacus.completedStages.length === 1 ? "" : "s"} explored · last: {abacusStage?.shortTitle || "Abacus Lab"}</small>}
                   <div className="progress-chips">{visibleActivities.map((key) => <span key={key}>{ACTIVITY_META[key].icon} {childProgress.activities[key].completed.length}</span>)}</div>
                   <button onClick={() => onDeleteProfile(profile.id)}>Delete profile</button>
                 </article>
