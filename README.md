@@ -2,6 +2,8 @@
 
 ColorQuest Kids is a free, ad-free, installable creative learning app for ages 1–12. It includes free drawing, shape building, coloring, funny illustrated storybooks, varied reasoning puzzles, guided Math and Science trails, hands-on Science Labs, and Discovery Lab missions covering nature, geography, science, mathematics, and space.
 
+> Project operating procedure, architecture notes, and living roadmap: [COLORQUEST_SOP_ROADMAP.md](COLORQUEST_SOP_ROADMAP.md)
+
 ## New in version 2.8.0 — Brecksville Labs Play readiness
 
 - Android identity moved to the permanent Brecksville Labs namespace `com.brecksvillelabs.colorquestkids`
