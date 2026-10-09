@@ -1754,3 +1754,164 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   .pdf-preview { min-height: 230px; max-height: 52vh; }
   .pdf-page-picker { grid-template-columns: 42px minmax(0, 1fr) 42px; }
 }
+
+
+/* ---------- 2026 hard check: stronger parent boundary ---------- */
+.gate-pin-field {
+  display: grid;
+  gap: 6px;
+  margin: 9px 0;
+  color: #506985;
+  font-size: 12px;
+  font-weight: 850;
+}
+.gate-pin-field > span {
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.gate-pin-field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 14px;
+  border: 2px solid #c9d8e5;
+  border-radius: 14px;
+  color: var(--navy, #173b6d);
+  background: #fff;
+  font: 900 24px/1 system-ui, sans-serif;
+  letter-spacing: .18em;
+  text-align: center;
+}
+.gate-pin-field input:focus {
+  outline: 3px solid #24bca455;
+  border-color: #24bca4;
+}
+.gate-show-pin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 1px 0 10px;
+  color: #607793;
+  font-size: 12px;
+  font-weight: 750;
+}
+.gate-show-pin input {
+  width: 20px;
+  height: 20px;
+  accent-color: #24bca4;
+}
+.gate-forgot {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.first-parent-pin {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+  margin: 18px 0;
+  padding: 16px;
+  border: 2px solid #bfe2d8;
+  border-radius: 20px;
+  background: #f0fbf7;
+}
+.first-parent-pin > div {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.first-parent-pin > div > span {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 23px;
+}
+.first-parent-pin p { margin: 0; }
+.first-parent-pin strong,
+.first-parent-pin small { display: block; }
+.first-parent-pin strong { color: var(--navy, #173b6d); font-size: 16px; }
+.first-parent-pin small { margin-top: 3px; color: #617993; font-size: 11px; line-height: 1.4; }
+.first-parent-pin > label {
+  display: grid;
+  gap: 5px;
+  color: #526983;
+  font-size: 11px;
+  font-weight: 850;
+}
+.first-parent-pin > label input {
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 2px solid #c5d9d3;
+  border-radius: 12px;
+  color: var(--navy, #173b6d);
+  background: #fff;
+  font: 850 18px/1 system-ui, sans-serif;
+  text-align: center;
+  letter-spacing: .12em;
+}
+.first-parent-pin > small {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+/* ---------- 2026 hard check: supervised science labs ---------- */
+.lab-prediction-wide {
+  margin: 16px 0;
+}
+.lab-supervision-gate {
+  margin: 16px 0;
+  padding: clamp(14px, 2.5vw, 22px);
+  border: 2px solid #f2c46b;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #fffaf0, #fff4dd);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 430px);
+  gap: 18px;
+  align-items: center;
+}
+.lab-supervision-copy {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.lab-supervision-copy > span {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: #fff;
+  font-size: 25px;
+  box-shadow: 0 5px 14px #173b6d10;
+}
+.lab-supervision-copy h4 {
+  margin: 3px 0 6px;
+  color: var(--navy, #173b6d);
+  font-size: clamp(22px, 3vw, 30px);
+}
+.lab-supervision-copy p:not(.eyebrow) {
+  margin: 0;
+  max-width: 60ch;
+  color: #665738;
+  font: 700 13px/1.5 system-ui, sans-serif;
+}
+.lab-supervision-gate .gate-card {
+  margin: 0;
+  background: #fff;
+}
+.lab-procedure {
+  margin-top: 16px;
+}
+
+@media (max-width: 700px) {
+  .first-parent-pin { grid-template-columns: 1fr; padding: 13px; }
+  .first-parent-pin > div,
+  .first-parent-pin > small { grid-column: 1; }
+  .lab-supervision-gate { grid-template-columns: 1fr; }
+  .lab-supervision-copy > span { width: 46px; height: 46px; border-radius: 14px; }
+}
