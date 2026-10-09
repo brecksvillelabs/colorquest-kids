@@ -104,7 +104,7 @@ const ACTIVITY_META: Record<Activity, { icon: string; title: string; copy: strin
   color: { icon: "🎨", title: "Color", copy: `${COLORING_SCENE_COUNT} built-in scenes + family pages` },
   puzzle: { icon: "🧩", title: "Build puzzles", copy: "Match, sort, sequence, reason" },
   stories: { icon: "📚", title: "Storybooks", copy: "Funny picture stories read aloud" },
-  math: { icon: "🧮", title: "Math", copy: "Big ideas made visible" },
+  math: { icon: "🧮", title: "Math", copy: "Fresh questions + a real abacus" },
   science: { icon: "🧪", title: "Science", copy: "Ask, observe, explain" },
   lab: { icon: "🥼", title: "Science Lab", copy: "Predict, test safely, explain" },
   discover: { icon: "🔭", title: "Discovery Lab", copy: "Real places, space, stories & math" },
