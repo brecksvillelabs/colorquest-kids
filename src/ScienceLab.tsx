@@ -110,13 +110,19 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
               </p>
             </div>
           </div>
-          <GrownUpGate
-            compact
-            title={safety}
-            intro="Enter the Parent PIN when the supervising grown-up is ready to begin the hands-on part."
-            confirmLabel="We’re ready to begin"
-            onPass={() => setAdultReady(true)}
-          />
+          <div className="lab-supervision-actions">
+            <GrownUpGate
+              compact
+              title={safety}
+              intro="Enter the Parent PIN when the supervising grown-up is ready to begin the hands-on part."
+              confirmLabel="We’re ready to begin"
+              onPass={() => setAdultReady(true)}
+            />
+            <button
+              className="text-button"
+              onClick={() => onSelectLab(page < labs.length ? page + 1 : 1)}
+            >Choose a different lab →</button>
+          </div>
         </section>
       ) : (
         <div className="lab-grid lab-procedure">
@@ -152,6 +158,7 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
           </section>
         </div>
       )}
+      {adultReady && (<>
       <section className="lab-explain">
         <div>
           <span>5 · EXPLAIN</span>
@@ -181,6 +188,7 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
         </div> : null}
       </section>}
       {revealed && <section className="lab-wonder"><span>🌟 NEXT QUESTION</span><p>{lab.wonder}</p><strong>Draw or write what you would test next.</strong></section>}
+      </>)}
       <section className="lab-map"><strong>Choose another investigation</strong><div>{labs.map((item, index) => <button key={item.id} className={index + 1 === page ? "active" : ""} onClick={() => onSelectLab(index + 1)}><span>{item.icon}</span>{item.title}<small>{SAFETY_ICON[effectiveLabSafety(age, item.safety)]} {effectiveLabSafety(age, item.safety)}</small></button>)}</div></section>
       <p className="lab-safety-note">Never taste lab materials. Never use flames, mains electricity, sealed pressure experiments, or unknown chemicals. Stop if anything breaks, spills dangerously, or becomes hot.</p>
     </div>
