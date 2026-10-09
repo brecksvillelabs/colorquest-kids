@@ -96,7 +96,7 @@ const AGE_GROUPS = [
 
 const ACTIVITY_META: Record<Activity, { icon: string; title: string; copy: string }> = {
   draw: { icon: "✏️", title: "Draw", copy: "A blank canvas for every idea" },
-  color: { icon: "🎨", title: "Color", copy: `${COLORING_SCENE_COUNT} scenes to fill with color` },
+  color: { icon: "🎨", title: "Color", copy: `${COLORING_SCENE_COUNT} built-in scenes + family pages` },
   puzzle: { icon: "🧩", title: "Build puzzles", copy: "Match, sort, sequence, reason" },
   stories: { icon: "📚", title: "Storybooks", copy: "Funny picture stories read aloud" },
   math: { icon: "🧮", title: "Math", copy: "Big ideas made visible" },
@@ -759,6 +759,7 @@ function Studio({
   const [recentWork, setRecentWork] = useState<CanvasDraft[]>([]);
   const [recentWorkOpen, setRecentWorkOpen] = useState(false);
   const [newDrawingPageRequest, setNewDrawingPageRequest] = useState(0);
+  const [customColoringMode, setCustomColoringMode] = useState(false);
   const [activityChooserOpen, setActivityChooserOpen] = useState(false);
   const [chooserGroup, setChooserGroup] = useState<"create" | "play-read" | "learn-discover" | null>(null);
   const fifiMascot = `${import.meta.env.BASE_URL}mascot/fifi-color-spark.png`;
@@ -793,6 +794,10 @@ function Studio({
     window.addEventListener("colorquest:draft-saved", onDraftSaved);
     return () => { active = false; window.removeEventListener("colorquest:draft-saved", onDraftSaved); };
   }, [profile.id]);
+
+  useEffect(() => {
+    if (activity !== "color") setCustomColoringMode(false);
+  }, [activity]);
 
   useEffect(() => {
     if (!activityChooserOpen) return;
@@ -842,6 +847,7 @@ function Studio({
                 </div>
               )}
             </div>
+            {!(activity === "color" && customColoringMode) && (
             <div className="page-picker">
               <button onClick={guard(() => onPage(page - 1))} aria-label={`Previous ${unit.toLowerCase()}`} disabled={page === 1}>←</button>
               <label>{unit} <input type="number" min="1" max={total} value={page} onChange={(event) => {
@@ -851,9 +857,10 @@ function Studio({
               <span className={`completion-marker ${completedHere ? "done" : ""}`}>{completedHere ? "✓ Done" : "In progress"}</span>
               <button onClick={guard(() => onPage(page + 1))} aria-label={`Next ${unit.toLowerCase()}`} disabled={page === total}>→</button>
             </div>
+            )}
           </div>
 
-          {(activity === "draw" || (activity === "color" && recentWork.length > 0)) && (
+          {(!customColoringMode && (activity === "draw" || (activity === "color" && recentWork.length > 0))) && (
             <section className="recent-work-drawer">
               <div className="creative-work-actions">
                 {activity === "draw" && <button type="button" className="new-page-button" onClick={() => setNewDrawingPageRequest((request) => request + 1)}><span aria-hidden="true">📄</span><strong>New page</strong></button>}
@@ -885,17 +892,19 @@ function Studio({
           )}
 
           {activity === "draw" && <DrawingStudio key={`d-${page}-${age}-${profile.id}`} page={page} age={age} profileId={profile.id} profileName={profile.name} newPageRequest={newDrawingPageRequest} onComplete={onComplete} onSaveArtwork={onSaveArtwork} onRequestStartOver={(confirm) => setPendingStartOver(() => confirm)} />}
-          {activity === "color" && <ColoringStudio key={`c-${page}-${age}-${profile.id}`} page={page} age={age} profileId={profile.id} profileName={profile.name} onComplete={onComplete} onSaveArtwork={onSaveArtwork} />}
+          {activity === "color" && <ColoringStudio key={`c-${page}-${age}-${profile.id}`} page={page} age={age} profileId={profile.id} profileName={profile.name} onComplete={onComplete} onSaveArtwork={onSaveArtwork} onLibraryModeChange={setCustomColoringMode} />}
           {activity === "puzzle" && <VariedPuzzleBoard key={`p-${page}-${age}`} page={page} age={age} onComplete={onComplete} />}
           {activity === "stories" && <StorybookBoard key={`story-${page}-${age}`} page={page} age={age} onSelectBook={onPage} onComplete={onComplete} />}
           {(activity === "math" || activity === "science") && <LearningBoard key={`l-${activity}-${page}-${age}-${profile.id}`} subject={activity} page={page} age={age} childAge={profile.age} profileId={profile.id} liked={profileProgress.learning.likedLessons.includes(getLearningLessons(activity, age)[page - 1].id)} mathPractice={profileProgress.learning.mathPractice?.[getLearningLessons(activity, age)[page - 1].id]} mathJourney={profileProgress.learning.mathJourney || []} onComplete={onComplete} onAttempt={() => onLearningAttempt(activity)} onMathAnswer={onMathAnswer} onLike={onLikeLesson} onSelectLesson={onPage} />}
           {activity === "lab" && <ScienceLabBoard key={`lab-${page}-${age}`} page={page} age={age} onComplete={onComplete} onSelectLab={onPage} />}
           {activity === "discover" && <DiscoveryBoard key={`x-${page}-${age}`} page={page} age={age} onComplete={onComplete} />}
 
-          <div className="next-row">
-            <div><span>🌟</span><p><strong>{activity === "stories" ? "Story reminder" : "Creative reminder"}</strong><br />{activity === "stories" ? "You can reread, retell, or invent a different ending." : "There is no wrong way to make art."}</p></div>
-            <button className="primary-button" disabled={page === total} onClick={guard(() => onPage(page + 1))}>{page === total ? `All ${pluralUnit} explored ✓` : `Next ${unit.toLowerCase()} →`}</button>
-          </div>
+          {!(activity === "color" && customColoringMode) && (
+            <div className="next-row">
+              <div><span>🌟</span><p><strong>{activity === "stories" ? "Story reminder" : "Creative reminder"}</strong><br />{activity === "stories" ? "You can reread, retell, or invent a different ending." : "There is no wrong way to make art."}</p></div>
+              <button className="primary-button" disabled={page === total} onClick={guard(() => onPage(page + 1))}>{page === total ? `All ${pluralUnit} explored ✓` : `Next ${unit.toLowerCase()} →`}</button>
+            </div>
+          )}
 
           <FifiGuide
             open={Boolean(pendingStartOver)}

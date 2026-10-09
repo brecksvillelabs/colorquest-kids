@@ -2,6 +2,7 @@ import { cloneElement, type ReactElement, type ReactNode, type SVGProps, useEffe
 import { ART_PAINTS, DEFAULT_PAINT, getArtPaint, paintCss, safeSvgId } from "./art-palette";
 import { draftKey, loadDraft, saveDraft } from "./canvas-drafts";
 import { SpeakButton, useAutoSpeak } from "./SpeechProvider";
+import CustomColoringStudio from "./CustomColoringStudio";
 
 type Scene = {
   id: string;
@@ -207,7 +208,23 @@ function PaintBackground({ paintId, onPaint }: { paintId: string; onPaint: () =>
   );
 }
 
-export default function ColoringStudio({ page, age, profileId, profileName, onComplete, onSaveArtwork }: { page: number; age: number; profileId: string; profileName: string; onComplete: () => void; onSaveArtwork: (dataUrl: string, title: string) => Promise<void> }) {
+export default function ColoringStudio({
+  page,
+  age,
+  profileId,
+  profileName,
+  onComplete,
+  onSaveArtwork,
+  onLibraryModeChange,
+}: {
+  page: number;
+  age: number;
+  profileId: string;
+  profileName: string;
+  onComplete: () => void;
+  onSaveArtwork: (dataUrl: string, title: string) => Promise<void>;
+  onLibraryModeChange?: (customMode: boolean) => void;
+}) {
   const scene = COLORING_SCENES[(page - 1 + age * 6) % COLORING_SCENES.length];
   const svgRef = useRef<SVGSVGElement>(null);
   const completed = useRef(false);
@@ -216,7 +233,13 @@ export default function ColoringStudio({ page, age, profileId, profileName, onCo
   const [backgroundPaint, setBackgroundPaint] = useState("snow");
   const [message, setMessage] = useState("");
   const [showGradients, setShowGradients] = useState(age > 0);
+  const [libraryMode, setLibraryMode] = useState<"built-in" | "custom">("built-in");
   const id = draftKey(profileId, "color", age, page);
+
+  useEffect(() => {
+    onLibraryModeChange?.(libraryMode === "custom");
+    return () => onLibraryModeChange?.(false);
+  }, [libraryMode, onLibraryModeChange]);
 
   useAutoSpeak([scene.title, "Pick a color or gradient, then tap the picture or its background.", scene.fact], `color-${age}-${page}`);
 
@@ -298,6 +321,22 @@ export default function ColoringStudio({ page, age, profileId, profileName, onCo
   const visiblePaints = ART_PAINTS.filter((paint) => showGradients || paint.colors.length === 1);
   return (
     <div className="creative-board color-board coloring-studio-v26">
+      <div className="coloring-library-switch" aria-label="Coloring page library">
+        <button
+          className={libraryMode === "built-in" ? "active" : ""}
+          onClick={() => setLibraryMode("built-in")}
+          aria-pressed={libraryMode === "built-in"}
+        >🌈 ColorQuest pages</button>
+        <button
+          className={libraryMode === "custom" ? "active" : ""}
+          onClick={() => setLibraryMode("custom")}
+          aria-pressed={libraryMode === "custom"}
+        >🖍️ My coloring pages</button>
+      </div>
+      {libraryMode === "custom" ? (
+        <CustomColoringStudio profileId={profileId} profileName={profileName} onSaveArtwork={onSaveArtwork} />
+      ) : (
+        <>
       <div className="coloring-title-row"><div><span>COLORING STORY</span><h3>{scene.title}</h3><p>{scene.imagine}</p></div><SpeakButton id={`color-story-${scene.id}`} label="Hear the idea" text={[scene.title, scene.imagine]} /></div>
       <div className="coloring-hero">
         <div className="coloring-sheet detailed-coloring-sheet">
@@ -322,6 +361,8 @@ export default function ColoringStudio({ page, age, profileId, profileName, onCo
       </section>
       <div className="coloring-footer"><div className="learn-bubble"><span>💡 Animal & nature note</span><p>{scene.fact}</p><SpeakButton id={`color-fact-${scene.id}`} label="Hear it" text={scene.fact} /></div><p className="silent-save-note">✓ Recent work saves quietly on this device. Use <strong>Save to gallery</strong> only for a picture you want to keep.</p></div>
       {message && <div className="success-toast" role="status">{message}</div>}
+        </>
+      )}
     </div>
   );
 }
