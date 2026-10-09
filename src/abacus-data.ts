@@ -208,7 +208,13 @@ export function stagesForAge(childAge: number) {
 
 export function recommendedStageId(childAge: number, completedStages: string[] = []): AbacusStageId {
   const available = stagesForAge(childAge);
-  return (available.find((stage) => !completedStages.includes(stage.id)) || available[available.length - 1] || ABACUS_STAGES[0]).id;
+  const progression = childAge >= 4
+    ? available.filter((stage) => stage.id !== "bead-play")
+    : available;
+  return (progression.find((stage) => !completedStages.includes(stage.id))
+    || progression[progression.length - 1]
+    || available[0]
+    || ABACUS_STAGES[0]).id;
 }
 
 function directAddChallenge(random: () => number) {
