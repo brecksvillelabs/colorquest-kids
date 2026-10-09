@@ -8,6 +8,7 @@ import ColorQuestApp from "./App";
 import { buildDiscoveryMission, DISCOVERY_COUNTS } from "./discovery-data";
 import { getLearningLesson, getLearningLessons, LEARNING_COUNTS } from "./learning-data";
 import { getScienceLabs, LAB_COUNTS } from "./lab-data";
+import { effectiveLabSafety } from "./ScienceLab";
 import { getCuratedResource, getFavoriteInterest, getLessonGuide, getMentorRecommendations } from "./mentor-data";
 import { buildPuzzle, countPuzzles, getPuzzle, getPuzzleDeck, PUZZLE_FAMILIES } from "./puzzle-data";
 import { activityCount, COLORING_SCENE_COUNT } from "./content-counts";
@@ -590,6 +591,9 @@ describe("Science Lab and mentor paths", () => {
       expect(new Set(labs.map((lab) => lab.id)).size).toBe(expectedPerAge[age]);
       expect(labs.every((lab) => ["Child can try", "Grown-up nearby", "Grown-up required"].includes(lab.safety))).toBe(true);
       expect(labs.every((lab) => lab.steps.length >= 3 && lab.explanation && lab.wonder)).toBe(true);
+      if (age === 0) {
+        expect(labs.every((lab) => effectiveLabSafety(age, lab.safety) !== "Child can try")).toBe(true);
+      }
     }
   });
 
