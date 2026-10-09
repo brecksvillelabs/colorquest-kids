@@ -138,7 +138,7 @@ Goal: let a grown-up add a coloring sheet from the device, then let children col
 
 ### V1.1 — Files/PDF import and focused coloring
 
-**Status: In progress** (2026-10-09)
+**Status: Done** (2026-10-09)
 
 Triggered by phone UX testing.
 
@@ -173,7 +173,7 @@ Triggered by phone UX testing.
 | P0 | PWA deployment/cache correctness | Done | Network-first authored bundle/story delivery in service worker |
 | P0 | Creative-work autosave | Done | Built-in Draw/Color drafts are device-local |
 | P0 | Daily story delivery verification | Done | Exact-commit deploy verification added to workflow expectations |
-| P0 | Files/PDF picker + focused custom-page workbench | In progress | Android Files/Recent access, local PDF page rendering, selected-page hero UX |
+| P0 | Files/PDF picker + focused custom-page workbench | Done | Android Files/Recent access, local PDF page rendering, selected-page hero UX |
 | P1 | Custom page crop + rotate | Planned | Parent import preparation screen |
 | P1 | Adjustable line-cleanup threshold | Planned | Helps faint scans and gray worksheets |
 | P1 | Rename / age-tag / reorder family pages | Planned | Parent-managed shelf metadata |
@@ -217,4 +217,4 @@ Before marking V1 Done:
 ## 10. Change log
 
 - **2026-10-08:** Created project SOP/living roadmap. Added Custom Coloring Pages V1 architecture and QC requirements. Clarified web/PWA vs future Android/Play release boundaries.\n- **2026-10-08:** Custom Coloring Pages V1 passed full repository QC and was merged to `main`.
-- **2026-10-09:** Phone UX review exposed two V1 wrinkles: image-only picking routed Android into Photos instead of Files/Recent/PDF, and the family shelf competed visually with the selected canvas. Began V1.1 to add local PDF rendering, explicit Photos vs Files pickers, and a focused selected-page workbench.
+- **2026-10-09:** Phone UX review exposed two V1 wrinkles: image-only picking routed Android into Photos instead of Files/Recent/PDF, and the family shelf competed visually with the selected canvas. V1.1 added local PDF rendering, explicit Photos vs Files pickers, a multi-page PDF chooser, friendlier numeric filenames, and a focused selected-page workbench. Full web/Android repository QC passed before merge.
