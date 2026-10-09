@@ -231,7 +231,7 @@ export default function AbacusBoard({
   const defaultStage = recommendedStageId(childAge, progress.completedStages);
   const savedStage = availableStages.some((stage) => stage.id === saved.stageId)
     ? saved.stageId as AbacusStageId
-    : (progress.lastStageId && availableStages.some((stage) => stage.id === progress.lastStageId)
+    : (progress.hasVisited && progress.lastStageId && availableStages.some((stage) => stage.id === progress.lastStageId)
       ? progress.lastStageId as AbacusStageId
       : defaultStage);
   const savedMode = saved.mode || progress.lastMode || "learn";
