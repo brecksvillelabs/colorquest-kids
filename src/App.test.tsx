@@ -123,7 +123,18 @@ describe("ColorQuest core journeys", () => {
     expect(screen.getByText(/Ready to draw, count, wonder/)).toBeTruthy();
   });
 
-  it("opens the drawing studio from the home page", async () => {
+  it("remembers a dismissed Fifi home greeting for this profile and version", async () => {
+    const user = userEvent.setup();
+    const first = render(<ColorQuestApp />);
+    expect(screen.getByRole("note", { name: "Fifi's tip" })).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Dismiss Fifi's tip" }));
+    first.unmount();
+
+    render(<ColorQuestApp />);
+    expect(screen.queryByRole("note", { name: "Fifi's tip" })).toBeNull();
+  });
+
+    it("opens the drawing studio from the home page", async () => {
     const user = userEvent.setup();
     render(<ColorQuestApp />);
 
@@ -299,7 +310,20 @@ describe("Private child profiles and pacing", () => {
     });
   });
 
-  it("records resume locations and unique completion separately", () => {
+  it("requires the Parent PIN before a child can add another profile", async () => {
+    const user = userEvent.setup();
+    render(<ColorQuestApp />);
+    await user.click(screen.getByRole("button", { name: "Switch profile, currently Maya" }));
+    await user.click(screen.getByRole("button", { name: /Add a child/ }));
+
+    expect(screen.getByRole("heading", { name: "Parent PIN" })).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: "Who is creating today?" })).toBeNull();
+
+    await passGrownUpGate(user, "Add a child");
+    expect(screen.getByRole("heading", { name: "Who is creating today?" })).toBeTruthy();
+  });
+
+    it("records resume locations and unique completion separately", () => {
     const family: FamilyData = {
       version: 3,
       profiles: [{ id: "one", name: "One", age: 8, avatar: "🚀", createdAt: "now" }],
@@ -597,7 +621,22 @@ describe("Science Lab and mentor paths", () => {
     }
   });
 
-  it("requires prediction and safe steps before revealing a lab explanation", async () => {
+  it("treats every ages 1–3 hands-on lab as requiring a grown-up nearby", async () => {
+    const family = JSON.parse(window.localStorage.getItem(PROFILE_STORAGE_KEY) || "{}") as FamilyData;
+    family.profiles[0].age = 2;
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(family));
+    const user = userEvent.setup();
+    render(<ColorQuestApp />);
+    await openHomeActivity(user, "Learn", /^Try a Lab/);
+
+    const lab = getScienceLabs(0)[0];
+    expect(lab.safety).toBe("Child can try");
+    expect(screen.getAllByText("Grown-up nearby").length).toBeGreaterThan(0);
+    expect(screen.queryByText(lab.materials[0])).toBeNull();
+    expect(screen.getByRole("heading", { name: "Parent PIN" })).toBeTruthy();
+  });
+
+    it("requires prediction and safe steps before revealing a lab explanation", async () => {
     const user = userEvent.setup();
     render(<ColorQuestApp />);
     await openHomeActivity(user, "Learn", /^Try a Lab/);
