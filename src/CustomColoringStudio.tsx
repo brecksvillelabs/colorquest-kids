@@ -76,7 +76,7 @@ function displayPageTitle(title: string) {
 
 function pdfPageTitle(fileName: string, pageNumber: number, pageCount: number) {
   const title = safeCustomColoringTitle(fileName);
-  return pageCount > 1 ? \`${title} · page ${pageNumber}\` : title;
+  return pageCount > 1 ? `${title} · page ${pageNumber}` : title;
 }
 
 async function prepareLineArtFromCanvas(sourceCanvas: HTMLCanvasElement) {
@@ -513,7 +513,7 @@ export default function CustomColoringStudio({
     if (!selectedPage || !canvasRef.current) return;
     await onSaveArtwork(
       canvasRef.current.toDataURL("image/png"),
-      \`${profileName}'s ${displayPageTitle(selectedPage.title)}\`,
+      `${profileName}'s ${displayPageTitle(selectedPage.title)}`,
     );
     setMessage("Saved to the family gallery! ⭐");
   };
@@ -550,7 +550,7 @@ export default function CustomColoringStudio({
       pageNumber: 1,
       previewDataUrl: previewCanvas.toDataURL("image/png"),
     });
-    setMessage(\`PDF opened. Choose one of ${pageCount} pages.\`);
+    setMessage(`PDF opened. Choose one of ${pageCount} pages.`);
   };
 
   const handleUpload = async (file?: File) => {
@@ -560,7 +560,7 @@ export default function CustomColoringStudio({
     try {
       if (!isSupportedColoringFile(file)) {
         const limit = Math.round(CUSTOM_COLORING_MAX_FILE_BYTES / (1024 * 1024));
-        throw new Error(\`Choose a PNG, JPG, WebP, SVG, or PDF smaller than ${limit} MB.\`);
+        throw new Error(`Choose a PNG, JPG, WebP, SVG, or PDF smaller than ${limit} MB.`);
       }
       if (isPdfColoringFile(file)) {
         await openPdfForImport(file);
@@ -599,7 +599,7 @@ export default function CustomColoringStudio({
   const importSelectedPdfPage = async () => {
     if (!pdfImport) return;
     setPdfBusy(true);
-    setMessage(\`Preparing PDF page ${pdfImport.pageNumber}…\`);
+    setMessage(`Preparing PDF page ${pdfImport.pageNumber}…`);
     try {
       const canvas = await renderPdfPageCanvas(pdfImport.document, pdfImport.pageNumber, 1200);
       const prepared = await prepareLineArtFromCanvas(canvas);
@@ -693,7 +693,7 @@ export default function CustomColoringStudio({
   );
 
   return (
-    <section className={\`custom-coloring-studio ${selectedPage ? "page-focused" : "library-view"}\`} aria-label="My coloring pages">
+    <section className={`custom-coloring-studio ${selectedPage ? "page-focused" : "library-view"}`} aria-label="My coloring pages">
       <input
         ref={photoInputRef}
         className="visually-hidden"
@@ -750,7 +750,7 @@ export default function CustomColoringStudio({
                         <small>{new Date(page.createdAt).toLocaleDateString()} · Tap to color</small>
                       </span>
                     </button>
-                    <button className="custom-page-delete" aria-label={\`Remove ${displayPageTitle(page.title)}\`} onClick={() => setGateAction({ type: "delete", page })}>×</button>
+                    <button className="custom-page-delete" aria-label={`Remove ${displayPageTitle(page.title)}`} onClick={() => setGateAction({ type: "delete", page })}>×</button>
                   </article>
                 ))}
               </nav>
@@ -773,14 +773,14 @@ export default function CustomColoringStudio({
               <div className="custom-canvas-viewport">
                 <canvas
                   ref={canvasRef}
-                  className={\`custom-coloring-canvas tool-${tool}\`}
-                  style={{ width: \`${zoom * 100}%\`, maxWidth: "none" }}
+                  className={`custom-coloring-canvas tool-${tool}`}
+                  style={{ width: `${zoom * 100}%`, maxWidth: "none" }}
                   onPointerDown={start}
                   onPointerMove={move}
                   onPointerUp={stop}
                   onPointerCancel={stop}
                   onPointerLeave={stop}
-                  aria-label={\`Color ${displayPageTitle(selectedPage.title)}\`}
+                  aria-label={`Color ${displayPageTitle(selectedPage.title)}`}
                 />
               </div>
               <div className="custom-canvas-meta">
@@ -827,7 +827,7 @@ export default function CustomColoringStudio({
                       className={selectedPaint === paint.id ? "active" : ""}
                       style={{ background: paintCss(paint.id) }}
                       title={paint.label}
-                      aria-label={\`Choose ${paint.label}\`}
+                      aria-label={`Choose ${paint.label}`}
                       onClick={() => setSelectedPaint(paint.id)}
                     />
                   ))}
@@ -888,7 +888,7 @@ export default function CustomColoringStudio({
               <button aria-label="Cancel PDF import" onClick={() => void cancelPdfImport()}>×</button>
             </div>
             <div className="pdf-preview">
-              <img src={pdfImport.previewDataUrl} alt={\`Preview of PDF page ${pdfImport.pageNumber}\`} />
+              <img src={pdfImport.previewDataUrl} alt={`Preview of PDF page ${pdfImport.pageNumber}`} />
               {pdfBusy && <span>Preparing page…</span>}
             </div>
             <div className="pdf-page-picker">
