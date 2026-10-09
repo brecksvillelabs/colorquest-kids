@@ -256,7 +256,7 @@ export default function AbacusBoard({
     () => buildAbacusChallenge(stage.id, childAge, sequence, profileId),
     [stage.id, childAge, sequence, profileId],
   );
-  const guidedRods = Math.max(challenge.rods, childAge <= 3 ? 3 : Math.min(defaultRodCount(childAge), 7));
+  const guidedRods = challenge.rods;
   const activeRods = mode === "free" ? freeRods : guidedRods;
   const currentValue = valueFromDigits(digits);
   const recommended = recommendedStageId(childAge, progress.completedStages);
@@ -398,7 +398,7 @@ export default function AbacusBoard({
           <div className="abacus-lesson-main">
             <span className="abacus-stage-icon" aria-hidden="true">{stage.icon}</span>
             <div>
-              <p className="eyebrow">Stage {stage.order + 1}</p>
+              <p className="eyebrow">{stage.order === 0 ? "Explore" : `Stage ${stage.order}`}</p>
               <h4>{stage.title}</h4>
               <p>{stage.description}</p>
               <strong>{stage.bigIdea}</strong>
