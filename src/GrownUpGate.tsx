@@ -26,7 +26,7 @@ export function makeGateChallenge(random: () => number = Math.random): GateChall
   return { left, right, answer: left * right };
 }
 
-type GateMode = "pin" | "bootstrap" | "setup-pin" | "reset-bootstrap";
+type GateMode = "pin" | "bootstrap" | "setup-pin";
 
 export function GrownUpGate({
   title = "Grown-ups only",
@@ -96,13 +96,11 @@ export function GrownUpGate({
   const keyAction = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== "Enter") return;
     if (mode === "pin") checkPin();
-    else if (mode === "bootstrap" || mode === "reset-bootstrap") checkChallenge();
+    else if (mode === "bootstrap") checkChallenge();
     else setNewPin();
   };
 
-  const bootstrapCopy = mode === "reset-bootstrap"
-    ? "To reset a forgotten Parent PIN, a grown-up needs to pass one last check. Then ColorQuest will replace the old PIN on this device."
-    : intro || "Please ask a grown-up to answer this. After the check, they will create a Parent PIN for this device.";
+  const bootstrapCopy = intro || "Please ask a grown-up to answer this. After the check, they will create a Parent PIN for this device.";
 
   return (
     <section className={`gate-card ${compact ? "compact" : ""}`.trim()}>
@@ -130,13 +128,7 @@ export function GrownUpGate({
           </label>
           <label className="gate-show-pin"><input type="checkbox" checked={showPin} onChange={(event) => setShowPin(event.target.checked)} /> Show PIN</label>
           <button className="primary-button" onClick={checkPin}>{confirmLabel}</button>
-          <button className="text-button gate-forgot" onClick={() => {
-            setPin("");
-            setPinAgain("");
-            setFailed("");
-            reroll();
-            setMode("reset-bootstrap");
-          }}>Forgot the PIN?</button>
+          <small className="gate-recovery-note">Forgot the PIN? For child safety, ColorQuest cannot bypass a saved PIN. See Parent Support for local reset options.</small>
         </>
       ) : mode === "setup-pin" ? (
         <>
