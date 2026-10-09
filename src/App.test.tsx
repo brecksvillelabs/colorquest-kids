@@ -209,7 +209,7 @@ describe("ColorQuest core journeys", () => {
 
     expect(browserConfirm).not.toHaveBeenCalled();
     expect(screen.queryByRole("dialog")).toBeNull();
-    expect(screen.getByRole("heading", { name: "Quick check" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Parent PIN" })).toBeTruthy();
     browserConfirm.mockRestore();
   });
 
@@ -576,7 +576,7 @@ describe("Math and science learning trails", () => {
     const lesson = getLearningLesson("science", 3, 1);
     render(<ColorQuestApp />);
 
-    await openHomeActivity(user, "Learn", /^Science/);
+    await openHomeActivity(user, "Learn", /^Science,/);
 
     expect(screen.getByRole("heading", { name: "Science" })).toBeTruthy();
     expect(screen.getByRole("heading", { name: lesson.title })).toBeTruthy();
@@ -587,7 +587,7 @@ describe("Math and science learning trails", () => {
   it("adds another explanation, a concept story, and remembers a child's interest", async () => {
     const user = userEvent.setup();
     render(<ColorQuestApp />);
-    await openHomeActivity(user, "Learn", /^Science/);
+    await openHomeActivity(user, "Learn", /^Science,/);
 
     await user.click(screen.getByRole("button", { name: "Explain it another way" }));
     expect(screen.getByText("Let’s unpack it")).toBeTruthy();
