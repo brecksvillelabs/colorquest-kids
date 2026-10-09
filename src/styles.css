@@ -1990,3 +1990,24 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   .parent-pin-fields { grid-template-columns: 1fr; }
   .parent-pin-fields .tool-button { width: 100%; min-height: 48px; }
 }
+
+
+.profile-parent-gate-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: #10294770;
+  backdrop-filter: blur(8px);
+}
+.profile-parent-gate-dialog {
+  width: min(100%, 520px);
+  max-height: 92vh;
+  overflow: auto;
+  padding: 10px;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0 22px 70px #0c203f4d;
+}
