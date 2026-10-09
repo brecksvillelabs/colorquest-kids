@@ -5,6 +5,8 @@
 **Review branch:** `audit/ux-teacher-hard-check-20261009`  
 **Scope:** child home, profiles, Creative Studio, custom coloring, puzzles, storybooks, Math, Science, Science Lab, Discovery Lab, read-aloud, Fifi coaching, Parent Corner, local privacy/safety boundaries, mobile/tablet behavior, PWA/Android release paths.
 
+**Final disposition:** Implementation and release verification completed for the software hard check. Real-child field testing remains a separate planned activity and has not been represented as completed.
+
 > **Method disclosure:** This is a structured role-based product review carried out against the source, tests, interaction architecture, responsive CSS, content catalogs, and release workflow. The five-day “kid control group” below is a **synthetic usability simulation using representative personas and scripted tasks**. It is not a claim that real children participated. A separate real-world field-test protocol is included at the end.
 
 ---
@@ -402,3 +404,48 @@ The review is not “complete” until:
 6. deployed artifact contains the hard-check changes;
 7. `COLORQUEST_SOP_ROADMAP.md` reflects the final disposition.
 
+
+
+---
+
+## 10. Final verification
+
+### Pre-main quality gate
+
+- Pull request: #10
+- Validated branch head: `0373bb26ffdafcac73518216d9fd3e73e53f1ab1`
+- GitHub Actions run: `37981904165`
+- Automated tests: **106 passed / 106 total** across 12 test files.
+- TypeScript + Vite production build: passed.
+- Android web sync: passed.
+- Android unit tests and minified release-bundle engineering build: passed.
+- Privacy/support assets and release metadata check: passed.
+- Unsigned Android engineering artifact: created successfully. This is **not** a Google Play release.
+
+### Main and PWA verification
+
+- Squash merge to `main`: `6273069339e711fc88ead2b6059f190560027f02`
+- GitHub Pages run: `37982334065`
+- Result: **success**.
+- Pages artifact digest: `sha256:932bd7e0481007a4ff89e5c88e90fdf8f72d92836c203fd8652b48685bc8d0dc`.
+- The deployed artifact was unpacked and checked directly. Its compiled `assets/app.js` contains:
+  - Parent PIN UI/logic;
+  - **Puzzles and challenges** older-child wording;
+  - **Pause before the hands-on part** supervised-lab flow;
+  - **Choose a different lab** safe exit;
+  - **Math reminder** contextual coaching.
+- Deployed `support.html` contains Parent PIN/recovery-limit guidance.
+
+### Non-blocking performance note
+
+The production build reports `app.js` at roughly **582 KB minified / 190 KB gzip** and PDF.js in a separate lazy-loaded chunk. The build passes and this was not treated as a release blocker, but low-end-device startup/responsiveness should be measured in the real child field study before deciding whether additional code splitting is warranted.
+
+### Remaining hard-check items
+
+The software/UX/teacher hard check is complete. These remain intentionally open roadmap work rather than hidden defects:
+
+1. Real five-day child field study with actual participants.
+2. Purpose-built ages 7–9 and 10–12 story library.
+3. Teacher-style Parent Corner learning summary.
+4. Custom-coloring crop/rotate/threshold/gap-repair improvements.
+5. Low-end-device performance benchmark.
