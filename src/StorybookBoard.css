@@ -160,8 +160,8 @@
 }
 
 .storybook-page-dots button {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   color: #53677d;
   font: inherit;
@@ -241,11 +241,17 @@
 
 @media (max-width: 900px) {
   .storybook-shelf {
-    grid-template-columns: 1fr;
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    padding: 2px 2px 9px;
+    scroll-snap-type: x proximity;
   }
 
   .storybook-shelf button {
+    flex: 0 0 min(290px, 78vw);
     min-height: 78px;
+    scroll-snap-align: start;
   }
 
   .storybook-spread {
