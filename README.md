@@ -5,6 +5,16 @@ ColorQuest Kids is a free, ad-free, installable creative learning app for ages 1
 > Project operating procedure, architecture notes, and living roadmap: [COLORQUEST_SOP_ROADMAP.md](COLORQUEST_SOP_ROADMAP.md)  
 > Current app-wide child UX + teacher hard check: [UX_TEACHER_HARD_CHECK_2026-10-09.md](UX_TEACHER_HARD_CHECK_2026-10-09.md)
 
+## Current feature — Abacus Lab
+
+- Math now has two internal paths: the existing **Math Trail / Number Games** and a new **Abacus Lab / Abacus Play**
+- Abacus Lab uses a legal-state Japanese soroban model: one upper 5-bead plus four lower 1-beads per rod
+- Learn, Practice, and Free Abacus modes support touch/tap, swipe, mouse, keyboard, Undo, Reset, place-value labels, and read-aloud
+- The age-aware curriculum progresses from bead exploration and digits through place value, direct addition/subtraction, complements to 5/10, multi-digit arithmetic, and basic multiplication/division result practice
+- Abacus progress is stored separately per child from adaptive Math progress and remains on-device
+- V1 deliberately excludes leaderboards, mandatory timers, automatic carrying, and claims of full traditional multiplication/division technique
+- Full product/curriculum/QC specification: [ABACUS_LAB_SPEC.md](ABACUS_LAB_SPEC.md)
+
 ## Current hard check — child UX, teacher review, and safety
 
 - Parent-only actions now use a reusable local Parent PIN rather than relying on multiplication that an older child may solve
