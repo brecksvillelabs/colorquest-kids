@@ -2029,3 +2029,741 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   justify-self: center;
   min-height: 42px;
 }
+
+
+/* ---------- Math Home + Abacus Lab ---------- */
+.math-home {
+  display: grid;
+  gap: 14px;
+}
+.math-path-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid #d9e6f2;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #f7fbff, #fffaf1);
+}
+.math-path-switch button {
+  min-height: 84px;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 1px 10px;
+  padding: 12px 16px;
+  border: 2px solid transparent;
+  border-radius: 17px;
+  background: transparent;
+  color: var(--navy, #173b6d);
+  text-align: left;
+  cursor: pointer;
+}
+.math-path-switch button > span {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: #fff;
+  font-size: 25px;
+  box-shadow: 0 4px 12px #173b6d12;
+}
+.math-path-switch button strong {
+  align-self: end;
+  font-size: 17px;
+}
+.math-path-switch button small {
+  align-self: start;
+  color: #677e98;
+  font-size: 11.5px;
+}
+.math-path-switch button.active {
+  border-color: #29bba4;
+  background: #ecfbf7;
+  box-shadow: 0 7px 18px #29bba41a;
+}
+.math-path-switch button.active > span {
+  background: #fff;
+}
+
+.abacus-lab {
+  display: grid;
+  gap: 15px;
+  padding: 2px 0 8px;
+}
+.abacus-lab-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(16px, 3vw, 24px);
+  border: 1px solid #d9e6f1;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 92% 12%, #ffd85c4a, transparent 28%),
+    linear-gradient(135deg, #f1fbff, #fffaf0);
+}
+.abacus-lab-heading h3 {
+  margin: 4px 0 7px;
+  color: var(--navy, #173b6d);
+  font-size: clamp(27px, 4vw, 42px);
+  line-height: 1.02;
+}
+.abacus-lab-heading > div:first-child > p:not(.eyebrow) {
+  max-width: 70ch;
+  margin: 0;
+  color: #5e748f;
+  font: 650 13px/1.5 system-ui, sans-serif;
+}
+.abacus-value-card {
+  min-width: 180px;
+  display: grid;
+  place-items: center;
+  gap: 3px;
+  padding: 13px 16px;
+  border: 1px solid #d4e4ef;
+  border-radius: 19px;
+  background: #fffffff2;
+  box-shadow: 0 8px 22px #173b6d10;
+}
+.abacus-value-card > span {
+  color: #698097;
+  font-size: 10.5px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.abacus-value-card > strong {
+  color: var(--navy, #173b6d);
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.abacus-value-card .speak-button {
+  margin-top: 4px;
+}
+
+.abacus-mode-switch {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.abacus-mode-switch button {
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid #d5e4ef;
+  border-radius: 17px;
+  background: #fff;
+  color: var(--navy, #173b6d);
+  text-align: left;
+  cursor: pointer;
+}
+.abacus-mode-switch button > span {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #f3f7fb;
+  font-size: 21px;
+}
+.abacus-mode-switch button strong { align-self: end; font-size: 14px; }
+.abacus-mode-switch button small { align-self: start; color: #6f8297; font-size: 9.5px; line-height: 1.25; }
+.abacus-mode-switch button.active {
+  border-color: #29bba4;
+  background: #eafaf6;
+}
+.abacus-mode-switch button.active > span { background: #fff; }
+
+.abacus-stage-rail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 3px 2px 9px;
+  scroll-snap-type: x proximity;
+}
+.abacus-stage-rail > button {
+  position: relative;
+  flex: 0 0 132px;
+  min-height: 98px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  padding: 10px 7px;
+  border: 1px solid #d7e4ee;
+  border-radius: 17px;
+  background: #fff;
+  color: var(--navy, #173b6d);
+  text-align: center;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+.abacus-stage-rail > button > span:first-child {
+  font-size: 23px;
+}
+.abacus-stage-rail > button strong {
+  font-size: 12px;
+}
+.abacus-stage-rail > button > small {
+  color: #16836c;
+  font-size: 9px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.abacus-stage-rail > button.active {
+  border: 2px solid #29bba4;
+  background: #f0fcf9;
+  box-shadow: 0 6px 17px #29bba418;
+}
+.abacus-stage-rail > button.recommended:not(.active)::after {
+  content: "";
+  position: absolute;
+  inset: 5px 5px auto auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff8b64;
+}
+
+.abacus-stage-progress {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.abacus-stage-progress i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #dce6ed;
+}
+.abacus-stage-progress i.done {
+  background: #29bba4;
+}
+
+.abacus-lesson-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
+  gap: 14px 22px;
+  padding: clamp(15px, 2.5vw, 22px);
+  border: 1px solid #d9e5ef;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 7px 20px #173b6d0d;
+}
+.abacus-lesson-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.abacus-stage-icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: #fff4d9;
+  font-size: 27px;
+}
+.abacus-lesson-main h4 {
+  margin: 3px 0 4px;
+  color: var(--navy, #173b6d);
+  font-size: clamp(23px, 3vw, 31px);
+}
+.abacus-lesson-main p:not(.eyebrow) {
+  margin: 0 0 7px;
+  color: #617792;
+  font: 650 12.5px/1.45 system-ui, sans-serif;
+}
+.abacus-lesson-main strong {
+  display: block;
+  color: #195c50;
+  font: 850 13px/1.4 system-ui, sans-serif;
+}
+.abacus-lesson-card ol {
+  margin: 0;
+  padding: 3px 0 0 24px;
+  color: #536b87;
+  font: 650 12px/1.55 system-ui, sans-serif;
+}
+.abacus-lesson-card li + li { margin-top: 5px; }
+.abacus-teacher-note {
+  grid-column: 1 / -1;
+  padding: 9px 11px;
+  border-radius: 12px;
+  background: #f4f8fb;
+  color: #647990;
+  font: 650 10.5px/1.4 system-ui, sans-serif;
+}
+.abacus-stage-meter {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #60758e;
+  font-size: 10.5px;
+  font-weight: 750;
+}
+
+.abacus-challenge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 15px 18px;
+  border: 1px solid #d7e5ef;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fff, #f7fbff);
+}
+.abacus-challenge h4 {
+  margin: 3px 0 4px;
+  color: var(--navy, #173b6d);
+  font-size: clamp(25px, 4vw, 38px);
+  font-variant-numeric: tabular-nums;
+}
+.abacus-challenge p:not(.eyebrow) {
+  margin: 0;
+  color: #627891;
+  font: 650 11.5px/1.4 system-ui, sans-serif;
+}
+
+.abacus-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+  gap: 14px;
+  align-items: start;
+}
+.abacus-board-wrap {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #d6e3ed;
+  border-radius: 23px;
+  background: #edf5f8;
+  box-shadow: inset 0 1px 0 #fff, 0 8px 24px #173b6d0c;
+}
+.abacus-board-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 3px 8px;
+}
+.abacus-board-topline > span {
+  color: #5f748d;
+  font-size: 11px;
+  font-weight: 800;
+}
+.abacus-board-topline > div {
+  display: flex;
+  gap: 6px;
+}
+.abacus-board-topline button {
+  min-height: 36px;
+  padding: 5px 10px;
+  border: 1px solid #cddde8;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--navy, #173b6d);
+  font: 800 10.5px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+.abacus-board-topline button:disabled { opacity: .4; cursor: default; }
+
+.soroban-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 16px;
+  background: #eaf0f2;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.soroban {
+  display: block;
+  max-width: none;
+  height: auto;
+  margin: 0 auto;
+  touch-action: pan-x;
+}
+.soroban-frame {
+  fill: #6b3d25;
+  stroke: #4b2b1b;
+  stroke-width: 4;
+}
+.soroban-inner {
+  fill: #fbf6e9;
+  stroke: #d2b88c;
+  stroke-width: 2;
+}
+.soroban-beam {
+  fill: #173b6d;
+}
+.soroban-rod-line {
+  stroke: #8b6c4d;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.soroban-dot {
+  fill: #f9d85b;
+  stroke: #173b6d;
+  stroke-width: 2;
+}
+.soroban-bead {
+  cursor: grab;
+  outline: none;
+}
+.soroban-bead:focus rect {
+  stroke: #173b6d;
+  stroke-width: 4;
+}
+.soroban-bead rect {
+  transition: y .12s ease, fill .12s ease, stroke .12s ease;
+  stroke-width: 2;
+}
+.soroban-bead path {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+.soroban-bead.active rect {
+  fill: #ff765f;
+  stroke: #c84235;
+}
+.soroban-bead.active path { stroke: #9f3027; }
+.soroban-bead.inactive rect {
+  fill: #f5c979;
+  stroke: #b9853f;
+}
+.soroban-bead.inactive path { stroke: #9b6a2d; }
+.soroban-bead.heaven.active rect {
+  fill: #32bca5;
+  stroke: #167865;
+}
+.soroban-bead.heaven.active path { stroke: #116251; }
+.soroban-place-label text {
+  fill: #506984;
+  font: 800 12px/1 system-ui, sans-serif;
+  text-anchor: middle;
+}
+
+.abacus-touch-help {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  padding: 7px 5px 1px;
+  color: #6b7f94;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+.abacus-touch-help span::before {
+  content: "•";
+  margin-right: 5px;
+  color: #29bba4;
+}
+
+.abacus-coach-card {
+  position: sticky;
+  top: 72px;
+  display: grid;
+  gap: 8px;
+  padding: 15px;
+  border: 1px solid #d9e5ee;
+  border-radius: 21px;
+  background: #fff;
+  box-shadow: 0 7px 21px #173b6d0e;
+}
+.abacus-coach-card h4 {
+  margin: 0;
+  color: var(--navy, #173b6d);
+  font-size: 21px;
+}
+.abacus-coach-card > p:not(.eyebrow) {
+  margin: 0;
+  color: #62778f;
+  font: 650 11.5px/1.45 system-ui, sans-serif;
+}
+.abacus-hint {
+  padding: 9px 10px;
+  border-radius: 12px;
+  background: #fff7df;
+  color: #6d5320 !important;
+}
+.abacus-feedback {
+  padding: 9px 10px;
+  border-radius: 12px;
+  font: 800 11px/1.4 system-ui, sans-serif;
+}
+.abacus-feedback.correct {
+  background: #e9f9f4;
+  color: #176b58;
+}
+.abacus-feedback.try {
+  background: #fff3ee;
+  color: #94513f;
+}
+.abacus-coach-actions {
+  display: grid;
+  gap: 7px;
+}
+.abacus-coach-actions .primary-button,
+.abacus-coach-actions .text-button {
+  width: 100%;
+}
+.abacus-coach-card > small {
+  color: #75879b;
+  font: 650 9.5px/1.4 system-ui, sans-serif;
+  text-align: center;
+}
+
+.abacus-free-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 13px;
+  align-items: center;
+  padding: 12px 15px;
+  border: 1px solid #d8e5ee;
+  border-radius: 19px;
+  background: #fff;
+}
+.abacus-free-tools > div strong {
+  display: block;
+  color: var(--navy, #173b6d);
+  font-size: 16px;
+}
+.abacus-free-tools > div small {
+  display: block;
+  margin-top: 2px;
+  color: #697f97;
+  font-size: 10.5px;
+}
+.abacus-free-tools > label {
+  display: grid;
+  gap: 4px;
+  color: #5f748d;
+  font-size: 10px;
+  font-weight: 850;
+}
+.abacus-free-tools select {
+  min-height: 40px;
+  padding: 5px 9px;
+  border: 1px solid #cbdbe6;
+  border-radius: 10px;
+  color: var(--navy, #173b6d);
+  background: #f8fbfd;
+  font: 800 12px/1 system-ui, sans-serif;
+}
+.abacus-label-toggle {
+  display: flex !important;
+  align-items: center;
+  gap: 7px !important;
+  min-height: 40px;
+}
+.abacus-label-toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: #29bba4;
+}
+.abacus-free-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 13px;
+  padding: 13px 16px;
+  border-radius: 17px;
+  background: #f4f9fc;
+}
+.abacus-free-footer p {
+  margin: 0;
+  color: #5f748e;
+  font: 650 11.5px/1.4 system-ui, sans-serif;
+}
+.abacus-free-footer p strong {
+  color: var(--navy, #173b6d);
+}
+.abacus-free-footer button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 7px 11px;
+  border: 1px solid #cfe0e9;
+  border-radius: 11px;
+  background: #fff;
+  color: #18745f;
+  font: 850 11px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .abacus-workbench {
+    grid-template-columns: 1fr;
+  }
+  .abacus-coach-card {
+    position: static;
+  }
+  .abacus-lesson-card {
+    grid-template-columns: 1fr;
+  }
+  .abacus-lesson-card ol {
+    padding-left: 23px;
+  }
+}
+
+@media (max-width: 700px) {
+  .math-path-switch {
+    gap: 7px;
+    padding: 6px;
+    border-radius: 18px;
+  }
+  .math-path-switch button {
+    min-height: 76px;
+    grid-template-columns: 38px 1fr;
+    padding: 9px 10px;
+    column-gap: 7px;
+  }
+  .math-path-switch button > span {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+  .math-path-switch button strong { font-size: 13px; }
+  .math-path-switch button small { font-size: 9px; line-height: 1.15; }
+
+  .abacus-lab-heading {
+    grid-template-columns: 1fr;
+    padding: 15px;
+  }
+  .abacus-value-card {
+    min-width: 0;
+    width: 100%;
+    grid-template-columns: auto 1fr auto;
+    justify-items: start;
+    place-items: center start;
+  }
+  .abacus-value-card > strong {
+    justify-self: center;
+  }
+  .abacus-value-card .speak-button {
+    justify-self: end;
+    margin: 0;
+  }
+
+  .abacus-mode-switch {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .abacus-mode-switch button {
+    min-height: 78px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 29px auto auto;
+    place-items: center;
+    gap: 1px;
+    padding: 8px 4px;
+    text-align: center;
+  }
+  .abacus-mode-switch button > span {
+    grid-row: auto;
+    width: 31px;
+    height: 31px;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+  .abacus-mode-switch button strong { align-self: center; font-size: 11px; }
+  .abacus-mode-switch button small { align-self: center; font-size: 8px; }
+
+  .abacus-stage-rail > button {
+    flex-basis: 116px;
+    min-height: 91px;
+  }
+  .abacus-challenge {
+    align-items: flex-start;
+    padding: 13px;
+  }
+  .abacus-challenge .speak-button {
+    flex: 0 0 auto;
+  }
+  .abacus-board-wrap {
+    padding: 6px;
+    border-radius: 18px;
+  }
+  .soroban-scroll {
+    border-radius: 12px;
+  }
+  .abacus-touch-help {
+    justify-content: flex-start;
+    padding-inline: 5px;
+  }
+  .abacus-free-tools {
+    grid-template-columns: 1fr 1fr;
+  }
+  .abacus-free-tools > div {
+    grid-column: 1 / -1;
+  }
+  .abacus-free-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .abacus-free-footer button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  .math-path-switch button small {
+    display: none;
+  }
+  .math-path-switch button {
+    min-height: 58px;
+    grid-template-rows: auto;
+  }
+  .math-path-switch button > span {
+    grid-row: auto;
+  }
+  .abacus-lab-heading h3 {
+    font-size: 27px;
+  }
+  .abacus-value-card {
+    grid-template-columns: auto 1fr;
+  }
+  .abacus-value-card .speak-button {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: 100%;
+  }
+  .abacus-mode-switch button small {
+    display: none;
+  }
+  .abacus-mode-switch button {
+    min-height: 62px;
+    grid-template-rows: 29px auto;
+  }
+  .abacus-challenge h4 {
+    font-size: 28px;
+  }
+  .abacus-board-topline {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .abacus-board-topline > div {
+    width: 100%;
+  }
+  .abacus-board-topline button {
+    flex: 1;
+  }
+  .abacus-free-tools {
+    grid-template-columns: 1fr;
+  }
+}
