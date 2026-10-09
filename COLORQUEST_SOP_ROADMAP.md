@@ -175,7 +175,42 @@ Hard-check release requirements:
 - Storybook mobile shelf must not push the active reader far below a growing catalog.
 - Real child usability testing remains separate from synthetic review and must never be reported as completed until human participants actually take part.
 
-## 7. Storybook workflow
+## 7. Abacus Lab — Soroban Math V1
+
+**Status: In progress** (2026-10-09)
+
+Detailed specification: [ABACUS_LAB_SPEC.md](ABACUS_LAB_SPEC.md)
+
+Product decision:
+
+- Abacus Lab is **inside Math**, not a ninth Home activity.
+- Math contains two paths:
+  - **Math Trail / Number Games** — existing adaptive concept lessons;
+  - **Abacus Lab / Abacus Play** — real soroban instruction and practice.
+- The virtual instrument uses legal Japanese soroban states: one upper 5-bead and four lower 1-beads per rod.
+- Beads support tap, swipe, mouse, and keyboard controls and snap to legal states.
+- The child performs carry/borrow/complement movements; ColorQuest does not auto-carry or auto-solve.
+- Learn, Practice, and Free Abacus modes are included.
+- Abacus progress is stored separately from adaptive Math progress because conventional arithmetic ability and soroban experience are not the same skill.
+- Ages 1–3 receive exploratory **Abacus Play** only; formal soroban instruction begins later.
+- V1 progresses through place value, direct addition/subtraction, complements to 5/10, multi-digit arithmetic, and basic multiplication/division result practice.
+- Complete traditional soroban multiplication/division layouts and Mental Abacus are roadmap work and must not be described as already taught by V1.
+- No timer, leaderboard, streak pressure, or public score is part of V1.
+
+V1 release requirements:
+
+- legal bead-state engine tests pass;
+- all generated challenges fit the available rods;
+- age curriculum and rod availability tests pass;
+- per-child local progress/resume tests pass;
+- Math Trail regressions remain green;
+- Abacus Lab hides irrelevant Math Trail page navigation while active;
+- phone/tablet layout keeps rods touchable and scrollable instead of shrinking them excessively;
+- full web + Android repository QC passes;
+- exact-main Pages deployment succeeds;
+- deployed artifact contains Abacus Lab code.
+
+## 8. Storybook workflow
 
 - Daily story content uses `src/story-data.ts`, story art under `public/stories/`, and `DAILY_STORY_LOG.md`.
 - Story art/content must be original and age-appropriate.
@@ -184,7 +219,7 @@ Hard-check release requirements:
 - A story is not reported live until the exact-commit GitHub Pages deployment succeeds and the deployed artifact contains the story.
 - The illustrated PDF companion is generated only after successful source/web delivery verification.
 
-## 8. Roadmap
+## 9. Roadmap
 
 | Priority | Item | Status | Notes |
 | --- | --- | --- | --- |
@@ -194,6 +229,7 @@ Hard-check release requirements:
 | P0 | Daily story delivery verification | Done | Exact-commit deploy verification added to workflow expectations |
 | P0 | Files/PDF picker + focused custom-page workbench | Done | Android Files/Recent access, local PDF page rendering, selected-page hero UX |
 | P0 | UX + teacher hard check | Done | 106 tests, web build, Android release-check, exact-commit Pages deploy, deployed-artifact verification |
+| P0 | Abacus Lab V1 | In progress | Math sub-path with legal soroban engine, Learn/Practice/Free modes, local progress, age-aware curriculum |
 | P0 | Real five-day child usability study | Planned | Human participants only; age-capped sessions and adult consent per hard-check protocol |
 | P1 | Custom page crop + rotate | Planned | Parent import preparation screen |
 | P1 | Adjustable line-cleanup threshold | Planned | Helps faint scans and gray worksheets |
@@ -203,12 +239,16 @@ Hard-check release requirements:
 | P1 | Older-child story library | Planned | Purpose-built ages 7–9 and 10–12 stories with original art and richer literacy prompts |
 | P1 | Story library navigation as catalog grows | Planned | Search/age grouping/recent additions |
 | P1 | Teacher-style parent learning summary | Planned | Factual explored/practiced/next-prompt summary; never claim mastery without evidence |
+| P1 | Traditional soroban multiplication/division algorithms | Planned | Instructor-reviewed multi-rod method with step verification, beyond V1 final-answer practice |
+| P1 | Mental Abacus progression | Planned | Fade labels/beads only after demonstrated soroban fluency; never age-only promotion |
 | P2 | Web bundle performance benchmark | Planned | Production app.js is ~582 KB minified / ~190 KB gzip; benchmark low-end devices during real child field study before deciding whether more code splitting is needed |
+| P2 | Abacus decimals / money | Planned | Decimal marker, place-value lessons, carefully reviewed arithmetic |
+| P2 | Optional private abacus fluency mode | Planned | Local timing only for experienced children; no leaderboard |
 | P2 | Backup/export family-created content | Planned | Parent-controlled portable backup; privacy review required |
 | P2 | Native Android release preparation | Planned | Only after web/PWA feature and QC baseline are stable |
 | P2 | Google Play launch | Hold | No Play release yet; resume when product/release checklist is ready |
 
-## 9. Feature-specific QC checklist: Custom Coloring Pages
+## 10. Feature-specific QC checklist: Custom Coloring Pages
 
 Before marking V1 Done:
 
@@ -229,7 +269,7 @@ Before marking V1 Done:
 - Exact `main` GitHub Pages deployment succeeds.
 - Deployed artifact contains custom-coloring code.
 
-## 10. Documentation map
+## 11. Documentation map
 
 - `COLORQUEST_SOP_ROADMAP.md` — project process, architecture, roadmap, major feature state.
 - `CURRICULUM_ROADMAP.md` — learning/curriculum expansion.
@@ -238,10 +278,12 @@ Before marking V1 Done:
 - `ANDROID_RELEASE.md`, `PLAY_STORE_SUBMISSION.md`, `DATA_SAFETY.md` — Android/Play release preparation.
 - `RELEASE_SUMMARY.md` — current release-package summary.
 - `UX_TEACHER_HARD_CHECK_2026-10-09.md` — app-wide child UX, teacher, safety, synthetic usability review and real field-test protocol.
+- `ABACUS_LAB_SPEC.md` — Soroban architecture, curriculum, age behavior, progress model, QC requirements, and advanced roadmap.
 
-## 11. Change log
+## 12. Change log
 
 - **2026-10-08:** Created project SOP/living roadmap. Added Custom Coloring Pages V1 architecture and QC requirements. Clarified web/PWA vs future Android/Play release boundaries.\n- **2026-10-08:** Custom Coloring Pages V1 passed full repository QC and was merged to `main`.
 - **2026-10-09:** Phone UX review exposed two V1 wrinkles: image-only picking routed Android into Photos instead of Files/Recent/PDF, and the family shelf competed visually with the selected canvas. V1.1 added local PDF rendering, explicit Photos vs Files pickers, a multi-page PDF chooser, friendlier numeric filenames, and a focused selected-page workbench. Full web/Android repository QC passed before merge.
 - **2026-10-09:** Hard check opened: app-wide child UX + teacher review found the arithmetic grown-up gate insufficient for older children and found supervised lab labels were not enforced in behavior. Parent PIN, lab procedure gating, age-aware home/navigation cleanup, and accessibility changes entered QC.
 - **2026-10-09:** Hard check completed. Final branch QC passed 106/106 automated tests plus TypeScript/Vite production build, Android sync, Android unit/minified release-bundle check, privacy/support asset checks, and release artifact creation. Squash merge `6273069339e711fc88ead2b6059f190560027f02` deployed successfully in GitHub Pages run `37982334065`; the deployed artifact was inspected for the Parent PIN, age-aware navigation, supervised-lab gate/exit, and activity-specific reminder changes. The five-day child-control-group section remains explicitly synthetic; the real human field study is still P0 Planned.
+- **2026-10-09:** Abacus Lab V1 entered QC. Math now has a planned two-path architecture (Math Trail + Abacus Lab) with a legal-state Japanese soroban engine, Learn/Practice/Free modes, age-aware curriculum, separate per-child abacus progress, and advanced traditional/mental-abacus work explicitly deferred to the roadmap.

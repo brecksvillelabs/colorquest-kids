@@ -514,6 +514,44 @@ describe("Math and science learning trails", () => {
     expect(screen.queryByText("Creative reminder")).toBeNull();
   });
 
+
+  it("opens Abacus Lab as a separate Math path and remembers the visit", async () => {
+    const user = userEvent.setup();
+    render(<ColorQuestApp />);
+    await openHomeActivity(user, "Learn", /^Number Games/);
+
+    expect(screen.getByRole("button", { name: /Number Games/ })).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: /Abacus Lab/ }));
+
+    expect(screen.getByRole("region", { name: "Abacus Lab" })).toBeTruthy();
+    expect(screen.getByText("A real soroban you can practice anywhere")).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Interactive Japanese soroban" })).toBeTruthy();
+    expect(screen.queryByText("Math reminder")).toBeNull();
+
+    await waitFor(() => {
+      const saved = JSON.parse(window.localStorage.getItem(PROFILE_STORAGE_KEY) || "{}") as FamilyData;
+      expect(saved.progress["profile-test"].learning.abacus.hasVisited).toBe(true);
+    });
+
+    await user.click(screen.getByRole("button", { name: /Free Abacus/ }));
+    expect(screen.getByText("Nothing to solve. Move the beads, build a number, or follow homework beside the screen.")).toBeTruthy();
+    expect(screen.getByRole("combobox")).toBeTruthy();
+  });
+
+  it("offers advanced abacus stages to older children without hiding earlier stages", async () => {
+    const family = JSON.parse(window.localStorage.getItem(PROFILE_STORAGE_KEY) || "{}") as FamilyData;
+    family.profiles[0].age = 10;
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(family));
+    const user = userEvent.setup();
+    render(<ColorQuestApp />);
+    await openHomeActivity(user, "Learn", /^Math,/);
+    await user.click(screen.getByRole("button", { name: /Abacus Lab/ }));
+
+    expect(screen.getByRole("button", { name: /0–9/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /× and ÷/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Mixed/ })).toBeTruthy();
+  });
+
     it("teaches a math idea, checks reasoning, and offers off-screen practice", async () => {
     const user = userEvent.setup();
     const lesson = getLearningLesson("math", 1, 1);

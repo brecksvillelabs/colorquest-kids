@@ -21,6 +21,20 @@ export type ProfileProgress = {
   learning: LearningSignals;
 };
 
+export type AbacusModeKey = "learn" | "practice" | "free";
+
+export type AbacusProgress = {
+  hasVisited: boolean;
+  attempts: number;
+  correct: number;
+  stageCorrect: Record<string, number>;
+  completedStages: string[];
+  recentResults: boolean[];
+  lastMode: AbacusModeKey;
+  lastStageId: string;
+  lastValue: number;
+};
+
 export type LearningSignals = {
   interestScores: Record<InterestKey, number>;
   lessonAttempts: Record<string, number>;
@@ -28,6 +42,7 @@ export type LearningSignals = {
   recentLessons: string[];
   mathPractice: Record<string, MathPracticeState>;
   mathJourney: MathPracticeOutcome[];
+  abacus: AbacusProgress;
 };
 
 /**
@@ -72,6 +87,20 @@ export const PROFILE_AVATARS = ["🦊", "🐼", "🦁", "🐬", "🦋", "🚀", 
 export const ACTIVITY_KEYS: ActivityKey[] = ["draw", "color", "puzzle", "stories", "math", "science", "lab", "discover"];
 export const INTEREST_KEYS: InterestKey[] = ["numbers", "patterns", "building", "animals", "earth", "space", "experiments", "stories"];
 
+export function emptyAbacusProgress(): AbacusProgress {
+  return {
+    hasVisited: false,
+    attempts: 0,
+    correct: 0,
+    stageCorrect: {},
+    completedStages: [],
+    recentResults: [],
+    lastMode: "learn",
+    lastStageId: "bead-play",
+    lastValue: 0,
+  };
+}
+
 export function emptyLearningSignals(): LearningSignals {
   return {
     interestScores: { numbers: 0, patterns: 0, building: 0, animals: 0, earth: 0, space: 0, experiments: 0, stories: 0 },
@@ -80,6 +109,7 @@ export function emptyLearningSignals(): LearningSignals {
     recentLessons: [],
     mathPractice: {},
     mathJourney: [],
+    abacus: emptyAbacusProgress(),
   };
 }
 
@@ -136,7 +166,14 @@ export function loadFamilyData(): FamilyData {
         progress[profile.id] = {
           ...progress[profile.id],
           activities: { ...base.activities, ...progress[profile.id].activities },
-          learning: { ...emptyLearningSignals(), ...(progress[profile.id].learning || {}) },
+          learning: {
+            ...emptyLearningSignals(),
+            ...(progress[profile.id].learning || {}),
+            abacus: {
+              ...emptyAbacusProgress(),
+              ...(progress[profile.id].learning?.abacus || {}),
+            },
+          },
         };
       }
     }
@@ -268,6 +305,90 @@ export function recordInterest(
           ...learning,
           likedLessons: [...learning.likedLessons, lessonId],
           interestScores: { ...learning.interestScores, [interest]: (learning.interestScores[interest] || 0) + 1 },
+        },
+      },
+    },
+  };
+}
+
+
+export function recordAbacusResult(
+  data: FamilyData,
+  profileId: string,
+  result: {
+    stageId: string;
+    mode: AbacusModeKey;
+    correct: boolean;
+    value: number;
+  },
+): FamilyData {
+  const progress = data.progress[profileId] || emptyProgress();
+  const learning = progress.learning || emptyLearningSignals();
+  const previous = { ...emptyAbacusProgress(), ...(learning.abacus || {}) };
+  const stageCorrect = { ...previous.stageCorrect };
+  if (result.correct && result.mode !== "free") {
+    stageCorrect[result.stageId] = (stageCorrect[result.stageId] || 0) + 1;
+  }
+  const completedStages = stageCorrect[result.stageId] >= 3 && !previous.completedStages.includes(result.stageId)
+    ? [...previous.completedStages, result.stageId]
+    : previous.completedStages;
+
+  return {
+    ...data,
+    progress: {
+      ...data.progress,
+      [profileId]: {
+        ...progress,
+        lastActivity: "math",
+        learning: {
+          ...learning,
+          abacus: {
+            ...previous,
+            hasVisited: true,
+            attempts: previous.attempts + (result.mode === "free" ? 0 : 1),
+            correct: previous.correct + (result.correct && result.mode !== "free" ? 1 : 0),
+            stageCorrect,
+            completedStages,
+            recentResults: result.mode === "free"
+              ? previous.recentResults
+              : [...previous.recentResults, result.correct].slice(-12),
+            lastMode: result.mode,
+            lastStageId: result.stageId,
+            lastValue: Math.max(0, Math.round(result.value)),
+          },
+        },
+      },
+    },
+  };
+}
+
+
+export function recordAbacusVisit(
+  data: FamilyData,
+  profileId: string,
+  state: {
+    stageId: string;
+    mode: AbacusModeKey;
+  },
+): FamilyData {
+  const progress = data.progress[profileId] || emptyProgress();
+  const learning = progress.learning || emptyLearningSignals();
+  const previous = { ...emptyAbacusProgress(), ...(learning.abacus || {}) };
+  return {
+    ...data,
+    progress: {
+      ...data.progress,
+      [profileId]: {
+        ...progress,
+        lastActivity: "math",
+        learning: {
+          ...learning,
+          abacus: {
+            ...previous,
+            hasVisited: true,
+            lastMode: state.mode,
+            lastStageId: state.stageId,
+          },
         },
       },
     },

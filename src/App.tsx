@@ -16,6 +16,7 @@ import ArtworkGallery from "./ArtworkGallery";
 import DrawingStudio from "./DrawingStudio";
 import ColoringStudio from "./ColoringStudio";
 import LearningBoard from "./LearningBoard";
+import MathBoard from "./MathBoard";
 import ScienceLabBoard from "./ScienceLab";
 import StorybookBoard from "./StorybookBoard";
 import { ProfileHub, ProfileSetup } from "./ProfileViews";
@@ -26,6 +27,7 @@ import { getScienceLabs, LAB_COUNTS } from "./lab-data";
 import { activityCount, activityNoun, activityUnit, COLORING_SCENE_COUNT } from "./content-counts";
 import { artCredit, DiscoveryArt } from "./discovery-art";
 import { recordAdaptiveMathAnswer, type MathRepresentation } from "./adaptive-math";
+import { ABACUS_STAGES } from "./abacus-data";
 import {
   activityGroupsForAge,
   isActivityAvailable,
@@ -50,6 +52,8 @@ import {
   recordInterest,
   recordLearningAttempt,
   recordLocation,
+  recordAbacusResult,
+  recordAbacusVisit,
   saveFamilyData,
   type ActivityKey,
   type ChildProfile,
@@ -100,7 +104,7 @@ const ACTIVITY_META: Record<Activity, { icon: string; title: string; copy: strin
   color: { icon: "🎨", title: "Color", copy: `${COLORING_SCENE_COUNT} built-in scenes + family pages` },
   puzzle: { icon: "🧩", title: "Build puzzles", copy: "Match, sort, sequence, reason" },
   stories: { icon: "📚", title: "Storybooks", copy: "Funny picture stories read aloud" },
-  math: { icon: "🧮", title: "Math", copy: "Big ideas made visible" },
+  math: { icon: "🧮", title: "Math", copy: "Fresh questions + a real abacus" },
   science: { icon: "🧪", title: "Science", copy: "Ask, observe, explain" },
   lab: { icon: "🥼", title: "Science Lab", copy: "Predict, test safely, explain" },
   discover: { icon: "🔭", title: "Discovery Lab", copy: "Real places, space, stories & math" },
@@ -735,6 +739,8 @@ function Studio({
   onComplete,
   onLearningAttempt,
   onMathAnswer,
+  onAbacusResult,
+  onAbacusVisit,
   onLikeLesson,
   onSaveArtwork,
   onOpenRecent,
@@ -756,6 +762,16 @@ function Studio({
     representation: MathRepresentation;
     sessionId: string;
   }) => void;
+  onAbacusResult: (result: {
+    stageId: string;
+    mode: "learn" | "practice" | "free";
+    correct: boolean;
+    value: number;
+  }) => void;
+  onAbacusVisit: (visit: {
+    stageId: string;
+    mode: "learn" | "practice" | "free";
+  }) => void;
   onLikeLesson: (lessonId: string, interest: InterestKey) => void;
   onSaveArtwork: (dataUrl: string, title: string) => Promise<void>;
   onOpenRecent: (activity: "draw" | "color", ageWorld: number, page: number) => void;
@@ -769,6 +785,7 @@ function Studio({
   const [recentWorkOpen, setRecentWorkOpen] = useState(false);
   const [newDrawingPageRequest, setNewDrawingPageRequest] = useState(0);
   const [customColoringMode, setCustomColoringMode] = useState(false);
+  const [mathAbacusMode, setMathAbacusMode] = useState(false);
   const [activityChooserOpen, setActivityChooserOpen] = useState(false);
   const [chooserGroup, setChooserGroup] = useState<"create" | "play-read" | "learn-discover" | null>(null);
   const fifiMascot = `${import.meta.env.BASE_URL}mascot/fifi-color-spark.png`;
@@ -806,6 +823,7 @@ function Studio({
 
   useEffect(() => {
     if (activity !== "color") setCustomColoringMode(false);
+    if (activity !== "math") setMathAbacusMode(false);
   }, [activity]);
 
   useEffect(() => {
@@ -856,7 +874,7 @@ function Studio({
                 </div>
               )}
             </div>
-            {!(activity === "color" && customColoringMode) && (
+            {!(activity === "color" && customColoringMode) && !(activity === "math" && mathAbacusMode) && (
             <div className="page-picker">
               <button onClick={guard(() => onPage(page - 1))} aria-label={`Previous ${unit.toLowerCase()}`} disabled={page === 1}>←</button>
               <label>{unit} <input type="number" min="1" max={total} value={page} onChange={(event) => {
@@ -904,11 +922,12 @@ function Studio({
           {activity === "color" && <ColoringStudio key={`c-${page}-${age}-${profile.id}`} page={page} age={age} profileId={profile.id} profileName={profile.name} onComplete={onComplete} onSaveArtwork={onSaveArtwork} onLibraryModeChange={setCustomColoringMode} />}
           {activity === "puzzle" && <VariedPuzzleBoard key={`p-${page}-${age}`} page={page} age={age} onComplete={onComplete} />}
           {activity === "stories" && <StorybookBoard key={`story-${page}-${age}`} page={page} age={age} onSelectBook={onPage} onComplete={onComplete} />}
-          {(activity === "math" || activity === "science") && <LearningBoard key={`l-${activity}-${page}-${age}-${profile.id}`} subject={activity} page={page} age={age} childAge={profile.age} profileId={profile.id} liked={profileProgress.learning.likedLessons.includes(getLearningLessons(activity, age)[page - 1].id)} mathPractice={profileProgress.learning.mathPractice?.[getLearningLessons(activity, age)[page - 1].id]} mathJourney={profileProgress.learning.mathJourney || []} onComplete={onComplete} onAttempt={() => onLearningAttempt(activity)} onMathAnswer={onMathAnswer} onLike={onLikeLesson} onSelectLesson={onPage} />}
+          {activity === "math" && <MathBoard key={`math-${page}-${age}-${profile.id}`} page={page} age={age} childAge={profile.age} profileId={profile.id} liked={profileProgress.learning.likedLessons.includes(getLearningLessons("math", age)[page - 1].id)} mathPractice={profileProgress.learning.mathPractice?.[getLearningLessons("math", age)[page - 1].id]} mathJourney={profileProgress.learning.mathJourney || []} abacusProgress={profileProgress.learning.abacus} onComplete={onComplete} onAttempt={() => onLearningAttempt("math")} onMathAnswer={onMathAnswer} onAbacusResult={onAbacusResult} onAbacusVisit={onAbacusVisit} onLike={onLikeLesson} onSelectLesson={onPage} onAbacusModeChange={setMathAbacusMode} />}
+          {activity === "science" && <LearningBoard key={`l-science-${page}-${age}-${profile.id}`} subject="science" page={page} age={age} childAge={profile.age} profileId={profile.id} liked={profileProgress.learning.likedLessons.includes(getLearningLessons("science", age)[page - 1].id)} mathJourney={[]} onComplete={onComplete} onAttempt={() => onLearningAttempt("science")} onMathAnswer={onMathAnswer} onLike={onLikeLesson} onSelectLesson={onPage} />}
           {activity === "lab" && <ScienceLabBoard key={`lab-${page}-${age}`} page={page} age={age} onComplete={onComplete} onSelectLab={onPage} />}
           {activity === "discover" && <DiscoveryBoard key={`x-${page}-${age}`} page={page} age={age} onComplete={onComplete} />}
 
-          {!(activity === "color" && customColoringMode) && (
+          {!(activity === "color" && customColoringMode) && !(activity === "math" && mathAbacusMode) && (
             <div className="next-row">
               <div><span>🌟</span><p><strong>{NEXT_REMINDERS[activity].title}</strong><br />{NEXT_REMINDERS[activity].copy}</p></div>
               <button className="primary-button" disabled={page === total} onClick={guard(() => onPage(page + 1))}>{page === total ? `All ${pluralUnit} explored ✓` : `Next ${unit.toLowerCase()} →`}</button>
@@ -928,7 +947,7 @@ function Studio({
             }}
           />
           <FifiGuide
-            open={fifiTipOpen && !pendingStartOver}
+            open={fifiTipOpen && !pendingStartOver && !(activity === "math" && mathAbacusMode)}
             mode="tip"
             childName={profile.name}
             mascotSrc={fifiMascot}
@@ -1181,6 +1200,8 @@ function ParentCorner({
               const visibleActivities = activityGroupsForAge(childAgeWorld).flatMap((group) => group.activities);
               const mathJourney = childProgress.learning?.mathJourney || [];
               const independentMath = mathJourney.filter((outcome) => outcome.firstTry).length;
+              const abacus = childProgress.learning?.abacus;
+              const abacusStage = ABACUS_STAGES.find((stage) => stage.id === abacus?.lastStageId);
               return (
                 <article key={profile.id}>
                   <span>{profile.avatar}</span>
@@ -1189,6 +1210,7 @@ function ParentCorner({
                   <strong>{completedCount(childProgress)} completed</strong>
                   <small>Continue: {ACTIVITY_META[resume.activity].title}, {activityUnit(resume.activity).toLowerCase()} {resume.page}</small>
                   <small>Fresh Math practice: {mathJourney.length} questions · {independentMath} solved independently first try</small>
+                  {abacus?.hasVisited && <small>Abacus: {abacus.completedStages.length} stage{abacus.completedStages.length === 1 ? "" : "s"} explored · last: {abacusStage?.shortTitle || "Abacus Lab"}</small>}
                   <div className="progress-chips">{visibleActivities.map((key) => <span key={key}>{ACTIVITY_META[key].icon} {childProgress.activities[key].completed.length}</span>)}</div>
                   <button onClick={() => onDeleteProfile(profile.id)}>Delete profile</button>
                 </article>
@@ -1294,6 +1316,24 @@ export default function ColorQuestApp() {
     });
   };
 
+  const abacusResult = (result: {
+    stageId: string;
+    mode: "learn" | "practice" | "free";
+    correct: boolean;
+    value: number;
+  }) => {
+    if (!activeProfile) return;
+    setFamily((current) => recordAbacusResult(current, activeProfile.id, result));
+  };
+
+  const abacusVisit = (visit: {
+    stageId: string;
+    mode: "learn" | "practice" | "free";
+  }) => {
+    if (!activeProfile) return;
+    setFamily((current) => recordAbacusVisit(current, activeProfile.id, visit));
+  };
+
   const likeLesson = (lessonId: string, interest: InterestKey) => {
     if (!activeProfile) return;
     setFamily((current) => recordInterest(current, activeProfile.id, lessonId, interest));
@@ -1390,10 +1430,10 @@ export default function ColorQuestApp() {
     : view === "profiles"
       ? <ProfileHub profiles={family.profiles} activeProfileId={activeProfile.id} onSelect={selectProfile} onAdd={() => setView("profile-new")} onBack={() => setView("home")} />
       : view === "studio"
-        ? <Studio profile={activeProfile} profileProgress={activeProgress} age={age} activity={activity} page={page} onActivity={changeActivity} onPage={changePage} onHome={() => setView("home")} onComplete={complete} onLearningAttempt={learningAttempt} onMathAnswer={mathAnswer} onLikeLesson={likeLesson} onSaveArtwork={saveArtwork} onOpenRecent={openRecentCreative} />
+        ? <Studio profile={activeProfile} profileProgress={activeProgress} age={age} activity={activity} page={page} onActivity={changeActivity} onPage={changePage} onHome={() => setView("home")} onComplete={complete} onLearningAttempt={learningAttempt} onMathAnswer={mathAnswer} onAbacusResult={abacusResult} onAbacusVisit={abacusVisit} onLikeLesson={likeLesson} onSaveArtwork={saveArtwork} onOpenRecent={openRecentCreative} />
         : view === "parents"
           ? <ParentCorner family={family} activeProfile={activeProfile} age={age} artworkRevision={artworkRevision} onHome={() => setView("home")} onProfiles={() => setView("profiles")} onUpdateProfile={updateProfile} onDeleteProfile={deleteProfile} />
-          : <Home age={age} profileProgress={activeProgress} profile={activeProfile} canContinue={completedCount(activeProgress) > 0 || safeResume.page > 1} onStart={start} onStartLesson={(subject, lessonPage) => start(subject, false, lessonPage)} onContinue={continueAdventure} onParents={() => setView("parents")} onProfiles={() => setView("profiles")} />;
+          : <Home age={age} profileProgress={activeProgress} profile={activeProfile} canContinue={completedCount(activeProgress) > 0 || safeResume.page > 1 || Boolean(activeProgress.learning.abacus?.hasVisited)} onStart={start} onStartLesson={(subject, lessonPage) => start(subject, false, lessonPage)} onContinue={continueAdventure} onParents={() => setView("parents")} onProfiles={() => setView("profiles")} />;
 
   // Read-aloud pace follows the age world the child is currently exploring.
   return <SpeechProvider ageWorld={age}>{screen}</SpeechProvider>;
