@@ -5,6 +5,7 @@ export const CUSTOM_COLORING_ACCEPTED_TYPES = [
   "image/jpeg",
   "image/webp",
   "image/svg+xml",
+  "application/pdf",
 ] as const;
 
 export type UploadLike = {
@@ -20,13 +21,14 @@ export function safeCustomColoringTitle(filename: string) {
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 48);
-  return cleaned || "My coloring page";
+  if (!cleaned || /^\d+$/.test(cleaned)) return "My coloring page";
+  return cleaned;
 }
 
 export function isSupportedColoringFile(file: UploadLike) {
   if (file.size <= 0 || file.size > CUSTOM_COLORING_MAX_FILE_BYTES) return false;
   if (CUSTOM_COLORING_ACCEPTED_TYPES.includes(file.type as (typeof CUSTOM_COLORING_ACCEPTED_TYPES)[number])) return true;
-  return /\.(png|jpe?g|webp|svg)$/i.test(file.name);
+  return /\.(png|jpe?g|webp|svg|pdf)$/i.test(file.name);
 }
 
 export function fitInside(width: number, height: number, maxDimension = 1200) {
@@ -134,4 +136,14 @@ export function floodFillPixels(
   }
 
   return true;
+}
+
+
+export function isPdfColoringFile(file: Pick<UploadLike, "name" | "type">) {
+  return file.type === "application/pdf" || /\.pdf$/i.test(file.name);
+}
+
+export function clampPdfPage(page: number, pageCount: number) {
+  const safeCount = Math.max(1, Math.floor(pageCount));
+  return Math.max(1, Math.min(safeCount, Math.floor(Number.isFinite(page) ? page : 1)));
 }

@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   CUSTOM_COLORING_MAX_FILE_BYTES,
+  clampPdfPage,
   fitInside,
   floodFillPixels,
+  isPdfColoringFile,
   isSupportedColoringFile,
   safeCustomColoringTitle,
 } from "./custom-coloring-utils";
@@ -11,13 +13,23 @@ describe("custom coloring page utilities", () => {
   it("accepts supported image formats within the size limit", () => {
     expect(isSupportedColoringFile({ name: "owl.png", type: "image/png", size: 1000 })).toBe(true);
     expect(isSupportedColoringFile({ name: "page.svg", type: "", size: 1000 })).toBe(true);
-    expect(isSupportedColoringFile({ name: "notes.pdf", type: "application/pdf", size: 1000 })).toBe(false);
+    expect(isSupportedColoringFile({ name: "pages.pdf", type: "application/pdf", size: 1000 })).toBe(true);
+    expect(isSupportedColoringFile({ name: "notes.txt", type: "text/plain", size: 1000 })).toBe(false);
     expect(isSupportedColoringFile({ name: "huge.jpg", type: "image/jpeg", size: CUSTOM_COLORING_MAX_FILE_BYTES + 1 })).toBe(false);
   });
 
   it("creates a friendly title from an uploaded filename", () => {
     expect(safeCustomColoringTitle("my_dinosaur-page.PNG")).toBe("my dinosaur page");
     expect(safeCustomColoringTitle(".png")).toBe("My coloring page");
+    expect(safeCustomColoringTitle("1000007496.jpg")).toBe("My coloring page");
+  });
+
+  it("recognizes PDFs and keeps a chosen PDF page in range", () => {
+    expect(isPdfColoringFile({ name: "book.PDF", type: "" })).toBe(true);
+    expect(isPdfColoringFile({ name: "page.png", type: "image/png" })).toBe(false);
+    expect(clampPdfPage(0, 8)).toBe(1);
+    expect(clampPdfPage(99, 8)).toBe(8);
+    expect(clampPdfPage(4, 8)).toBe(4);
   });
 
   it("keeps imported pages inside the rasterization ceiling", () => {

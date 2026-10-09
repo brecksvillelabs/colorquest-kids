@@ -135,6 +135,27 @@ Goal: let a grown-up add a coloring sheet from the device, then let children col
 - V1 uses automatic line cleanup; interactive crop/rotate/threshold controls are deferred.
 - Imported raster pages do not become semantic independent SVG shapes.
 
+
+### V1.1 — Files/PDF import and focused coloring
+
+**Status: In progress** (2026-10-09)
+
+Triggered by phone UX testing.
+
+- The library must present two explicit grown-up entry points:
+  - **Photos** for the system photo library;
+  - **Files & PDF** for Recent, Downloads, cloud/file providers, images, and PDF documents.
+- Prefer the browser's document file picker when available; fall back to a mixed-MIME file input so Android does not force an image-only photo picker.
+- PDF rendering uses Mozilla PDF.js bundled with the app. The PDF bytes stay on-device; the selected page is rendered locally and then passed through the same line-art cleanup pipeline as images.
+- Multi-page PDFs show an in-app page preview/selector before import.
+- Once a family page is chosen, that page becomes the visual hero:
+  - the family shelf disappears;
+  - the ColorQuest/My Pages library tabs collapse out of the way;
+  - a compact **My pages** back control replaces the shelf;
+  - the canvas is first and full-width on phones;
+  - coloring tools follow the canvas rather than pushing it below a large library header.
+- Numeric camera/file names should display as **My coloring page** rather than exposing an unfriendly file number.
+
 ## 6. Storybook workflow
 
 - Daily story content uses `src/story-data.ts`, story art under `public/stories/`, and `DAILY_STORY_LOG.md`.
@@ -152,6 +173,7 @@ Goal: let a grown-up add a coloring sheet from the device, then let children col
 | P0 | PWA deployment/cache correctness | Done | Network-first authored bundle/story delivery in service worker |
 | P0 | Creative-work autosave | Done | Built-in Draw/Color drafts are device-local |
 | P0 | Daily story delivery verification | Done | Exact-commit deploy verification added to workflow expectations |
+| P0 | Files/PDF picker + focused custom-page workbench | In progress | Android Files/Recent access, local PDF page rendering, selected-page hero UX |
 | P1 | Custom page crop + rotate | Planned | Parent import preparation screen |
 | P1 | Adjustable line-cleanup threshold | Planned | Helps faint scans and gray worksheets |
 | P1 | Rename / age-tag / reorder family pages | Planned | Parent-managed shelf metadata |
@@ -195,3 +217,4 @@ Before marking V1 Done:
 ## 10. Change log
 
 - **2026-10-08:** Created project SOP/living roadmap. Added Custom Coloring Pages V1 architecture and QC requirements. Clarified web/PWA vs future Android/Play release boundaries.\n- **2026-10-08:** Custom Coloring Pages V1 passed full repository QC and was merged to `main`.
+- **2026-10-09:** Phone UX review exposed two V1 wrinkles: image-only picking routed Android into Photos instead of Files/Recent/PDF, and the family shelf competed visually with the selected canvas. Began V1.1 to add local PDF rendering, explicit Photos vs Files pickers, and a focused selected-page workbench.

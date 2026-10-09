@@ -234,10 +234,12 @@ export default function ColoringStudio({
   const [message, setMessage] = useState("");
   const [showGradients, setShowGradients] = useState(age > 0);
   const [libraryMode, setLibraryMode] = useState<"built-in" | "custom">("built-in");
+  const [customPageFocused, setCustomPageFocused] = useState(false);
   const id = draftKey(profileId, "color", age, page);
 
   useEffect(() => {
     onLibraryModeChange?.(libraryMode === "custom");
+    if (libraryMode !== "custom") setCustomPageFocused(false);
     return () => onLibraryModeChange?.(false);
   }, [libraryMode, onLibraryModeChange]);
 
@@ -321,20 +323,22 @@ export default function ColoringStudio({
   const visiblePaints = ART_PAINTS.filter((paint) => showGradients || paint.colors.length === 1);
   return (
     <div className="creative-board color-board coloring-studio-v26">
-      <div className="coloring-library-switch" aria-label="Coloring page library">
-        <button
-          className={libraryMode === "built-in" ? "active" : ""}
-          onClick={() => setLibraryMode("built-in")}
-          aria-pressed={libraryMode === "built-in"}
-        >🌈 ColorQuest pages</button>
-        <button
-          className={libraryMode === "custom" ? "active" : ""}
-          onClick={() => setLibraryMode("custom")}
-          aria-pressed={libraryMode === "custom"}
-        >🖍️ My coloring pages</button>
-      </div>
+      {!(libraryMode === "custom" && customPageFocused) && (
+        <div className="coloring-library-switch" aria-label="Coloring page library">
+          <button
+            className={libraryMode === "built-in" ? "active" : ""}
+            onClick={() => setLibraryMode("built-in")}
+            aria-pressed={libraryMode === "built-in"}
+          >🌈 ColorQuest pages</button>
+          <button
+            className={libraryMode === "custom" ? "active" : ""}
+            onClick={() => setLibraryMode("custom")}
+            aria-pressed={libraryMode === "custom"}
+          >🖍️ My coloring pages</button>
+        </div>
+      )}
       {libraryMode === "custom" ? (
-        <CustomColoringStudio profileId={profileId} profileName={profileName} onSaveArtwork={onSaveArtwork} />
+        <CustomColoringStudio profileId={profileId} profileName={profileName} onSaveArtwork={onSaveArtwork} onFocusChange={setCustomPageFocused} />
       ) : (
         <>
       <div className="coloring-title-row"><div><span>COLORING STORY</span><h3>{scene.title}</h3><p>{scene.imagine}</p></div><SpeakButton id={`color-story-${scene.id}`} label="Hear the idea" text={[scene.title, scene.imagine]} /></div>
