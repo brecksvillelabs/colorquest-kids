@@ -2011,3 +2011,12 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   background: #fff;
   box-shadow: 0 22px 70px #0c203f4d;
 }
+
+.gate-recovery-note {
+  display: block;
+  max-width: 42ch;
+  margin: 9px auto 2px;
+  color: #728397;
+  font: 650 10.5px/1.45 system-ui, sans-serif;
+  text-align: center;
+}
