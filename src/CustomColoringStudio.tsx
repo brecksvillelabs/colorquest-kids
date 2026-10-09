@@ -182,7 +182,7 @@ async function renderPdfPageCanvas(document: PDFDocumentProxy, pageNumber: numbe
   const base = page.getViewport({ scale: 1 });
   const scale = Math.max(0.25, Math.min(2.5, maxDimension / Math.max(base.width, base.height)));
   const viewport = page.getViewport({ scale });
-  const canvas = document.ownerDocument?.createElement?.("canvas") || window.document.createElement("canvas");
+  const canvas = window.document.createElement("canvas");
   canvas.width = Math.max(1, Math.round(viewport.width));
   canvas.height = Math.max(1, Math.round(viewport.height));
   const context = canvas.getContext("2d");
