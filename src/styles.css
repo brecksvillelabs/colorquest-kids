@@ -2020,3 +2020,12 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   font: 650 10.5px/1.45 system-ui, sans-serif;
   text-align: center;
 }
+
+.lab-supervision-actions {
+  display: grid;
+  gap: 7px;
+}
+.lab-supervision-actions > .text-button {
+  justify-self: center;
+  min-height: 42px;
+}
