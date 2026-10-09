@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { PROFILE_AVATARS, ageWorldFor, type ChildProfile } from "./profile-data";
+import { hasParentPin, saveParentPin, validParentPin } from "./parent-pin";
+import { GrownUpGate } from "./GrownUpGate";
 
 const AGE_WORLD_NAMES = ["Little Explorer", "Growing Creator", "Curious Inventor", "Big Thinker"];
 
@@ -13,7 +15,17 @@ export function ProfileSetup({
   const [name, setName] = useState("");
   const [age, setAge] = useState(6);
   const [avatar, setAvatar] = useState(PROFILE_AVATARS[0]);
-  const canCreate = name.trim().length > 0;
+  const [needsParentPin] = useState(() => !hasParentPin());
+  const [parentPin, setParentPin] = useState("");
+  const [parentPinAgain, setParentPinAgain] = useState("");
+  const pinReady = !needsParentPin || (validParentPin(parentPin) && parentPin === parentPinAgain);
+  const canCreate = name.trim().length > 0 && pinReady;
+
+  const create = () => {
+    if (!canCreate) return;
+    if (needsParentPin) saveParentPin(parentPin);
+    onCreate(name, age, avatar);
+  };
 
   return (
     <main className="profile-page">
@@ -42,6 +54,39 @@ export function ProfileSetup({
           <strong>{age} years old · {AGE_WORLD_NAMES[ageWorldFor(age)]}</strong>
         </label>
 
+        {needsParentPin && (
+          <section className="first-parent-pin">
+            <div><span aria-hidden="true">🔐</span><p><strong>Grown-up setup</strong><small>Create a Parent PIN for protected actions on this device.</small></p></div>
+            <label>
+              Parent PIN
+              <input
+                type="password"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="off"
+                maxLength={6}
+                value={parentPin}
+                onChange={(event) => setParentPin(event.target.value.replace(/\D/g, "").slice(0, 6))}
+                placeholder="4–6 digits"
+              />
+            </label>
+            <label>
+              Enter it again
+              <input
+                type="password"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="off"
+                maxLength={6}
+                value={parentPinAgain}
+                onChange={(event) => setParentPinAgain(event.target.value.replace(/\D/g, "").slice(0, 6))}
+                placeholder="Same PIN"
+              />
+            </label>
+            <small>The PIN stays on this device. It protects Parent Corner, file access, external links, and supervised labs.</small>
+          </section>
+        )}
+
         <fieldset className="avatar-picker">
           <legend>Choose a friendly explorer</legend>
           <div>
@@ -53,7 +98,7 @@ export function ProfileSetup({
           </div>
         </fieldset>
 
-        <button className="primary-button profile-create" disabled={!canCreate} onClick={() => canCreate && onCreate(name, age, avatar)}>
+        <button className="primary-button profile-create" disabled={!canCreate} onClick={create}>
           Create {name.trim() ? `${name.trim()}'s` : "my"} space →
         </button>
         {onCancel && <button className="text-button" onClick={onCancel}>Cancel</button>}
@@ -76,6 +121,8 @@ export function ProfileHub({
   onAdd: () => void;
   onBack: () => void;
 }) {
+  const [addGateOpen, setAddGateOpen] = useState(false);
+
   return (
     <main className="profile-page">
       <section className="profile-hub-card">
@@ -91,11 +138,26 @@ export function ProfileHub({
               <em>{profile.id === activeProfileId ? "Playing now" : "Choose profile"}</em>
             </button>
           ))}
-          <button className="add-profile-card" onClick={onAdd}>
+          <button className="add-profile-card" onClick={() => setAddGateOpen(true)}>
             <span>＋</span><strong>Add a child</strong><small>Create a separate private space</small>
           </button>
         </div>
       </section>
+      {addGateOpen && (
+        <div className="profile-parent-gate-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setAddGateOpen(false); }}>
+          <div className="profile-parent-gate-dialog" role="dialog" aria-modal="true" aria-label="Grown-up check to add a child profile">
+            <GrownUpGate
+              compact
+              title="Grown-ups only"
+              intro="Adding another child changes the household setup, so a grown-up needs to enter the Parent PIN."
+              confirmLabel="Add a child"
+              cancelLabel="Back to profiles"
+              onPass={() => { setAddGateOpen(false); onAdd(); }}
+              onCancel={() => setAddGateOpen(false)}
+            />
+          </div>
+        </div>
+      )}
     </main>
   );
 }

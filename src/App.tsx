@@ -34,6 +34,7 @@ import {
   safeResumeLocation,
 } from "./activity-organization";
 import { GrownUpGate } from "./GrownUpGate";
+import { saveParentPin, validParentPin } from "./parent-pin";
 import { SpeakButton, SpeechProvider, useAutoSpeak, useSpeech } from "./SpeechProvider";
 import { isSpeechSupported, voiceProfileForAge } from "./speech";
 import FifiGuide from "./FifiGuide";
@@ -122,6 +123,31 @@ const CHILD_GROUP_META = {
   "learn-discover": { icon: "🔭", title: "Learn", copy: "Numbers, science, and wonder" },
 } as const;
 
+function childActivityLabel(activity: Activity, ageWorld: number) {
+  if (activity === "math") return ageWorld >= 2 ? "Math" : "Number Games";
+  if (activity === "lab") return ageWorld >= 2 ? "Science Lab" : "Try a Lab";
+  if (activity === "discover") return ageWorld >= 2 ? "Discovery" : "Discover";
+  return CHILD_ACTIVITY_LABELS[activity];
+}
+
+function childGroupMeta(groupId: keyof typeof CHILD_GROUP_META, ageWorld: number) {
+  const base = CHILD_GROUP_META[groupId];
+  if (groupId === "play-read" && ageWorld >= 2) return { ...base, copy: "Puzzles and challenges" };
+  if (groupId === "learn-discover" && ageWorld >= 2) return { ...base, copy: "Math, science, and discovery" };
+  return base;
+}
+
+const NEXT_REMINDERS: Record<Activity, { title: string; copy: string }> = {
+  draw: { title: "Creative reminder", copy: "There is no wrong way to make art." },
+  color: { title: "Creative reminder", copy: "Your colors can be realistic, surprising, or completely imagined." },
+  puzzle: { title: "Thinking reminder", copy: "Say the rule or connection—not just the answer." },
+  stories: { title: "Story reminder", copy: "You can reread, retell, or invent a different ending." },
+  math: { title: "Math reminder", copy: "Try a second strategy, then explain how you know." },
+  science: { title: "Science reminder", copy: "Ask what evidence made the idea make sense." },
+  lab: { title: "Lab reminder", copy: "A surprising result is still useful evidence." },
+  discover: { title: "Explorer reminder", copy: "Notice one real detail, then imagine from what you observed." },
+};
+
 const COLORS = ["#ff604f", "#ffd65a", "#24bca4", "#55aaf5", "#7857d6", "#f58bbb", "#173b6d", "#ffffff"];
 const FACTS = [
   "Elephants use their trunks to smell, drink, and say hello.",
@@ -171,8 +197,7 @@ function AppHeader({
       <nav aria-label="Main navigation">
         {profile && <button className="profile-pill" onClick={onProfiles} aria-label={`Switch profile, currently ${profile.name}`}><span>{profile.avatar}</span><strong>{profile.name}</strong><small>Age {profile.age}</small></button>}
         <button className="nav-link" onClick={onHome}>Explore</button>
-        <button className="nav-link" onClick={onParents}>Grown-ups</button>
-        <button className="grownups" onClick={onParents}>👥 Parent corner</button>
+        <button className="grownups" aria-label="Grown-ups" onClick={onParents}>👥 Parent corner</button>
         <button className="nav-cta" onClick={onStart}>Start creating</button>
       </nav>
     </header>
@@ -202,15 +227,15 @@ function Home({
 }) {
   const recommendations = getMentorRecommendations(age, profileProgress);
   const favorite = getFavoriteInterest(profileProgress);
-  const progress = completedCount(profileProgress);
   const [openGroup, setOpenGroup] = useState<"create" | "play-read" | "learn-discover" | null>(null);
   const homeGroups = activityGroupsForAge(age);
+  const visibleRecommendations = age <= 1 ? recommendations.slice(0, 1) : recommendations;
   // Version the greeting flag so every material Fifi upgrade is visible once
   // after deployment instead of being hidden by an older session marker.
   const welcomeKey = `colorquest-fifi-welcome-v4:${profile.id}`;
   const [fifiWelcomeOpen, setFifiWelcomeOpen] = useState(() => {
     try {
-      return window.sessionStorage.getItem(welcomeKey) !== "seen";
+      return window.localStorage.getItem(welcomeKey) !== "seen";
     } catch {
       return true;
     }
@@ -223,9 +248,9 @@ function Home({
   ];
   const dismissWelcome = () => {
     try {
-      window.sessionStorage.setItem(welcomeKey, "seen");
+      window.localStorage.setItem(welcomeKey, "seen");
     } catch {
-      /* A private browser can still dismiss Fifi for this render. */
+      /* Private browsing may block storage; dismissal still works for this render. */
     }
     setFifiWelcomeOpen(false);
   };
@@ -243,9 +268,10 @@ function Home({
             for curious kids.
           </p>
           <div className="hero-actions">
-            <button className="primary-button" onClick={() => onStart()}>Start creating</button>
-            {canContinue && <button className="continue-button" onClick={onContinue}>Continue my adventure →</button>}
-            <a className="text-link" href="#activities">Choose an activity ↓</a>
+            {canContinue
+              ? <button className="primary-button" onClick={onContinue}>Continue my adventure →</button>
+              : <button className="primary-button" onClick={() => onStart()}>Start drawing</button>}
+            <a className="text-link" href="#activities">{canContinue ? "Choose something else ↓" : "Choose something fun ↓"}</a>
           </div>
           <p className="trust-line">✓ No ads&nbsp;&nbsp; ✓ No sign-up&nbsp;&nbsp; ✓ Kid-safe</p>
         </div>
@@ -265,7 +291,7 @@ function Home({
         </div>
         <div className="home-door-grid" aria-label="Activity doors">
           {homeGroups.map((group) => {
-            const door = CHILD_GROUP_META[group.id];
+            const door = childGroupMeta(group.id, age);
             return (
               <div className="home-door-slot" key={group.id}>
                 <button
@@ -285,9 +311,9 @@ function Home({
                         const activityProgress = profileProgress.activities[key];
                         const hasProgress = activityProgress.completed.length > 0 || activityProgress.lastPage > 1;
                         return (
-                          <button className="activity-card" key={key} onClick={() => onStart(key)} aria-label={`${CHILD_ACTIVITY_LABELS[key]}, ${hasProgress ? "Keep going" : "New"}`}>
+                          <button className="activity-card" key={key} onClick={() => onStart(key)} aria-label={`${childActivityLabel(key, age)}, ${hasProgress ? "Keep going" : "New"}`}>
                             <span className="activity-icon">{ACTIVITY_META[key].icon}</span>
-                            <span><strong>{CHILD_ACTIVITY_LABELS[key]}</strong><small>{hasProgress ? "Keep going" : "New"}</small></span>
+                            <span><strong>{childActivityLabel(key, age)}</strong><small>{hasProgress ? "Keep going" : "New"}</small></span>
                             <span className="activity-arrow">→</span>
                           </button>
                         );
@@ -301,43 +327,26 @@ function Home({
         </div>
       </section>
 
-      <section className="mentor-home" aria-label={`${profile.name}'s learning path`}>
+      <section className={`mentor-home ${age <= 1 ? "mentor-home-young" : ""}`} aria-label={`${profile.name}'s learning path`}>
         <div className="mentor-home-heading">
-          <div><p className="eyebrow">My learning path</p><h2>A small next step, picked for {profile.name}</h2></div>
-          <p>{favorite ? `${INTERESTS[favorite].icon} We noticed an interest in ${INTERESTS[favorite].label}. Recommendations will grow as ${profile.name} explores.` : "Try a few lessons and tap “I liked this.” ColorQuest will gently learn what sparks curiosity—without rushing or locking other topics."}</p>
+          <div>
+            <p className="eyebrow">{age <= 1 ? "Try this next" : "My learning path"}</p>
+            <h2>{age <= 1 ? `One small idea for ${profile.name}` : `A small next step, picked for ${profile.name}`}</h2>
+          </div>
+          <p>{age <= 1
+            ? (favorite ? `${INTERESTS[favorite].icon} This matches something ${profile.name} enjoyed. Try it—or choose anything else.` : "Try it if it sounds fun. It is always okay to choose something else.")
+            : (favorite ? `${INTERESTS[favorite].icon} We noticed an interest in ${INTERESTS[favorite].label}. Recommendations will grow as ${profile.name} explores.` : "Try a few lessons and tap “I liked this.” ColorQuest will gently learn what sparks curiosity—without rushing or locking other topics.")}</p>
         </div>
         <div className="mentor-path-grid">
-          {recommendations.map((item) => (
+          {visibleRecommendations.map((item) => (
             <article key={item.subject} className={item.subject}>
               <span>{item.subject === "math" ? "🧮" : "🧪"}</span>
-              <div><small>{item.path} · {item.completed}/{item.total} complete</small><h3>{item.lesson.title}</h3><p>{item.reason}</p></div>
-              <button onClick={() => onStartLesson(item.subject, item.page)}>Start this step →</button>
+              <div><small>{age <= 1 ? item.path : `${item.path} · ${item.completed}/${item.total} complete`}</small><h3>{item.lesson.title}</h3><p>{item.reason}</p></div>
+              <button onClick={() => onStartLesson(item.subject, item.page)}>Try this →</button>
             </article>
           ))}
         </div>
         <small className="mentor-promise">No streaks. No locked lessons. Repeat, skip, pause, or explore in any order.</small>
-      </section>
-
-      <section className="learning-strip">
-        <div><span>4</span><small>age-adapted worlds</small></div>
-        <div><span>8</span><small>ways to create and learn</small></div>
-        <div><span>{LEARNING_COUNTS.total}</span><small>guided math &amp; science concepts</small></div>
-        <div><span>{LAB_COUNTS.total}</span><small>hands-on science labs</small></div>
-        <div><span>{progress}</span><small>activities completed here</small></div>
-        <p>Every activity quietly builds fine-motor skills, focus, vocabulary, creativity, or problem-solving.</p>
-      </section>
-
-      <section className="why-section">
-        <div>
-          <p className="eyebrow">Learning hidden inside play</p>
-          <h2>Little hands. Big ideas.</h2>
-        </div>
-        <div className="why-grid">
-          <article><span>🖐️</span><h3>Motor skills</h3><p>Tracing, tapping, and drawing build hand control.</p></article>
-          <article><span>💡</span><h3>Creative thinking</h3><p>Open-ended prompts make room for original ideas.</p></article>
-          <article><span>🌎</span><h3>Curious minds</h3><p>Every page includes a small nature, word, or science discovery.</p></article>
-          <article><span>🛡️</span><h3>Calm and safe</h3><p>No ads, chat, public profiles, or pressure to keep playing.</p></article>
-        </div>
       </section>
 
       <footer>
@@ -831,7 +840,7 @@ function Studio({
     <main className={`studio-page ${activity === "draw" || activity === "color" ? "creative-focus" : ""}`}>
       <header className="workspace-topbar">
         <button className="workspace-back" onClick={guard(onHome)} aria-label={activity === "draw" || activity === "color" ? "Leave Creative Studio" : "Back to Home"}>←</button>
-        <div className="workspace-title"><span aria-hidden="true">{ACTIVITY_META[activity].icon}</span><strong>{CHILD_ACTIVITY_LABELS[activity]}</strong></div>
+        <div className="workspace-title"><span aria-hidden="true">{ACTIVITY_META[activity].icon}</span><strong>{childActivityLabel(activity, age)}</strong></div>
         <button className="workspace-switch" onClick={() => { setChooserGroup(null); setActivityChooserOpen(true); }} aria-haspopup="dialog">Activities</button>
       </header>
       <div className="studio-shell focused-studio-shell">
@@ -839,7 +848,7 @@ function Studio({
           <div className="studio-heading">
             <div>
               <p>{AGE_GROUPS[age].icon} Made for age {profile.age}</p>
-              <h2>{activity === "draw" || activity === "color" ? "Creative Studio" : CHILD_ACTIVITY_LABELS[activity]}</h2>
+              <h2>{activity === "draw" || activity === "color" ? "Creative Studio" : childActivityLabel(activity, age)}</h2>
               {(activity === "draw" || activity === "color") && (
                 <div className="creative-mode-switch" aria-label="Creative Studio mode">
                   <button className={activity === "draw" ? "active" : ""} onClick={() => onActivity("draw")} aria-pressed={activity === "draw"}>✏️ Draw freely</button>
@@ -901,7 +910,7 @@ function Studio({
 
           {!(activity === "color" && customColoringMode) && (
             <div className="next-row">
-              <div><span>🌟</span><p><strong>{activity === "stories" ? "Story reminder" : "Creative reminder"}</strong><br />{activity === "stories" ? "You can reread, retell, or invent a different ending." : "There is no wrong way to make art."}</p></div>
+              <div><span>🌟</span><p><strong>{NEXT_REMINDERS[activity].title}</strong><br />{NEXT_REMINDERS[activity].copy}</p></div>
               <button className="primary-button" disabled={page === total} onClick={guard(() => onPage(page + 1))}>{page === total ? `All ${pluralUnit} explored ✓` : `Next ${unit.toLowerCase()} →`}</button>
             </div>
           )}
@@ -932,10 +941,10 @@ function Studio({
       {activityChooserOpen && (
         <div className="workspace-switcher-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setActivityChooserOpen(false); }}>
           <section className="workspace-switcher" role="dialog" aria-modal="true" aria-labelledby="workspace-switcher-title">
-            <div className="workspace-switcher-heading"><div><span aria-hidden="true">✨</span><div><h2 id="workspace-switcher-title">{chooserGroup ? CHILD_GROUP_META[chooserGroup].title : "What next?"}</h2><p>{chooserGroup ? "Pick one activity." : "Choose a door."}</p></div></div><button autoFocus onClick={() => setActivityChooserOpen(false)} aria-label="Close activity chooser">×</button></div>
+            <div className="workspace-switcher-heading"><div><span aria-hidden="true">✨</span><div><h2 id="workspace-switcher-title">{chooserGroup ? childGroupMeta(chooserGroup, age).title : "What next?"}</h2><p>{chooserGroup ? "Pick one activity." : "Choose a door."}</p></div></div><button autoFocus onClick={() => setActivityChooserOpen(false)} aria-label="Close activity chooser">×</button></div>
             <div className="workspace-choice-grid">
               {!chooserGroup && activityGroupsForAge(age).map((group) => {
-                const door = CHILD_GROUP_META[group.id];
+                const door = childGroupMeta(group.id, age);
                 return <button key={group.id} aria-label={`${door.title}: ${door.copy}`} onClick={() => setChooserGroup(group.id)}><span aria-hidden="true">{door.icon}</span><strong>{door.title}</strong><small>{door.copy}</small></button>;
               })}
               {chooserGroup && activityGroupsForAge(age).find((group) => group.id === chooserGroup)?.activities.map((key) => {
@@ -945,7 +954,7 @@ function Studio({
                     <button
                       key={key}
                       className={activity === key ? "active" : ""}
-                      aria-label={`${CHILD_ACTIVITY_LABELS[key]}, ${activity === key ? "You are here" : hasProgress ? "Keep going" : "New"}`}
+                      aria-label={`${childActivityLabel(key, age)}, ${activity === key ? "You are here" : hasProgress ? "Keep going" : "New"}`}
                       onClick={() => {
                         onActivity(key);
                         setActivityChooserOpen(false);
@@ -953,7 +962,7 @@ function Studio({
                         window.scrollTo({ top: 0 });
                       }}
                     >
-                      <span aria-hidden="true">{ACTIVITY_META[key].icon}</span><strong>{CHILD_ACTIVITY_LABELS[key]}</strong><small>{activity === key ? "You are here" : hasProgress ? "Keep going" : "New"}</small>
+                      <span aria-hidden="true">{ACTIVITY_META[key].icon}</span><strong>{childActivityLabel(key, age)}</strong><small>{activity === key ? "You are here" : hasProgress ? "Keep going" : "New"}</small>
                     </button>
                   );
                 })}
@@ -1075,6 +1084,44 @@ function ReadAloudSettings() {
   );
 }
 
+function ParentPinSettings() {
+  const [pin, setPin] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [message, setMessage] = useState("");
+
+  const update = () => {
+    if (!validParentPin(pin)) {
+      setMessage("Use 4 to 6 digits.");
+      return;
+    }
+    if (pin !== confirm) {
+      setMessage("The two PIN entries do not match.");
+      return;
+    }
+    saveParentPin(pin);
+    setPin("");
+    setConfirm("");
+    setMessage("Parent PIN updated on this device.");
+  };
+
+  return (
+    <section className="parent-pin-settings">
+      <div>
+        <p className="eyebrow">Parent PIN</p>
+        <h2>Keep grown-up actions separate</h2>
+        <p>This PIN protects Parent Corner, family file access, approved outside links, and supervised lab procedures. It stays on this device.</p>
+      </div>
+      <div className="parent-pin-fields">
+        <label>New PIN<input type="password" inputMode="numeric" pattern="[0-9]*" autoComplete="off" maxLength={6} value={pin} onChange={(event) => { setPin(event.target.value.replace(/\D/g, "").slice(0, 6)); setMessage(""); }} /></label>
+        <label>Enter again<input type="password" inputMode="numeric" pattern="[0-9]*" autoComplete="off" maxLength={6} value={confirm} onChange={(event) => { setConfirm(event.target.value.replace(/\D/g, "").slice(0, 6)); setMessage(""); }} /></label>
+        <button className="tool-button" disabled={!pin || !confirm} onClick={update}>Change Parent PIN</button>
+      </div>
+      {message && <small className="parent-pin-message" role="status">{message}</small>}
+      <small className="parent-pin-note">If the PIN is forgotten, the Grown-up Gate offers a local reset check. Because ColorQuest has no account or server login, this PIN is a household-device boundary rather than account security.</small>
+    </section>
+  );
+}
+
 function ParentCorner({
   family,
   activeProfile,
@@ -1118,7 +1165,7 @@ function ParentCorner({
       <section className="parent-dashboard">
         <p className="eyebrow">Parent corner</p>
         <h1>Creative play, without the noise.</h1>
-        <p className="parent-intro">ColorQuest keeps progress on this device. There are no child accounts, ads, or social features. A small set of official learning links opens only after a grown-up check.</p>
+        <p className="parent-intro">ColorQuest keeps progress on this device. There are no child accounts, ads, or social features. Parent-only actions use the Parent PIN on this device.</p>
         <div className="parent-stats">
           <article><span>{progress}</span><strong>activities completed</strong><small>for {activeProfile.name}</small></article>
           <article><span>{AGE_GROUPS[age].short}</span><strong>current age world</strong><small>{AGE_GROUPS[age].skill}</small></article>
@@ -1151,6 +1198,7 @@ function ParentCorner({
           <button className="tool-button" onClick={onProfiles}>Add or switch profiles</button>
         </section>
         <ReadAloudSettings />
+        <ParentPinSettings />
         <div className="parent-notes">
           <article><h3>🌱 Let the child lead</h3><p>Ask “Tell me about your picture” instead of guessing what it is. This supports language and confidence.</p></article>
           <article><h3>⏱️ Keep sessions light</h3><p>For young children, 10–20 minutes is plenty. The app includes natural stopping points and no streak pressure.</p></article>

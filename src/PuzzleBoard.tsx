@@ -93,7 +93,7 @@ function MatchPuzzle({ puzzle, onComplete }: { puzzle: Extract<PuzzleDefinition,
           <h3>Pieces</h3>
           <div className="piece-bank">
             {puzzle.pairs.map((pair) => (
-              <button key={pair.label} className={`match-piece ${selected === pair.label ? "active" : ""} ${placed.includes(pair.label) ? "placed" : ""}`} onClick={() => setSelected(pair.label)} disabled={placed.includes(pair.label)}>
+              <button key={pair.label} className={`match-piece ${selected === pair.label ? "active" : ""} ${placed.includes(pair.label) ? "placed" : ""}`} onClick={() => setSelected(pair.label)} disabled={placed.includes(pair.label)} aria-pressed={selected === pair.label}>
                 <span>{pair.item}</span><small>{pair.label}</small>
               </button>
             ))}
@@ -106,7 +106,7 @@ function MatchPuzzle({ puzzle, onComplete }: { puzzle: Extract<PuzzleDefinition,
               const pair = puzzle.pairs.find((entry) => entry.homeLabel === home.homeLabel)!;
               const filled = placed.includes(pair.label);
               return (
-                <button key={home.homeLabel} className={`match-home ${filled ? "filled" : ""}`} onClick={() => tryMatch(home.homeLabel)} disabled={filled}>
+                <button key={home.homeLabel} className={`match-home ${filled ? "filled" : ""}`} onClick={() => tryMatch(home.homeLabel)} disabled={filled} aria-label={filled ? `${home.homeLabel} matched with ${pair.label}` : `Match with ${home.homeLabel}`}>
                   <span>{filled ? pair.item : pair.home}</span><small>{pair.homeLabel}</small>
                 </button>
               );
@@ -140,14 +140,14 @@ function SortPuzzle({ puzzle, onComplete }: { puzzle: Extract<PuzzleDefinition, 
       <PuzzleHeader puzzle={puzzle} message={message} />
       <div className="sort-bank">
         {puzzle.items.map((item) => (
-          <button key={item.id} disabled={Boolean(placed[item.id])} className={`${selected === item.id ? "active" : ""} ${placed[item.id] ? "placed" : ""}`} onClick={() => setSelected(item.id)}>
+          <button key={item.id} disabled={Boolean(placed[item.id])} className={`${selected === item.id ? "active" : ""} ${placed[item.id] ? "placed" : ""}`} onClick={() => setSelected(item.id)} aria-pressed={selected === item.id}>
             <span>{item.icon}</span><small>{item.label}</small>
           </button>
         ))}
       </div>
       <div className="category-bins">
         {puzzle.categories.map((category) => (
-          <button key={category} onClick={() => place(category)}>
+          <button key={category} onClick={() => place(category)} aria-label={`Place selected item in ${category}`}>
             <strong>{category}</strong>
             <span>{puzzle.items.filter((item) => placed[item.id] === category).map((item) => item.icon).join(" ") || "Drop ideas here"}</span>
           </button>
@@ -220,7 +220,7 @@ function ChoicePuzzle({ puzzle, onComplete }: { puzzle: Extract<PuzzleDefinition
         </div>
         <div>
           {puzzle.options.map((option) => (
-            <button key={option.label} onClick={() => choose(option.label)} className={choice === option.label ? (option.label === puzzle.answer ? "correct" : "incorrect") : ""}>
+            <button key={option.label} onClick={() => choose(option.label)} className={choice === option.label ? (option.label === puzzle.answer ? "correct" : "incorrect") : ""} aria-pressed={choice === option.label}>
               <span>{option.icon}</span><strong>{option.label}</strong>
             </button>
           ))}

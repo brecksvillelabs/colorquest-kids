@@ -156,7 +156,26 @@ Triggered by phone UX testing.
   - coloring tools follow the canvas rather than pushing it below a large library header.
 - Numeric camera/file names should display as **My coloring page** rather than exposing an unfriendly file number.
 
-## 6. Storybook workflow
+## 6. 2026-10-09 UX + Teacher Hard Check
+
+**Status: In progress**
+
+Detailed review: [UX_TEACHER_HARD_CHECK_2026-10-09.md](UX_TEACHER_HARD_CHECK_2026-10-09.md)
+
+Hard-check release requirements:
+
+- Parent-only actions use a reusable local Parent PIN rather than a math question once a PIN has been established.
+- New installs create the Parent PIN during first-profile setup; legacy installs without a PIN bootstrap once and then create one.
+- Adding another child profile requires Parent PIN.
+- Supervised Science Lab materials/procedures stay hidden until Parent PIN is entered.
+- Ages 1–3 are treated as requiring at least a grown-up nearby for every hands-on lab.
+- Child Home prioritizes one next action, uses age-appropriate labels, and omits parent-marketing/stat clutter.
+- Activity-specific reminders must match the discipline rather than reuse art copy.
+- Fifi’s Home greeting persists per profile/version rather than repeating every session.
+- Storybook mobile shelf must not push the active reader far below a growing catalog.
+- Real child usability testing remains separate from synthetic review and must never be reported as completed until human participants actually take part.
+
+## 7. Storybook workflow
 
 - Daily story content uses `src/story-data.ts`, story art under `public/stories/`, and `DAILY_STORY_LOG.md`.
 - Story art/content must be original and age-appropriate.
@@ -165,7 +184,7 @@ Triggered by phone UX testing.
 - A story is not reported live until the exact-commit GitHub Pages deployment succeeds and the deployed artifact contains the story.
 - The illustrated PDF companion is generated only after successful source/web delivery verification.
 
-## 7. Roadmap
+## 8. Roadmap
 
 | Priority | Item | Status | Notes |
 | --- | --- | --- | --- |
@@ -174,17 +193,21 @@ Triggered by phone UX testing.
 | P0 | Creative-work autosave | Done | Built-in Draw/Color drafts are device-local |
 | P0 | Daily story delivery verification | Done | Exact-commit deploy verification added to workflow expectations |
 | P0 | Files/PDF picker + focused custom-page workbench | Done | Android Files/Recent access, local PDF page rendering, selected-page hero UX |
+| P0 | UX + teacher hard check | In progress | Parent PIN, lab enforcement, child-home hierarchy, age-aware copy, accessibility, synthetic 5-day review |
+| P0 | Real five-day child usability study | Planned | Human participants only; age-capped sessions and adult consent per hard-check protocol |
 | P1 | Custom page crop + rotate | Planned | Parent import preparation screen |
 | P1 | Adjustable line-cleanup threshold | Planned | Helps faint scans and gray worksheets |
 | P1 | Rename / age-tag / reorder family pages | Planned | Parent-managed shelf metadata |
 | P1 | Custom-page thumbnail and storage management | Planned | Show local storage usage and clearer delete/manage flow |
 | P1 | Better imported-page bucket boundaries | Planned | Gap closing / optional segmentation improvements |
+| P1 | Older-child story library | Planned | Purpose-built ages 7–9 and 10–12 stories with original art and richer literacy prompts |
 | P1 | Story library navigation as catalog grows | Planned | Search/age grouping/recent additions |
+| P1 | Teacher-style parent learning summary | Planned | Factual explored/practiced/next-prompt summary; never claim mastery without evidence |
 | P2 | Backup/export family-created content | Planned | Parent-controlled portable backup; privacy review required |
 | P2 | Native Android release preparation | Planned | Only after web/PWA feature and QC baseline are stable |
 | P2 | Google Play launch | Hold | No Play release yet; resume when product/release checklist is ready |
 
-## 8. Feature-specific QC checklist: Custom Coloring Pages
+## 9. Feature-specific QC checklist: Custom Coloring Pages
 
 Before marking V1 Done:
 
@@ -205,7 +228,7 @@ Before marking V1 Done:
 - Exact `main` GitHub Pages deployment succeeds.
 - Deployed artifact contains custom-coloring code.
 
-## 9. Documentation map
+## 10. Documentation map
 
 - `COLORQUEST_SOP_ROADMAP.md` — project process, architecture, roadmap, major feature state.
 - `CURRICULUM_ROADMAP.md` — learning/curriculum expansion.
@@ -213,8 +236,10 @@ Before marking V1 Done:
 - `DAILY_STORY_LOG.md` — daily story rotation/content log.
 - `ANDROID_RELEASE.md`, `PLAY_STORE_SUBMISSION.md`, `DATA_SAFETY.md` — Android/Play release preparation.
 - `RELEASE_SUMMARY.md` — current release-package summary.
+- `UX_TEACHER_HARD_CHECK_2026-10-09.md` — app-wide child UX, teacher, safety, synthetic usability review and real field-test protocol.
 
-## 10. Change log
+## 11. Change log
 
 - **2026-10-08:** Created project SOP/living roadmap. Added Custom Coloring Pages V1 architecture and QC requirements. Clarified web/PWA vs future Android/Play release boundaries.\n- **2026-10-08:** Custom Coloring Pages V1 passed full repository QC and was merged to `main`.
 - **2026-10-09:** Phone UX review exposed two V1 wrinkles: image-only picking routed Android into Photos instead of Files/Recent/PDF, and the family shelf competed visually with the selected canvas. V1.1 added local PDF rendering, explicit Photos vs Files pickers, a multi-page PDF chooser, friendlier numeric filenames, and a focused selected-page workbench. Full web/Android repository QC passed before merge.
+- **2026-10-09:** Hard check opened: app-wide child UX + teacher review found the arithmetic grown-up gate insufficient for older children and found supervised lab labels were not enforced in behavior. Parent PIN, lab procedure gating, age-aware home/navigation cleanup, and accessibility changes entered QC.

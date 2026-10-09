@@ -2,11 +2,21 @@
 
 ColorQuest Kids is a free, ad-free, installable creative learning app for ages 1–12. It includes free drawing, shape building, coloring, funny illustrated storybooks, varied reasoning puzzles, guided Math and Science trails, hands-on Science Labs, and Discovery Lab missions covering nature, geography, science, mathematics, and space.
 
-> Project operating procedure, architecture notes, and living roadmap: [COLORQUEST_SOP_ROADMAP.md](COLORQUEST_SOP_ROADMAP.md)
+> Project operating procedure, architecture notes, and living roadmap: [COLORQUEST_SOP_ROADMAP.md](COLORQUEST_SOP_ROADMAP.md)  
+> Current app-wide child UX + teacher hard check: [UX_TEACHER_HARD_CHECK_2026-10-09.md](UX_TEACHER_HARD_CHECK_2026-10-09.md)
+
+## Current hard check — child UX, teacher review, and safety
+
+- Parent-only actions now use a reusable local Parent PIN rather than relying on multiplication that an older child may solve
+- Supervised Science Lab materials and procedure remain hidden until the Parent PIN is entered; ages 1–3 always require at least a grown-up nearby
+- Child Home has a simpler action hierarchy, less parent-facing clutter, and age-appropriate labels for older children
+- Adding another child profile is parent-controlled
+- Storybook mobile browsing, puzzle selection semantics, Fifi repeat behavior, and activity-specific coaching were tightened
+- The documented five-day control-group pass is a **synthetic usability simulation**, not real-child research; a separate age-capped human field protocol must still be run before broad release
 
 ## Current feature — Family coloring pages
 
-- Grown-ups can add PNG, JPG, WebP, SVG, or PDF coloring sheets through a randomized grown-up gate
+- Grown-ups can add PNG, JPG, WebP, SVG, or PDF coloring sheets behind the device's Parent PIN
 - Photos and Files/PDF have separate parent-gated pickers; multi-page PDFs get an in-app page chooser before local line-art conversion
 - After a family page is chosen, the shelf collapses and the page becomes the full-width workbench; children can use paint bucket, brush, crayon, eraser, undo/redo, zoom, and per-profile autosave
 - Finished custom pages save into the existing private family artwork gallery
