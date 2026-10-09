@@ -68,7 +68,7 @@ export default function ScienceLabBoard({ age, page, onComplete, onSelectLab }: 
           id={`lab-${lab.id}`}
           label="Read the lab"
           className="on-banner"
-          text={adultReady ? [lab.title, `Safety level: ${safety}.`, ...labNarration(lab).slice(2)] : [lab.title, `Safety level: ${safety}.`, lab.question, "Ask a grown-up before starting the hands-on steps."]}
+          text={adultReady ? labNarration(lab, safety) : [lab.title, `Safety level: ${safety}.`, lab.question, "Ask a grown-up before starting the hands-on steps."]}
         />
       </header>
       <section className="lab-question">
