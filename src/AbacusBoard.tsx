@@ -458,7 +458,7 @@ export default function AbacusBoard({
               <button onClick={reset}>↺ {mode === "free" ? "Clear" : "Reset"}</button>
             </div>
           </div>
-          <Soroban digits={digits} onChange={changeDigits} showLabels={showLabels || mode === "learn"} />
+          <Soroban digits={digits} onChange={changeDigits} showLabels={mode === "free" ? showLabels : true} />
           <div className="abacus-touch-help">
             <span>Tap a bead</span><span>or swipe toward / away from the beam</span><span>beads snap to legal soroban positions</span>
           </div>
