@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import {
-  clearParentPin,
   hasParentPin,
   saveParentPin,
   validParentPin,
@@ -132,7 +131,6 @@ export function GrownUpGate({
           <label className="gate-show-pin"><input type="checkbox" checked={showPin} onChange={(event) => setShowPin(event.target.checked)} /> Show PIN</label>
           <button className="primary-button" onClick={checkPin}>{confirmLabel}</button>
           <button className="text-button gate-forgot" onClick={() => {
-            clearParentPin();
             setPin("");
             setPinAgain("");
             setFailed("");
