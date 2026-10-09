@@ -158,7 +158,7 @@ Triggered by phone UX testing.
 
 ## 6. 2026-10-09 UX + Teacher Hard Check
 
-**Status: In progress**
+**Status: Done**
 
 Detailed review: [UX_TEACHER_HARD_CHECK_2026-10-09.md](UX_TEACHER_HARD_CHECK_2026-10-09.md)
 
@@ -193,7 +193,7 @@ Hard-check release requirements:
 | P0 | Creative-work autosave | Done | Built-in Draw/Color drafts are device-local |
 | P0 | Daily story delivery verification | Done | Exact-commit deploy verification added to workflow expectations |
 | P0 | Files/PDF picker + focused custom-page workbench | Done | Android Files/Recent access, local PDF page rendering, selected-page hero UX |
-| P0 | UX + teacher hard check | In progress | Parent PIN, lab enforcement, child-home hierarchy, age-aware copy, accessibility, synthetic 5-day review |
+| P0 | UX + teacher hard check | Done | 106 tests, web build, Android release-check, exact-commit Pages deploy, deployed-artifact verification |
 | P0 | Real five-day child usability study | Planned | Human participants only; age-capped sessions and adult consent per hard-check protocol |
 | P1 | Custom page crop + rotate | Planned | Parent import preparation screen |
 | P1 | Adjustable line-cleanup threshold | Planned | Helps faint scans and gray worksheets |
@@ -203,6 +203,7 @@ Hard-check release requirements:
 | P1 | Older-child story library | Planned | Purpose-built ages 7–9 and 10–12 stories with original art and richer literacy prompts |
 | P1 | Story library navigation as catalog grows | Planned | Search/age grouping/recent additions |
 | P1 | Teacher-style parent learning summary | Planned | Factual explored/practiced/next-prompt summary; never claim mastery without evidence |
+| P2 | Web bundle performance benchmark | Planned | Production app.js is ~582 KB minified / ~190 KB gzip; benchmark low-end devices during real child field study before deciding whether more code splitting is needed |
 | P2 | Backup/export family-created content | Planned | Parent-controlled portable backup; privacy review required |
 | P2 | Native Android release preparation | Planned | Only after web/PWA feature and QC baseline are stable |
 | P2 | Google Play launch | Hold | No Play release yet; resume when product/release checklist is ready |
@@ -243,3 +244,4 @@ Before marking V1 Done:
 - **2026-10-08:** Created project SOP/living roadmap. Added Custom Coloring Pages V1 architecture and QC requirements. Clarified web/PWA vs future Android/Play release boundaries.\n- **2026-10-08:** Custom Coloring Pages V1 passed full repository QC and was merged to `main`.
 - **2026-10-09:** Phone UX review exposed two V1 wrinkles: image-only picking routed Android into Photos instead of Files/Recent/PDF, and the family shelf competed visually with the selected canvas. V1.1 added local PDF rendering, explicit Photos vs Files pickers, a multi-page PDF chooser, friendlier numeric filenames, and a focused selected-page workbench. Full web/Android repository QC passed before merge.
 - **2026-10-09:** Hard check opened: app-wide child UX + teacher review found the arithmetic grown-up gate insufficient for older children and found supervised lab labels were not enforced in behavior. Parent PIN, lab procedure gating, age-aware home/navigation cleanup, and accessibility changes entered QC.
+- **2026-10-09:** Hard check completed. Final branch QC passed 106/106 automated tests plus TypeScript/Vite production build, Android sync, Android unit/minified release-bundle check, privacy/support asset checks, and release artifact creation. Squash merge `6273069339e711fc88ead2b6059f190560027f02` deployed successfully in GitHub Pages run `37982334065`; the deployed artifact was inspected for the Parent PIN, age-aware navigation, supervised-lab gate/exit, and activity-specific reminder changes. The five-day child-control-group section remains explicitly synthetic; the real human field study is still P0 Planned.
