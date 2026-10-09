@@ -2395,7 +2395,7 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   max-width: none;
   height: auto;
   margin: 0 auto;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y;
 }
 .soroban-frame {
   fill: #6b3d25;
@@ -2423,14 +2423,20 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
 .soroban-bead {
   cursor: grab;
   outline: none;
+  touch-action: none;
 }
-.soroban-bead:focus rect {
+.soroban-bead:focus .soroban-bead-shape {
   stroke: #173b6d;
   stroke-width: 4;
 }
-.soroban-bead rect {
+.soroban-bead .soroban-bead-shape {
   transition: y .12s ease, fill .12s ease, stroke .12s ease;
   stroke-width: 2;
+}
+.soroban-hit {
+  fill: transparent !important;
+  stroke: none !important;
+  pointer-events: all;
 }
 .soroban-bead path {
   fill: none;
@@ -2438,17 +2444,17 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
   stroke-linecap: round;
   pointer-events: none;
 }
-.soroban-bead.active rect {
+.soroban-bead.active .soroban-bead-shape {
   fill: #ff765f;
   stroke: #c84235;
 }
 .soroban-bead.active path { stroke: #9f3027; }
-.soroban-bead.inactive rect {
+.soroban-bead.inactive .soroban-bead-shape {
   fill: #f5c979;
   stroke: #b9853f;
 }
 .soroban-bead.inactive path { stroke: #9b6a2d; }
-.soroban-bead.heaven.active rect {
+.soroban-bead.heaven.active .soroban-bead-shape {
   fill: #32bca5;
   stroke: #167865;
 }
