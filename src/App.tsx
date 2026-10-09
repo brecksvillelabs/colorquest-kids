@@ -1084,6 +1084,44 @@ function ReadAloudSettings() {
   );
 }
 
+function ParentPinSettings() {
+  const [pin, setPin] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [message, setMessage] = useState("");
+
+  const update = () => {
+    if (!validParentPin(pin)) {
+      setMessage("Use 4 to 6 digits.");
+      return;
+    }
+    if (pin !== confirm) {
+      setMessage("The two PIN entries do not match.");
+      return;
+    }
+    saveParentPin(pin);
+    setPin("");
+    setConfirm("");
+    setMessage("Parent PIN updated on this device.");
+  };
+
+  return (
+    <section className="parent-pin-settings">
+      <div>
+        <p className="eyebrow">Parent PIN</p>
+        <h2>Keep grown-up actions separate</h2>
+        <p>This PIN protects Parent Corner, family file access, approved outside links, and supervised lab procedures. It stays on this device.</p>
+      </div>
+      <div className="parent-pin-fields">
+        <label>New PIN<input type="password" inputMode="numeric" pattern="[0-9]*" autoComplete="off" maxLength={6} value={pin} onChange={(event) => { setPin(event.target.value.replace(/\D/g, "").slice(0, 6)); setMessage(""); }} /></label>
+        <label>Enter again<input type="password" inputMode="numeric" pattern="[0-9]*" autoComplete="off" maxLength={6} value={confirm} onChange={(event) => { setConfirm(event.target.value.replace(/\D/g, "").slice(0, 6)); setMessage(""); }} /></label>
+        <button className="tool-button" disabled={!pin || !confirm} onClick={update}>Change Parent PIN</button>
+      </div>
+      {message && <small className="parent-pin-message" role="status">{message}</small>}
+      <small className="parent-pin-note">If the PIN is forgotten, the Grown-up Gate offers a local reset check. Because ColorQuest has no account or server login, this PIN is a household-device boundary rather than account security.</small>
+    </section>
+  );
+}
+
 function ParentCorner({
   family,
   activeProfile,
@@ -1127,7 +1165,7 @@ function ParentCorner({
       <section className="parent-dashboard">
         <p className="eyebrow">Parent corner</p>
         <h1>Creative play, without the noise.</h1>
-        <p className="parent-intro">ColorQuest keeps progress on this device. There are no child accounts, ads, or social features. A small set of official learning links opens only after a grown-up check.</p>
+        <p className="parent-intro">ColorQuest keeps progress on this device. There are no child accounts, ads, or social features. Parent-only actions use the Parent PIN on this device.</p>
         <div className="parent-stats">
           <article><span>{progress}</span><strong>activities completed</strong><small>for {activeProfile.name}</small></article>
           <article><span>{AGE_GROUPS[age].short}</span><strong>current age world</strong><small>{AGE_GROUPS[age].skill}</small></article>
@@ -1160,6 +1198,7 @@ function ParentCorner({
           <button className="tool-button" onClick={onProfiles}>Add or switch profiles</button>
         </section>
         <ReadAloudSettings />
+        <ParentPinSettings />
         <div className="parent-notes">
           <article><h3>🌱 Let the child lead</h3><p>Ask “Tell me about your picture” instead of guessing what it is. This supports language and confidence.</p></article>
           <article><h3>⏱️ Keep sessions light</h3><p>For young children, 10–20 minutes is plenty. The app includes natural stopping points and no streak pressure.</p></article>
