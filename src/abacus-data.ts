@@ -266,7 +266,7 @@ export function buildAbacusChallenge(
     case "bead-play": {
       const target = randomInt(random, 0, 9);
       return {
-        id, stageId, prompt: `Can you make ${target} on one rod?`, startValue: 0, targetValue: target, rods: 3,
+        id, stageId, prompt: `Can you make ${target} on one rod?`, startValue: 0, targetValue: target, rods: 1,
         hint: target >= 5 ? `Use the 5-bead and ${target - 5} lower bead${target - 5 === 1 ? "" : "s"}.` : `Move ${target} lower bead${target === 1 ? "" : "s"} toward the beam.`,
         strategy: "Explore slowly. Only beads touching the beam count.",
         speakText: `Make ${target} on the abacus.`,
@@ -275,7 +275,7 @@ export function buildAbacusChallenge(
     case "digits": {
       const target = randomInt(random, 0, 9);
       return {
-        id, stageId, prompt: `Build the digit ${target}.`, startValue: 0, targetValue: target, rods: 3,
+        id, stageId, prompt: `Build the digit ${target}.`, startValue: 0, targetValue: target, rods: 1,
         hint: target >= 5 ? `Start with the 5-bead, then add ${target - 5} lower bead${target - 5 === 1 ? "" : "s"}.` : `You only need lower 1-beads for ${target}.`,
         strategy: "Upper bead = 5. Lower beads = 1 each.",
         speakText: `Build the digit ${target}.`,
