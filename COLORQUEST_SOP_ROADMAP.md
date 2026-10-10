@@ -177,7 +177,7 @@ Hard-check release requirements:
 
 ## 7. Abacus Lab — Soroban Math V1
 
-**Status: In progress** (2026-10-09)
+**Status: Done** (2026-10-09)
 
 Detailed specification: [ABACUS_LAB_SPEC.md](ABACUS_LAB_SPEC.md)
 
@@ -229,7 +229,7 @@ V1 release requirements:
 | P0 | Daily story delivery verification | Done | Exact-commit deploy verification added to workflow expectations |
 | P0 | Files/PDF picker + focused custom-page workbench | Done | Android Files/Recent access, local PDF page rendering, selected-page hero UX |
 | P0 | UX + teacher hard check | Done | 106 tests, web build, Android release-check, exact-commit Pages deploy, deployed-artifact verification |
-| P0 | Abacus Lab V1 | In progress | Math sub-path with legal soroban engine, Learn/Practice/Free modes, local progress, age-aware curriculum |
+| P0 | Abacus Lab V1 | Done | 120 tests, legal soroban engine, Learn/Practice/Free modes, local progress, full web/Android QC, exact-commit Pages verification |
 | P0 | Real five-day child usability study | Planned | Human participants only; age-capped sessions and adult consent per hard-check protocol |
 | P1 | Custom page crop + rotate | Planned | Parent import preparation screen |
 | P1 | Adjustable line-cleanup threshold | Planned | Helps faint scans and gray worksheets |
@@ -287,3 +287,6 @@ Before marking V1 Done:
 - **2026-10-09:** Hard check opened: app-wide child UX + teacher review found the arithmetic grown-up gate insufficient for older children and found supervised lab labels were not enforced in behavior. Parent PIN, lab procedure gating, age-aware home/navigation cleanup, and accessibility changes entered QC.
 - **2026-10-09:** Hard check completed. Final branch QC passed 106/106 automated tests plus TypeScript/Vite production build, Android sync, Android unit/minified release-bundle check, privacy/support asset checks, and release artifact creation. Squash merge `6273069339e711fc88ead2b6059f190560027f02` deployed successfully in GitHub Pages run `37982334065`; the deployed artifact was inspected for the Parent PIN, age-aware navigation, supervised-lab gate/exit, and activity-specific reminder changes. The five-day child-control-group section remains explicitly synthetic; the real human field study is still P0 Planned.
 - **2026-10-09:** Abacus Lab V1 entered QC. Math now has a planned two-path architecture (Math Trail + Abacus Lab) with a legal-state Japanese soroban engine, Learn/Practice/Free modes, age-aware curriculum, separate per-child abacus progress, and advanced traditional/mental-abacus work explicitly deferred to the roadmap.
+
+
+- **2026-10-09:** Abacus Lab V1 completed. Final QC branch head `c8bc47e119ecf64c9eed7d66a103ea64e4b246b8` passed GitHub Actions run `38006665865`: 120/120 automated tests across 15 test files, TypeScript/Vite production build, Android sync, Android unit tests, minified release-bundle engineering build, privacy/support checks, and artifact generation. PR #11 was squash-merged as `e3c8a3e1ad9ec7f04b7405f53b81f56c4eba9cc3`. GitHub Pages run `38006998333` completed successfully for that exact merge commit. The deployed Pages artifact (`sha256:01edcbb1766434e8ba6f71443f8269a07571fa74233e2b9093bcd89d6fe9712d`) was unpacked and verified to contain Abacus Lab, Free Abacus, Friends of 10, Math Trail, the interactive Japanese soroban, and the updated Math activity copy. The Android AAB remains an engineering artifact; ColorQuest is not yet published on Google Play.

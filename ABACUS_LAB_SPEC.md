@@ -1,7 +1,7 @@
 # ColorQuest Kids — Abacus Lab Specification
 
 **Feature:** Soroban Abacus Lab  
-**Status:** In progress — V1 QC branch  
+**Status:** Done — V1 deployed to web/PWA  
 **Date:** 2026-10-09  
 **Product location:** Learn → Math → Abacus Lab  
 **Primary instrument:** Japanese-style soroban (1 upper bead + 4 lower beads per rod)
@@ -266,3 +266,35 @@ ColorQuest should describe Abacus Lab as a visual-spatial arithmetic and place-v
 
 Do not market it as generalized “brain training” or claim broad cognitive benefits that the product does not measure.
 
+
+
+## 14. Final V1 verification
+
+### Pre-main QC
+
+- Validated feature branch head: `c8bc47e119ecf64c9eed7d66a103ea64e4b246b8`
+- GitHub Actions run: `38006665865`
+- Automated tests: **120 passed / 120 total** across 15 test files.
+- TypeScript + Vite production build: passed.
+- Android web sync: passed.
+- Android unit tests and minified release-bundle engineering build: passed.
+- Privacy/support assets and release metadata checks: passed.
+- The Android AAB produced by CI is an engineering artifact only; it is **not** a Google Play release.
+
+### Main / PWA verification
+
+- PR #11 squash merge: `e3c8a3e1ad9ec7f04b7405f53b81f56c4eba9cc3`
+- GitHub Pages run: `38006998333`
+- Result: **success**.
+- Pages artifact digest: `sha256:01edcbb1766434e8ba6f71443f8269a07571fa74233e2b9093bcd89d6fe9712d`.
+- The deployed Pages artifact was unpacked and checked directly. Production content includes:
+  - **Abacus Lab**
+  - **Free Abacus**
+  - **Friends of 10**
+  - **Math Trail**
+  - **Interactive Japanese soroban**
+  - **Fresh questions + a real abacus**
+
+### V1 release disposition
+
+Abacus Lab V1 is complete for the web/PWA and is part of the current ColorQuest source baseline. Advanced traditional multiplication/division layouts, Mental Abacus, decimals/money, and optional private fluency work remain roadmap items and must not be described as V1 capabilities.
