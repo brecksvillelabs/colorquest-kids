@@ -128,7 +128,7 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
 .workspace-title span { font-size: 30px; }
 .workspace-title strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 19px; }
 .workspace-switch { padding: 0 18px; background: #e7f8f4 !important; border-color: #9bdace !important; }
-.focused-studio-shell { display: block; width: min(1420px, 100%); min-height: calc(100svh - 68px); border-top: 0; }
+.studio-shell.focused-studio-shell { display: block; width: min(1420px, 100%); min-height: calc(100svh - 68px); border-top: 0; }
 .focused-studio-shell .studio-content { width: 100%; }
 .focused-studio-shell .completion-marker { display: none; }
 .workspace-switcher-backdrop { position: fixed; z-index: 90; inset: 0; padding: 20px; background: #173b6d66; display: grid; place-items: center; }
