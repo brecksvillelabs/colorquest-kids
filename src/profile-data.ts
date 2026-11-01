@@ -23,6 +23,29 @@ export type ProfileProgress = {
 
 export type AbacusModeKey = "learn" | "practice" | "free";
 
+/**
+ * What the Reading Garden remembers between visits.
+ *
+ * Page counts are real: pagesSeen holds "storyId:pageIndex" keys, so the
+ * number a parent reads is one they could verify by paging to the end.
+ * wordsMet deliberately excludes sight words, and savedWords is the child's
+ * own choice rather than everything they happened to tap. All of it stays
+ * on the device with the rest of the profile.
+ */
+export type ReadingProgress = {
+  /** null until a grown-up picks a shelf; the child's age decides until then. */
+  band: ReadingBandKey | null;
+  completedStories: string[];
+  pagesSeen: string[];
+  wordsMet: string[];
+  savedWords: Array<{ word: string; meaning: string }>;
+  /** storyId -> furthest page reached, so re-reading never loses the place. */
+  bookmarks: Record<string, number>;
+  lettersHeard: string[];
+};
+
+export type ReadingBandKey = "seedling" | "sprout" | "sapling" | "bloomer";
+
 export type AbacusProgress = {
   hasVisited: boolean;
   attempts: number;
@@ -43,6 +66,7 @@ export type LearningSignals = {
   mathPractice: Record<string, MathPracticeState>;
   mathJourney: MathPracticeOutcome[];
   abacus: AbacusProgress;
+  reading: ReadingProgress;
 };
 
 /**
@@ -101,6 +125,18 @@ export function emptyAbacusProgress(): AbacusProgress {
   };
 }
 
+export function emptyReadingProgress(band: ReadingBandKey | null = null): ReadingProgress {
+  return {
+    band,
+    completedStories: [],
+    pagesSeen: [],
+    wordsMet: [],
+    savedWords: [],
+    bookmarks: {},
+    lettersHeard: [],
+  };
+}
+
 export function emptyLearningSignals(): LearningSignals {
   return {
     interestScores: { numbers: 0, patterns: 0, building: 0, animals: 0, earth: 0, space: 0, experiments: 0, stories: 0 },
@@ -110,6 +146,7 @@ export function emptyLearningSignals(): LearningSignals {
     mathPractice: {},
     mathJourney: [],
     abacus: emptyAbacusProgress(),
+    reading: emptyReadingProgress(),
   };
 }
 
@@ -172,6 +209,10 @@ export function loadFamilyData(): FamilyData {
             abacus: {
               ...emptyAbacusProgress(),
               ...(progress[profile.id].learning?.abacus || {}),
+            },
+            reading: {
+              ...emptyReadingProgress(),
+              ...(progress[profile.id].learning?.reading || {}),
             },
           },
         };
@@ -393,4 +434,109 @@ export function recordAbacusVisit(
       },
     },
   };
+}
+
+/* ------------------------------------------------------------------
+   Reading Garden
+   Each recorder returns new data rather than mutating, so the caller
+   saves once and the child's place is never half-written.
+   ------------------------------------------------------------------ */
+
+function withReading(
+  data: FamilyData,
+  profileId: string,
+  update: (previous: ReadingProgress) => ReadingProgress,
+): FamilyData {
+  const progress = data.progress[profileId] || emptyProgress();
+  const learning = progress.learning || emptyLearningSignals();
+  const previous = { ...emptyReadingProgress(), ...(learning.reading || {}) };
+  return {
+    ...data,
+    progress: {
+      ...data.progress,
+      [profileId]: {
+        ...progress,
+        lastActivity: "stories",
+        learning: { ...learning, reading: update(previous) },
+      },
+    },
+  };
+}
+
+/** The shelf a grown-up picked, which overrides the age default from then on. */
+export function recordReadingBand(data: FamilyData, profileId: string, band: ReadingBandKey): FamilyData {
+  return withReading(data, profileId, (previous) => ({ ...previous, band }));
+}
+
+/**
+ * One page turned. newWords are the non-sight words on it, so the counter
+ * reflects words actually met rather than every word on every page.
+ */
+export function recordReadingPage(
+  data: FamilyData,
+  profileId: string,
+  page: { storyId: string; pageIndex: number; pageCount: number; newWords: string[] },
+): FamilyData {
+  return withReading(data, profileId, (previous) => {
+    const key = `${page.storyId}:${page.pageIndex}`;
+    // The bookmark tracks the furthest page reached, so going back to
+    // re-read an earlier page never costs a child their place.
+    const furthest = Math.min(page.pageIndex + 1, page.pageCount - 1);
+    return {
+      ...previous,
+      pagesSeen: previous.pagesSeen.includes(key) ? previous.pagesSeen : [...previous.pagesSeen, key],
+      wordsMet: [...new Set([...previous.wordsMet, ...page.newWords])],
+      bookmarks: {
+        ...previous.bookmarks,
+        [page.storyId]: Math.max(previous.bookmarks[page.storyId] || 0, furthest),
+      },
+    };
+  });
+}
+
+/** A story finished: the flower is planted and the bookmark retired. */
+export function recordReadingFinish(
+  data: FamilyData,
+  profileId: string,
+  story: { storyId: string; pageKeys: string[]; newWords: string[] },
+): FamilyData {
+  return withReading(data, profileId, (previous) => {
+    const bookmarks = { ...previous.bookmarks };
+    delete bookmarks[story.storyId];
+    return {
+      ...previous,
+      completedStories: previous.completedStories.includes(story.storyId)
+        ? previous.completedStories
+        : [...previous.completedStories, story.storyId],
+      pagesSeen: [...new Set([...previous.pagesSeen, ...story.pageKeys])],
+      wordsMet: [...new Set([...previous.wordsMet, ...story.newWords])],
+      bookmarks,
+    };
+  });
+}
+
+/** A word the child chose to keep. Saving twice is a toggle, not a duplicate. */
+export function toggleSavedWord(
+  data: FamilyData,
+  profileId: string,
+  entry: { word: string; meaning: string },
+): FamilyData {
+  return withReading(data, profileId, (previous) => {
+    const held = previous.savedWords.some((saved) => saved.word === entry.word);
+    return {
+      ...previous,
+      savedWords: held
+        ? previous.savedWords.filter((saved) => saved.word !== entry.word)
+        : [...previous.savedWords, entry],
+    };
+  });
+}
+
+export function recordLetterHeard(data: FamilyData, profileId: string, letter: string): FamilyData {
+  return withReading(data, profileId, (previous) => ({
+    ...previous,
+    lettersHeard: previous.lettersHeard.includes(letter)
+      ? previous.lettersHeard
+      : [...previous.lettersHeard, letter],
+  }));
 }

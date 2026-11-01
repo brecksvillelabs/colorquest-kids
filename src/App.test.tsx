@@ -401,7 +401,9 @@ describe("Child-friendly activity organization", () => {
       const activities = groups.flatMap((group) => group.activities);
       expect(new Set(activities).size).toBe(activities.length);
       expect(activities.every((activity) => isActivityAvailable(activity, age))).toBe(true);
-      expect(activities.includes("stories")).toBe(age < 2);
+      // Stories now carries the Reading Garden too, so it outlives the
+      // picture books and retires one age world later.
+      expect(activities.includes("stories")).toBe(age <= 2);
       expect(activities.includes("discover")).toBe(age >= 2);
     }
   });
@@ -850,5 +852,40 @@ describe("Drawing drafts", () => {
   it("survives storage being unavailable instead of breaking the canvas", async () => {
     await expect(saveDraft({ id: "x", ink: "data:,", shapes: [], background: "paper" })).resolves.toBeUndefined();
     await expect(loadDraft("does-not-exist")).resolves.toBeNull();
+  });
+});
+
+describe("Stories holds both halves of reading", () => {
+  it("offers a switch while picture books exist, and the garden alone after", async () => {
+    const stored = JSON.parse(window.localStorage.getItem(PROFILE_STORAGE_KEY) || "{}") as FamilyData;
+    const user = userEvent.setup();
+
+    // At six, both halves are available, so the child gets the choice.
+    stored.profiles[0].age = 6;
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(stored));
+    const six = render(<ColorQuestApp />);
+    await user.click(screen.getByRole("button", { name: /^Play:/ }));
+    await user.click(screen.getByRole("button", { name: /^Stories/ }));
+    expect(screen.getByRole("button", { name: /Read to me/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /I'll read it/ })).toBeTruthy();
+    six.unmount();
+
+    // At eight the picture books are gone, so there is nothing to switch
+    // between: the Reading Garden is simply what Stories is.
+    stored.profiles[0].age = 8;
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(stored));
+    const eight = render(<ColorQuestApp />);
+    await user.click(screen.getByRole("button", { name: /^Play:/ }));
+    await user.click(screen.getByRole("button", { name: /^Stories/ }));
+    expect(screen.queryByRole("button", { name: /Read to me/ })).toBeNull();
+    expect(screen.getByText(/Stories finished/)).toBeTruthy();
+    eight.unmount();
+
+    // At eleven, learning to read is done and the button retires.
+    stored.profiles[0].age = 11;
+    window.localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(stored));
+    render(<ColorQuestApp />);
+    await user.click(screen.getByRole("button", { name: /^Play:/ }));
+    expect(screen.queryByRole("button", { name: /^Stories/ })).toBeNull();
   });
 });

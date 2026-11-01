@@ -2773,3 +2773,164 @@ footer > button { border: 0; background: none; color: var(--navy); text-decorati
     grid-template-columns: 1fr;
   }
 }
+
+/* Stories: one button, two ways in — listen, or read it yourself. */
+.stories-path-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.stories-path-switch button { padding: 14px 12px; border: 2px solid #dbe5ee; border-radius: 18px; background: white; color: var(--navy); display: grid; justify-items: center; gap: 3px; cursor: pointer; text-align: center; }
+.stories-path-switch button > span { font-size: 24px; line-height: 1; }
+.stories-path-switch button strong { font-size: 15px; }
+.stories-path-switch button small { color: #5b7161; font: 500 11.5px/1.3 system-ui, sans-serif; }
+.stories-path-switch button.active { border-color: #6fa85c; background: #f2f8ee; box-shadow: 0 0 0 3px rgb(111 168 92 / 22%); }
+@media (max-width: 520px) {
+  .stories-path-switch button small { display: none; }
+}
+
+/* ---------------------------------------------------------------
+   Reading Garden
+   The reading surface is the one place in the app where legibility
+   beats personality: large type, generous line-height and a quiet
+   background, so a child decoding a word is not fighting the page.
+   Scoped tokens keep the garden greens out of the rest of the app.
+   --------------------------------------------------------------- */
+.reading-shelf, .reading-reader, .reading-phonics, .reading-letter, .reading-notebook, .reading-check, .reading-finish {
+  --leaf: #4f7c41; --sprout: #6fa85c; --soil: #a9764c; --paper: #fbf6ec; --bark: #e4dac3; --ink-soft: #5b7161;
+}
+
+.reading-garden { position: relative; min-height: 180px; padding-bottom: 12px; border-radius: 22px; overflow: hidden; background: linear-gradient(180deg, #bfdce3 0%, #bfdce3 52%, var(--soil) 52%, var(--soil) 100%); display: flex; align-items: flex-end; justify-content: center; }
+.reading-sun { position: absolute; top: 14px; right: 18px; width: 34px; height: 34px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 6px rgba(255,214,90,.3); }
+.reading-garden-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 6px; padding: 0 14px 6px; }
+.reading-garden-empty { margin: auto; padding: 14px 18px; max-width: 78%; border-radius: 16px; background: #fffffff2; color: var(--navy); text-align: center; font: 700 14px/1.4 system-ui, sans-serif; }
+.reading-garden-empty span { display: block; margin-bottom: 4px; font-size: 26px; }
+.reading-flower { display: block; }
+
+.reading-stats { margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.reading-stats > div { padding: 12px 8px; border-radius: 16px; background: var(--paper); text-align: center; }
+.reading-stats strong { display: block; color: var(--leaf); font-size: 24px; }
+.reading-stats small { color: var(--ink-soft); font: 650 11px/1.25 system-ui, sans-serif; }
+
+.reading-band-row { margin-top: 18px; }
+.reading-band-row h4 { margin: 0; font-size: 18px; }
+.reading-band-row small { color: var(--ink-soft); font: 650 12px/1.3 system-ui, sans-serif; }
+.reading-band-row p { margin: 6px 0 0; color: var(--ink-soft); font: 500 14px/1.45 system-ui, sans-serif; }
+
+.reading-story-list { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.reading-story { width: 100%; padding: 14px; border: 0; border-radius: 18px; background: white; box-shadow: 0 4px 14px #173b6d12; display: flex; align-items: center; gap: 14px; text-align: left; cursor: pointer; }
+.reading-story:active { transform: scale(.985); }
+.reading-cover { flex-shrink: 0; width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-size: 26px; }
+.reading-story-info { flex: 1; min-width: 0; display: block; }
+.reading-story-info strong { display: block; font-size: 16px; }
+.reading-story-info small { color: var(--ink-soft); font: 650 12px/1.3 system-ui, sans-serif; }
+.reading-story-flag { flex-shrink: 0; }
+.reading-done { width: 26px; height: 26px; border-radius: 50%; background: var(--sprout); color: white; display: grid; place-items: center; font-size: 14px; }
+.reading-resume { padding: 4px 9px; border-radius: 999px; background: #f5d9ce; color: #a8402a; font: 700 11px/1 system-ui, sans-serif; white-space: nowrap; }
+
+.reading-extras { margin-top: 14px; display: grid; gap: 8px; }
+.reading-primary { padding: 15px; border: 0; border-radius: 16px; background: var(--sprout); color: white; font: 700 16px/1 system-ui, sans-serif; cursor: pointer; }
+.reading-primary[disabled] { opacity: .45; cursor: default; }
+.reading-secondary { padding: 14px; border: 2px solid var(--sprout); border-radius: 16px; background: white; color: var(--leaf); font: 700 15px/1 system-ui, sans-serif; cursor: pointer; }
+.reading-secondary[disabled] { opacity: .45; cursor: default; }
+.reading-shelf-link { align-self: start; padding: 8px 14px; border: 0; border-radius: 999px; background: var(--paper); color: var(--leaf); font: 700 13px/1 system-ui, sans-serif; cursor: pointer; }
+
+.reading-shelf-switch { margin-top: 16px; padding: 12px 14px; border-radius: 16px; background: var(--paper); }
+.reading-shelf-switch summary { font: 700 14px/1 system-ui, sans-serif; cursor: pointer; }
+.reading-shelf-switch p { color: var(--ink-soft); font: 500 13px/1.5 system-ui, sans-serif; }
+.reading-band-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.reading-chip { padding: 9px 13px; border: 2px solid var(--bark); border-radius: 999px; background: white; color: var(--navy); font: 700 13px/1.1 system-ui, sans-serif; cursor: pointer; display: grid; gap: 2px; }
+.reading-chip.active { border-color: var(--sprout); background: var(--sprout); color: white; }
+.reading-chip small { font: 500 10px/1 system-ui, sans-serif; opacity: .8; }
+
+/* Reader */
+.reading-reader-header { display: grid; gap: 8px; margin-bottom: 12px; }
+.reading-reader-header h3 { margin: 0; font-size: 20px; }
+.reading-reader-header small { color: var(--ink-soft); font: 650 12px/1.3 system-ui, sans-serif; }
+.reading-scene { height: 150px; border-radius: 20px; display: grid; place-items: center; font-size: 62px; }
+.reading-page-text { margin: 18px 0 0; font-size: 23px; line-height: 1.75; color: var(--navy); }
+.reading-page-text.long { font-size: 20px; line-height: 1.7; }
+.reading-page-text.dense { font-size: 18.5px; line-height: 1.68; }
+.reading-word { padding: 2px 3px; border: 0; border-radius: 6px; background: none; color: inherit; font: inherit; cursor: pointer; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+.reading-word.tapped { box-shadow: inset 0 -3px 0 var(--yellow); }
+@media (hover: hover) { .reading-word:hover { background: #f5d9ce; } }
+.reading-hint { margin: 12px 0 0; color: var(--ink-soft); text-align: center; font: 500 12.5px/1.4 system-ui, sans-serif; }
+
+.reading-word-panel { margin-top: 14px; padding: 14px 16px; border: 2px dashed var(--bark); border-radius: 16px; background: white; }
+.reading-word-panel.empty { color: var(--ink-soft); text-align: center; font: 500 13px/1.4 system-ui, sans-serif; }
+.reading-word-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.reading-word-head strong { font-size: 19px; }
+.reading-word-meaning { margin-top: 8px; display: flex; align-items: flex-start; gap: 8px; color: var(--ink-soft); font: 500 14px/1.45 system-ui, sans-serif; }
+.reading-save { flex-shrink: 0; padding: 8px 13px; border: 2px solid var(--yellow); border-radius: 999px; background: white; color: var(--soil); font: 700 12.5px/1 system-ui, sans-serif; cursor: pointer; }
+.reading-save.saved { background: var(--yellow); color: var(--navy); }
+
+.reading-controls { margin-top: 18px; display: flex; gap: 10px; align-items: stretch; }
+.reading-controls > * { flex: 1; }
+.reading-dots { margin-top: 16px; display: flex; justify-content: center; gap: 6px; }
+.reading-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--bark); }
+.reading-dots span.seen { background: var(--sprout); }
+.reading-dots span.active { width: 18px; border-radius: 4px; background: var(--coral); }
+
+/* End-of-story check */
+.reading-check-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.reading-check-header h3 { margin: 0; font-size: 20px; }
+.reading-check-header small { color: var(--ink-soft); font: 650 12px/1 system-ui, sans-serif; }
+.reading-check-prompt { margin: 10px 0 0; color: var(--ink-soft); font: 500 14px/1.4 system-ui, sans-serif; }
+.reading-check-meaning { margin-top: 10px; padding: 14px 16px; border-radius: 16px; background: var(--paper); display: flex; align-items: flex-start; gap: 10px; font: 700 17px/1.4 system-ui, sans-serif; }
+.reading-check-choices { margin-top: 14px; display: grid; gap: 10px; }
+.reading-choice { padding: 16px; border: 2px solid var(--bark); border-radius: 14px; background: white; color: var(--navy); font: 700 18px/1 system-ui, sans-serif; text-align: left; cursor: pointer; }
+.reading-choice.right { border-color: var(--sprout); background: var(--sprout); color: white; }
+.reading-choice.wrong { border-color: var(--coral); background: #f5d9ce; color: #a8402a; }
+.reading-choice[disabled] { cursor: default; }
+.reading-check-feedback { min-height: 22px; margin: 12px 0 0; color: var(--ink-soft); font: 600 14px/1.4 system-ui, sans-serif; }
+.reading-check .reading-secondary { width: 100%; }
+
+/* Finish */
+.reading-finish { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 26px 16px; }
+.reading-finish h3 { margin: 6px 0 0; font-size: 22px; }
+.reading-finish p { margin: 0; color: var(--ink-soft); font: 500 14px/1.5 system-ui, sans-serif; }
+.reading-finish .reading-primary { margin-top: 18px; width: 100%; max-width: 320px; }
+
+/* Phonics */
+.reading-phonics h3, .reading-notebook h3 { margin: 10px 0 0; font-size: 20px; }
+.reading-phonics p, .reading-notebook p { margin: 6px 0 0; color: var(--ink-soft); font: 500 14px/1.45 system-ui, sans-serif; }
+.reading-explored { display: block; margin-top: 4px; color: var(--ink-soft); font: 650 12px/1 system-ui, sans-serif; }
+.reading-alphabet { margin-top: 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.reading-tile { position: relative; padding: 14px 6px 10px; border: 0; border-radius: 18px; background: white; box-shadow: 0 4px 14px #173b6d12; display: grid; justify-items: center; gap: 4px; cursor: pointer; }
+.reading-tile.heard::after { content: ""; position: absolute; top: 9px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--sprout); }
+.reading-tile strong { font-size: 22px; line-height: 1; }
+.reading-tile span { font-size: 19px; line-height: 1; }
+
+.reading-letter-card { margin-top: 12px; padding: 22px 20px; border-radius: 24px; background: white; box-shadow: 0 6px 18px #173b6d14; text-align: center; }
+.reading-letter-big { color: var(--leaf); font-size: 76px; line-height: 1; letter-spacing: 2px; }
+.reading-letter-keyword { margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+.reading-letter-keyword > span { font-size: 38px; line-height: 1; }
+.reading-letter-keyword strong { display: block; color: var(--coral); font-size: 21px; }
+.reading-letter-keyword small { display: block; margin-top: 2px; color: var(--ink-soft); font: 500 14px/1 system-ui, sans-serif; }
+.reading-letter-sounds { margin-top: 18px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.reading-letter h4 { margin: 20px 0 0; font-size: 15px; }
+.reading-examples { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+.reading-example { padding: 11px 18px; border: 2px solid var(--bark); border-radius: 999px; background: white; color: var(--navy); font-size: 19px; cursor: pointer; }
+.reading-example strong { color: var(--coral); }
+.reading-letter-note { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--paper); color: var(--ink-soft); font: 500 13.5px/1.5 system-ui, sans-serif; }
+
+/* Notebook */
+.reading-notebook-list { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.reading-notebook-list li { padding: 12px 6px; border-bottom: 1px dashed #d8cda9; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.reading-notebook-list li:last-child { border-bottom: 0; }
+.reading-notebook-list strong { display: block; font-size: 19px; }
+.reading-notebook-list small { display: block; margin-top: 3px; color: var(--ink-soft); font: 500 13.5px/1.4 system-ui, sans-serif; }
+.reading-notebook-actions { flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
+.reading-remove { width: 36px; height: 36px; border: 0; border-radius: 11px; background: var(--paper); color: var(--ink-soft); cursor: pointer; }
+.reading-empty { margin-top: 16px; padding: 30px 14px; border: 2px dashed var(--bark); border-radius: 18px; color: var(--ink-soft); text-align: center; font: 500 14px/1.5 system-ui, sans-serif; }
+.reading-empty span { display: block; margin-bottom: 8px; font-size: 38px; }
+
+/* Roomier screens: the shelf and the alphabet gain columns, and the
+   reader pairs its picture with the words instead of stacking them. */
+@media (min-width: 720px) {
+  .reading-story-list { grid-template-columns: 1fr 1fr; }
+  .reading-alphabet { grid-template-columns: repeat(6, 1fr); }
+  .reading-stats > div { padding: 16px 10px; }
+  .reading-stats strong { font-size: 30px; }
+  .reading-check-choices { grid-template-columns: 1fr 1fr; }
+  .reading-page-text { font-size: 28px; }
+  .reading-page-text.long { font-size: 25px; }
+  .reading-page-text.dense { font-size: 22px; }
+  .reading-scene { height: 210px; font-size: 84px; }
+}

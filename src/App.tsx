@@ -18,6 +18,7 @@ import ColoringStudio from "./ColoringStudio";
 import LearningBoard from "./LearningBoard";
 import MathBoard from "./MathBoard";
 import ScienceLabBoard from "./ScienceLab";
+import StoriesBoard from "./StoriesBoard";
 import StorybookBoard from "./StorybookBoard";
 import { ProfileHub, ProfileSetup } from "./ProfileViews";
 import VariedPuzzleBoard from "./PuzzleBoard";
@@ -28,6 +29,7 @@ import { activityCount, activityNoun, activityUnit, COLORING_SCENE_COUNT } from 
 import { artCredit, DiscoveryArt } from "./discovery-art";
 import { recordAdaptiveMathAnswer, type MathRepresentation } from "./adaptive-math";
 import { ABACUS_STAGES } from "./abacus-data";
+import type { ReadingBand } from "./reading-data";
 import {
   activityGroupsForAge,
   isActivityAvailable,
@@ -54,7 +56,12 @@ import {
   recordLocation,
   recordAbacusResult,
   recordAbacusVisit,
+  recordLetterHeard,
+  recordReadingBand,
+  recordReadingFinish,
+  recordReadingPage,
   saveFamilyData,
+  toggleSavedWord,
   type ActivityKey,
   type ChildProfile,
   type FamilyData,
@@ -103,7 +110,7 @@ const ACTIVITY_META: Record<Activity, { icon: string; title: string; copy: strin
   draw: { icon: "✏️", title: "Draw", copy: "A blank canvas for every idea" },
   color: { icon: "🎨", title: "Color", copy: `${COLORING_SCENE_COUNT} built-in scenes + family pages` },
   puzzle: { icon: "🧩", title: "Build puzzles", copy: "Match, sort, sequence, reason" },
-  stories: { icon: "📚", title: "Storybooks", copy: "Funny picture stories read aloud" },
+  stories: { icon: "📚", title: "Stories", copy: "Picture stories read aloud, or read them yourself" },
   math: { icon: "🧮", title: "Math", copy: "Fresh questions + a real abacus" },
   science: { icon: "🧪", title: "Science", copy: "Ask, observe, explain" },
   lab: { icon: "🥼", title: "Science Lab", copy: "Predict, test safely, explain" },
@@ -123,7 +130,7 @@ const CHILD_ACTIVITY_LABELS: Record<Activity, string> = {
 
 const CHILD_GROUP_META = {
   create: { icon: "🎨", title: "Create", copy: "Draw or color" },
-  "play-read": { icon: "🧩", title: "Play", copy: "Puzzles and stories" },
+  "play-read": { icon: "🧩", title: "Play", copy: "Puzzles, stories, and reading" },
   "learn-discover": { icon: "🔭", title: "Learn", copy: "Numbers, science, and wonder" },
 } as const;
 
@@ -136,7 +143,11 @@ function childActivityLabel(activity: Activity, ageWorld: number) {
 
 function childGroupMeta(groupId: keyof typeof CHILD_GROUP_META, ageWorld: number) {
   const base = CHILD_GROUP_META[groupId];
-  if (groupId === "play-read" && ageWorld >= 2) return { ...base, copy: "Puzzles and challenges" };
+  // The door's copy names only what is actually behind it: storybooks stop
+  // after age 6 and the Reading Garden after age 9, so neither is advertised
+  // to a child who cannot open it.
+  if (groupId === "play-read" && ageWorld >= 3) return { ...base, copy: "Puzzles and challenges" };
+  if (groupId === "play-read" && ageWorld === 2) return { ...base, copy: "Puzzles, reading, and challenges" };
   if (groupId === "learn-discover" && ageWorld >= 2) return { ...base, copy: "Math, science, and discovery" };
   return base;
 }
@@ -741,6 +752,7 @@ function Studio({
   onMathAnswer,
   onAbacusResult,
   onAbacusVisit,
+  readingActions,
   onLikeLesson,
   onSaveArtwork,
   onOpenRecent,
@@ -772,6 +784,13 @@ function Studio({
     stageId: string;
     mode: "learn" | "practice" | "free";
   }) => void;
+  readingActions: {
+    onPageRead: (entry: { storyId: string; pageIndex: number; pageCount: number; newWords: string[] }) => void;
+    onFinishStory: (entry: { storyId: string; pageKeys: string[]; newWords: string[] }) => void;
+    onToggleWord: (entry: { word: string; meaning: string }) => void;
+    onLetterHeard: (letter: string) => void;
+    onBandChange: (band: ReadingBand) => void;
+  };
   onLikeLesson: (lessonId: string, interest: InterestKey) => void;
   onSaveArtwork: (dataUrl: string, title: string) => Promise<void>;
   onOpenRecent: (activity: "draw" | "color", ageWorld: number, page: number) => void;
@@ -786,6 +805,7 @@ function Studio({
   const [newDrawingPageRequest, setNewDrawingPageRequest] = useState(0);
   const [customColoringMode, setCustomColoringMode] = useState(false);
   const [mathAbacusMode, setMathAbacusMode] = useState(false);
+  const [storiesReadingMode, setStoriesReadingMode] = useState(false);
   const [activityChooserOpen, setActivityChooserOpen] = useState(false);
   const [chooserGroup, setChooserGroup] = useState<"create" | "play-read" | "learn-discover" | null>(null);
   const fifiMascot = `${import.meta.env.BASE_URL}mascot/fifi-color-spark.png`;
@@ -794,7 +814,7 @@ function Studio({
     draw: "Try one shape, one brush, and one color you have never combined before. New ideas often begin with a tiny experiment!",
     color: "Colors do not have to copy real life. A purple ocean or golden elephant can begin a wonderful story.",
     puzzle: "Slow thinking is strong thinking. Name the rule before you choose a piece.",
-    stories: "Funny stories can grow from one surprising question. What would you change in this story?",
+    stories: "Listen first if a story is new, then try reading it yourself. Tap any word you are unsure of.",
     math: "If a number feels tricky, draw it, build it, or tell a small story about it.",
     science: "Scientists are allowed to change their minds when new evidence appears. That is how learning grows.",
     lab: "Make a prediction first. A surprising result is useful evidence, not a mistake.",
@@ -874,7 +894,7 @@ function Studio({
                 </div>
               )}
             </div>
-            {!(activity === "color" && customColoringMode) && !(activity === "math" && mathAbacusMode) && (
+            {!(activity === "color" && customColoringMode) && !(activity === "math" && mathAbacusMode) && !(activity === "stories" && storiesReadingMode) && (
             <div className="page-picker">
               <button onClick={guard(() => onPage(page - 1))} aria-label={`Previous ${unit.toLowerCase()}`} disabled={page === 1}>←</button>
               <label>{unit} <input type="number" min="1" max={total} value={page} onChange={(event) => {
@@ -921,13 +941,13 @@ function Studio({
           {activity === "draw" && <DrawingStudio key={`d-${page}-${age}-${profile.id}`} page={page} age={age} profileId={profile.id} profileName={profile.name} newPageRequest={newDrawingPageRequest} onComplete={onComplete} onSaveArtwork={onSaveArtwork} onRequestStartOver={(confirm) => setPendingStartOver(() => confirm)} />}
           {activity === "color" && <ColoringStudio key={`c-${page}-${age}-${profile.id}`} page={page} age={age} profileId={profile.id} profileName={profile.name} onComplete={onComplete} onSaveArtwork={onSaveArtwork} onLibraryModeChange={setCustomColoringMode} />}
           {activity === "puzzle" && <VariedPuzzleBoard key={`p-${page}-${age}`} page={page} age={age} onComplete={onComplete} />}
-          {activity === "stories" && <StorybookBoard key={`story-${page}-${age}`} page={page} age={age} onSelectBook={onPage} onComplete={onComplete} />}
+          {activity === "stories" && <StoriesBoard key={`stories-${age}-${profile.id}`} page={page} age={age} childAge={profile.age} profileId={profile.id} reading={profileProgress.learning.reading} onComplete={onComplete} onSelectBook={onPage} onReadingModeChange={setStoriesReadingMode} readingActions={readingActions} />}
           {activity === "math" && <MathBoard key={`math-${page}-${age}-${profile.id}`} page={page} age={age} childAge={profile.age} profileId={profile.id} liked={profileProgress.learning.likedLessons.includes(getLearningLessons("math", age)[page - 1].id)} mathPractice={profileProgress.learning.mathPractice?.[getLearningLessons("math", age)[page - 1].id]} mathJourney={profileProgress.learning.mathJourney || []} abacusProgress={profileProgress.learning.abacus} onComplete={onComplete} onAttempt={() => onLearningAttempt("math")} onMathAnswer={onMathAnswer} onAbacusResult={onAbacusResult} onAbacusVisit={onAbacusVisit} onLike={onLikeLesson} onSelectLesson={onPage} onAbacusModeChange={setMathAbacusMode} />}
           {activity === "science" && <LearningBoard key={`l-science-${page}-${age}-${profile.id}`} subject="science" page={page} age={age} childAge={profile.age} profileId={profile.id} liked={profileProgress.learning.likedLessons.includes(getLearningLessons("science", age)[page - 1].id)} mathJourney={[]} onComplete={onComplete} onAttempt={() => onLearningAttempt("science")} onMathAnswer={onMathAnswer} onLike={onLikeLesson} onSelectLesson={onPage} />}
           {activity === "lab" && <ScienceLabBoard key={`lab-${page}-${age}`} page={page} age={age} onComplete={onComplete} onSelectLab={onPage} />}
           {activity === "discover" && <DiscoveryBoard key={`x-${page}-${age}`} page={page} age={age} onComplete={onComplete} />}
 
-          {!(activity === "color" && customColoringMode) && !(activity === "math" && mathAbacusMode) && (
+          {!(activity === "color" && customColoringMode) && !(activity === "math" && mathAbacusMode) && !(activity === "stories" && storiesReadingMode) && (
             <div className="next-row">
               <div><span>🌟</span><p><strong>{NEXT_REMINDERS[activity].title}</strong><br />{NEXT_REMINDERS[activity].copy}</p></div>
               <button className="primary-button" disabled={page === total} onClick={guard(() => onPage(page + 1))}>{page === total ? `All ${pluralUnit} explored ✓` : `Next ${unit.toLowerCase()} →`}</button>
@@ -947,7 +967,7 @@ function Studio({
             }}
           />
           <FifiGuide
-            open={fifiTipOpen && !pendingStartOver && !(activity === "math" && mathAbacusMode)}
+            open={fifiTipOpen && !pendingStartOver && !(activity === "math" && mathAbacusMode) && !(activity === "stories" && storiesReadingMode)}
             mode="tip"
             childName={profile.name}
             mascotSrc={fifiMascot}
@@ -1334,6 +1354,33 @@ export default function ColorQuestApp() {
     setFamily((current) => recordAbacusVisit(current, activeProfile.id, visit));
   };
 
+  /**
+   * Everything the Reading Garden writes back, in one object so Studio's
+   * signature does not grow a prop per interaction.
+   */
+  const readingActions = {
+    onPageRead: (entry: { storyId: string; pageIndex: number; pageCount: number; newWords: string[] }) => {
+      if (!activeProfile) return;
+      setFamily((current) => recordReadingPage(current, activeProfile.id, entry));
+    },
+    onFinishStory: (entry: { storyId: string; pageKeys: string[]; newWords: string[] }) => {
+      if (!activeProfile) return;
+      setFamily((current) => recordReadingFinish(current, activeProfile.id, entry));
+    },
+    onToggleWord: (entry: { word: string; meaning: string }) => {
+      if (!activeProfile) return;
+      setFamily((current) => toggleSavedWord(current, activeProfile.id, entry));
+    },
+    onLetterHeard: (letter: string) => {
+      if (!activeProfile) return;
+      setFamily((current) => recordLetterHeard(current, activeProfile.id, letter));
+    },
+    onBandChange: (band: ReadingBand) => {
+      if (!activeProfile) return;
+      setFamily((current) => recordReadingBand(current, activeProfile.id, band));
+    },
+  };
+
   const likeLesson = (lessonId: string, interest: InterestKey) => {
     if (!activeProfile) return;
     setFamily((current) => recordInterest(current, activeProfile.id, lessonId, interest));
@@ -1430,7 +1477,7 @@ export default function ColorQuestApp() {
     : view === "profiles"
       ? <ProfileHub profiles={family.profiles} activeProfileId={activeProfile.id} onSelect={selectProfile} onAdd={() => setView("profile-new")} onBack={() => setView("home")} />
       : view === "studio"
-        ? <Studio profile={activeProfile} profileProgress={activeProgress} age={age} activity={activity} page={page} onActivity={changeActivity} onPage={changePage} onHome={() => setView("home")} onComplete={complete} onLearningAttempt={learningAttempt} onMathAnswer={mathAnswer} onAbacusResult={abacusResult} onAbacusVisit={abacusVisit} onLikeLesson={likeLesson} onSaveArtwork={saveArtwork} onOpenRecent={openRecentCreative} />
+        ? <Studio profile={activeProfile} profileProgress={activeProgress} age={age} activity={activity} page={page} onActivity={changeActivity} onPage={changePage} onHome={() => setView("home")} onComplete={complete} onLearningAttempt={learningAttempt} onMathAnswer={mathAnswer} onAbacusResult={abacusResult} onAbacusVisit={abacusVisit} readingActions={readingActions} onLikeLesson={likeLesson} onSaveArtwork={saveArtwork} onOpenRecent={openRecentCreative} />
         : view === "parents"
           ? <ParentCorner family={family} activeProfile={activeProfile} age={age} artworkRevision={artworkRevision} onHome={() => setView("home")} onProfiles={() => setView("profiles")} onUpdateProfile={updateProfile} onDeleteProfile={deleteProfile} />
           : <Home age={age} profileProgress={activeProgress} profile={activeProfile} canContinue={completedCount(activeProgress) > 0 || safeResume.page > 1 || Boolean(activeProgress.learning.abacus?.hasVisited)} onStart={start} onStartLesson={(subject, lessonPage) => start(subject, false, lessonPage)} onContinue={continueAdventure} onParents={() => setView("parents")} onProfiles={() => setView("profiles")} />;

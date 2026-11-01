@@ -19,7 +19,7 @@ export const ACTIVITY_GROUPS: ActivityGroup[] = [
   {
     id: "play-read",
     title: "Play & Read",
-    description: "Solve, match, and enjoy a story.",
+    description: "Solve, match, read, and enjoy a story.",
     activities: ["puzzle", "stories"],
   },
   {
@@ -31,7 +31,11 @@ export const ACTIVITY_GROUPS: ActivityGroup[] = [
 ];
 
 export function isActivityAvailable(activity: ActivityKey, ageWorld: number) {
-  if (activity === "stories") return ageWorld < 2;
+  // Stories holds both halves of reading: picture books read aloud, which
+  // stop mattering after about six, and the Reading Garden, where a child
+  // reads for themselves. The button therefore outlives the picture books
+  // and retires once learning to read is done.
+  if (activity === "stories") return ageWorld <= 2;
   if (activity === "discover") return ageWorld >= 2;
   return true;
 }
