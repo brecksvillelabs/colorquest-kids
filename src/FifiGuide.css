@@ -456,3 +456,31 @@
     transition: none !important;
   }
 }
+
+/* ---------------------------------------------------------------
+   Per-helper tint
+   Each helper sets --guide-accent, so Clink's bubble does not read
+   as Fifi's in a different hat. The fallback keeps Fifi's purple,
+   so any caller that passes no guide looks exactly as before.
+   --------------------------------------------------------------- */
+.fifi-tip-wrap,
+.fifi-dialog { --guide-accent: var(--fifi-purple-dark); }
+
+.fifi-kicker { color: var(--guide-accent); }
+
+.fifi-tip-copy.fifi-speech-bubble { border-color: color-mix(in srgb, var(--guide-accent) 34%, #fff); }
+
+.fifi-tip-copy strong { color: var(--guide-accent); }
+
+/* The emoji stand-ins get a tinted disc so they read as characters
+   rather than loose glyphs floating on the page. */
+.fifi-mascot-placeholder {
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--guide-accent) 16%, #fff);
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--guide-accent) 38%, #fff);
+}
+
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+  .fifi-mascot-placeholder { background: var(--fifi-mint); box-shadow: none; }
+  .fifi-tip-copy.fifi-speech-bubble { border-color: #fff; }
+}

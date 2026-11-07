@@ -3,17 +3,25 @@ import {
   useId,
   useRef,
   useState,
+  type CSSProperties,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
   type RefObject,
 } from "react";
 import { createPortal } from "react-dom";
 import { SpeakButton, useSpeech } from "./SpeechProvider";
+import { FIFI, type Guide } from "./guides";
 import "./FifiGuide.css";
 
 type SharedGuideProps = {
   open: boolean;
-  /** Supply `/fifi-mascot.png` after the finished local mascot art is added. */
+  /**
+   * Which helper is speaking. Defaults to Fifi, who owns the app-wide safety
+   * dialogs; inside an activity the specialist for that activity is passed
+   * in instead.
+   */
+  guide?: Guide;
+  /** Overrides the guide's own artwork when a caller has a specific file. */
   mascotSrc?: string;
   childName?: string;
   className?: string;
@@ -52,7 +60,7 @@ type GuideCopy = {
   listenText: string;
 };
 
-function copyFor(props: FifiGuideProps): GuideCopy {
+function copyFor(props: FifiGuideProps, guide: Guide): GuideCopy {
   const hello = props.childName ? `, ${props.childName}` : "";
 
   if (props.mode === "leave-drawing") {
@@ -69,11 +77,11 @@ function copyFor(props: FifiGuideProps): GuideCopy {
     return { title, message, listenText: `${title} ${message}` };
   }
 
-  const title = props.title || `A bright idea from Fifi${hello}`;
+  const title = props.title || `A bright idea from ${guide.name}${hello}`;
   return { title, message: props.message, listenText: `${title}. ${props.message}` };
 }
 
-function FifiMascot({ src, talking }: { src?: string; talking: boolean }) {
+function GuideMascot({ src, talking, guide }: { src?: string; talking: boolean; guide: Guide }) {
   const [imageFailed, setImageFailed] = useState(false);
 
   useEffect(() => setImageFailed(false), [src]);
@@ -83,7 +91,7 @@ function FifiMascot({ src, talking }: { src?: string; talking: boolean }) {
       <img
           className="fifi-mascot-image"
           src={src}
-          alt="Fifi, your ColorQuest guide"
+          alt={`${guide.name}, your ColorQuest guide`}
           onError={() => setImageFailed(true)}
         />
       <span className={`fifi-mouth ${talking ? "fifi-mouth-talking" : ""}`} aria-hidden="true" />
@@ -91,9 +99,11 @@ function FifiMascot({ src, talking }: { src?: string; talking: boolean }) {
     </>;
   }
 
+  // Most helpers have no artwork yet, so the emoji is the character rather
+  // than a placeholder for one.
   return (
-    <span className="fifi-mascot-placeholder" role="img" aria-label="Fifi, your ColorQuest guide">
-      🦊
+    <span className="fifi-mascot-placeholder" role="img" aria-label={`${guide.name}, your ColorQuest guide`}>
+      {guide.emoji}
     </span>
   );
 }
@@ -126,7 +136,8 @@ function GuideButton({
  */
 export default function FifiGuide(props: FifiGuideProps) {
   const { open, mascotSrc, className = "", autoGreet = false } = props;
-  const copy = copyFor(props);
+  const guide = props.guide || FIFI;
+  const copy = copyFor(props, guide);
   const rawId = useId();
   const stableId = rawId.replace(/[^a-zA-Z0-9_-]/g, "");
   const titleId = `fifi-title-${stableId}`;
@@ -136,7 +147,7 @@ export default function FifiGuide(props: FifiGuideProps) {
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const safeCloseRef = useRef<() => void>(() => undefined);
   const blocking = props.mode !== "tip";
-  const speechId = `fifi-${props.mode}-${stableId}`;
+  const speechId = `guide-${guide.id}-${props.mode}-${stableId}`;
   const { autoRead, say, speakingId, stop } = useSpeech();
   const talking = speakingId === speechId;
 
@@ -207,12 +218,12 @@ export default function FifiGuide(props: FifiGuideProps) {
 
   if (!open || typeof document === "undefined") return null;
 
-  const mascot = <FifiMascot src={mascotSrc} talking={talking} />;
+  const mascot = <GuideMascot src={mascotSrc} talking={talking} guide={guide} />;
   const listen = (
     <SpeakButton
       id={speechId}
       text={copy.listenText}
-      label="Hear Fifi"
+      label={`Hear ${guide.name}`}
       className="fifi-listen"
       voiceStyle="fifi"
     />
@@ -222,8 +233,9 @@ export default function FifiGuide(props: FifiGuideProps) {
     return createPortal(
       <aside
         className={`fifi-tip-wrap ${className}`.trim()}
+        style={{ "--guide-accent": guide.accent } as CSSProperties}
         role="note"
-        aria-label="Fifi's tip"
+        aria-label={`${guide.name}'s tip`}
         aria-live="polite"
         aria-atomic="true"
       >
@@ -241,7 +253,7 @@ export default function FifiGuide(props: FifiGuideProps) {
               )}
             </div>
           </div>
-          <button type="button" className="fifi-tip-close" onClick={props.onDismiss} aria-label="Dismiss Fifi's tip">
+          <button type="button" className="fifi-tip-close" onClick={props.onDismiss} aria-label={`Dismiss ${guide.name}'s tip`}>
             ×
           </button>
         </div>
@@ -264,6 +276,7 @@ export default function FifiGuide(props: FifiGuideProps) {
     <div className="fifi-layer" onMouseDown={closeFromBackdrop}>
       <div
         ref={dialogRef}
+        style={{ "--guide-accent": guide.accent } as CSSProperties}
         className={`fifi-dialog ${destructive ? "fifi-dialog-warning" : ""} ${className}`.trim()}
         role="dialog"
         aria-modal="true"
@@ -273,7 +286,7 @@ export default function FifiGuide(props: FifiGuideProps) {
       >
         <div className={`fifi-mascot ${talking ? "fifi-is-talking" : ""}`} aria-hidden="true">{mascot}</div>
         <div className="fifi-dialog-copy fifi-speech-bubble">
-          <p className="fifi-kicker">Fifi says</p>
+          <p className="fifi-kicker">{guide.name} says</p>
           <h2 id={titleId}>{copy.title}</h2>
           <p id={descriptionId}>{copy.message}</p>
           {listen}
